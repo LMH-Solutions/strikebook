@@ -1,0 +1,16 @@
+<!doctype html><html><head><meta charset="utf-8"><title>StrikeBook (dev)</title>
+<style>body{font:15px system-ui;max-width:760px;margin:40px auto;padding:0 16px}input,select{padding:4px}table{border-collapse:collapse}td,th{padding:4px 10px;border-bottom:1px solid #ddd}.big{font-size:42px;font-weight:600}</style></head>
+<body><h1>StrikeBook <small>dev skeleton</small></h1>
+<p>Perps-priced strike markets on the Predict pm-AMM. Fair YES = P(asset &gt; strike at expiry), from live Pyth price and realised vol.</p>
+<form id="f">Asset <select name="asset"><option>SOL</option><option>BTC</option></select>
+Strike $<input name="strike" size="8" placeholder="spot"> Hours <input name="hours" value="24" size="4"> <button>Price it</button></form>
+<div id="out"></div>
+<script>
+const f=document.getElementById('f'),out=document.getElementById('out');
+async function go(e){e&&e.preventDefault();const q=new URLSearchParams(new FormData(f));if(!q.get('strike'))q.delete('strike');
+const r=await (await fetch('/api/fair?'+q)).json();if(r.error){out.textContent=r.error;return}
+out.innerHTML=`<p>Spot $${r.spot.toFixed(2)} (±${r.conf.toFixed(3)}, ${r.source}) · σ ${(r.sigma*100).toFixed(1)}%/yr</p>
+<p>"${r.asset} &gt; $${(+r.strike).toFixed(2)} in ${r.hours}h?"</p><div class="big">${(r.fairYes*100).toFixed(1)}% YES</div>
+<h3>Strike ladder (seed prices for new pm-AMM markets)</h3><table><tr><th>P(YES)</th><th>Strike</th></tr>${r.ladder.map(l=>`<tr><td>${l.prob*100}%</td><td>$${l.strike.toFixed(2)}</td></tr>`).join('')}</table>`}
+f.onsubmit=go;go();
+</script></body></html>

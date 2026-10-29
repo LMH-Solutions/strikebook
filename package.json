@@ -1,0 +1,22 @@
+{
+  "name": "strikebook",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Perps-priced strike markets on the Predict pm-AMM (Solana): fair value from live perp marks, Pyth-resolved, LP risk dashboard",
+  "license": "MIT",
+  "scripts": {
+    "fair": "node src/cli/fair.cjs",
+    "markets": "node src/cli/markets.cjs",
+    "serve": "node src/server.cjs",
+    "test": "node --test test/"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@anchor-lang/core": "^1.2.2",
+    "@pm-amm/sdk": "^0.2.0",
+    "@solana/spl-token": "^0.4.15",
+    "@solana/web3.js": "^1.99.0"
+  }
+}
