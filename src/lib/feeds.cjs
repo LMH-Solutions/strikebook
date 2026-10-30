@@ -51,22 +51,45 @@ async function pythLatest(asset) {
 // Historical price at/near a timestamp (used by the resolver keeper).
 // Pyth Hermes historical (needs HERMES_API_KEY since late 2026); falls back to the
 // Coinbase 1-minute candle close containing unixTs so the dry-run keeper still works.
-async function pythAt(asset, unixTs) {
+const ONCHAIN_WINDOW = Number(process.env.PYTH_ONCHAIN_WINDOW || 90); // secs after endTs we trust the live account
+const settleCache = new Map(); // `${asset}:${ts}` -> settlement print, so every rung of a ladder settles on ONE print
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+// Settlement price for `asset` at `unixTs`. Order of preference:
+//  1) live on-chain Pyth account, first publish_time >= unixTs (retried for a few seconds), if we're inside the window
+//  2) Pyth Hermes historical (HERMES_API_KEY)
+//  3) Coinbase 1m candle close, ONLY once that candle has closed (else throws "not-final" and the keeper retries)
+async function pythAt(asset, unixTs, nowTs = Math.floor(Date.now() / 1000), { latest = pythLatest, retries = 5, retryMs = 1500 } = {}) {
+  const key = `${asset}:${unixTs}`;
+  if (settleCache.has(key)) return settleCache.get(key);
+  const keep = (v) => (settleCache.set(key, v), v);
   const id = PYTH_IDS[asset];
+  if (nowTs >= unixTs && nowTs - unixTs <= ONCHAIN_WINDOW && PYTH_ACCOUNTS[asset]) {
+    for (let i = 0; i <= retries; i++) {
+      try {
+        const p = await latest(asset);
+        if (p.source.startsWith("pyth-onchain") && p.publishTime >= unixTs && p.publishTime - unixTs <= ONCHAIN_WINDOW)
+          return keep({ price: p.price, conf: p.conf, publishTime: p.publishTime, source: p.source });
+        if (p.publishTime - unixTs > ONCHAIN_WINDOW) break;
+      } catch {}
+      if (i < retries) await sleep(retryMs);
+    }
+  }
   if (process.env.HERMES_API_KEY) {
     const res = await fetch(`${HERMES}/v2/updates/price/${unixTs}?ids[]=${id}&parsed=true`, { headers: { "x-api-key": process.env.HERMES_API_KEY } });
     if (res.ok) {
       const p = (await res.json()).parsed[0].price;
-      return { price: Number(p.price) * 10 ** p.expo, publishTime: p.publish_time, source: "pyth-hermes" };
+      return keep({ price: Number(p.price) * 10 ** p.expo, conf: Number(p.conf) * 10 ** p.expo, publishTime: p.publish_time, source: "pyth-hermes" });
     }
   }
-  const start = new Date((unixTs - 60) * 1000).toISOString(), end = new Date((unixTs + 60) * 1000).toISOString();
+  const minute = Math.floor(unixTs / 60) * 60;
+  if (Math.floor(Date.now() / 1000) < minute + 75) throw new Error("not-final: fallback candle still open");
+  const start = new Date((minute - 60) * 1000).toISOString(), end = new Date((minute + 60) * 1000).toISOString();
   const res = await fetch(`https://api.exchange.coinbase.com/products/${asset}-USD/candles?granularity=60&start=${start}&end=${end}`, { headers: { "user-agent": "strikebook" } });
   if (!res.ok) throw new Error(`coinbase ${res.status}`);
-  const rows = await res.json();
-  const row = rows.find((r) => r[0] <= unixTs && unixTs < r[0] + 60) || rows[0];
-  if (!row) throw new Error("no candle");
-  return { price: row[4], publishTime: row[0] + 60, source: "coinbase-1m-fallback" };
+  const row = (await res.json()).find((r) => r[0] === minute);
+  if (!row) throw new Error("not-final: no candle for that minute");
+  return keep({ price: row[4], conf: null, publishTime: minute + 60, source: "coinbase-1m-fallback" });
 }
 
 // Hourly closes for realised vol (Coinbase public candles, no auth).

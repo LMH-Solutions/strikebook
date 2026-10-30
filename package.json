@@ -8,7 +8,10 @@
     "fair": "node src/cli/fair.cjs",
     "markets": "node src/cli/markets.cjs",
     "serve": "node src/server.cjs",
-    "test": "node --test test/"
+    "test": "node --test test/",
+    "keeper": "node src/keeper.cjs",
+    "demo": "node src/cli/demo.cjs",
+    "trade": "node src/cli/trade.cjs"
   },
   "engines": {
     "node": ">=20"

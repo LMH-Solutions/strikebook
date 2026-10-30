@@ -2,7 +2,7 @@
 // Read-only: list live pm-AMM markets on devnet with their current price. No wallet needed.
 const { Connection, PublicKey } = require("@solana/web3.js");
 const { PmAmmClient } = require("@pm-amm/sdk");
-const { i80f48ToNumber, priceFromReserves } = require("@pm-amm/sdk/math");
+const { marketState } = require("../lib/pmamm.cjs");
 const { parseStrikeName } = require("../lib/resolver.cjs");
 
 const PROGRAM_ID = new PublicKey("GV1FMGHRYBjQLaghE5fnGuYCuCcpdt3GD5xEX3TwN16y");
@@ -16,7 +16,7 @@ const MUSDC = new PublicKey("3WQ8hCqTNwjrh8WzE2XyoZoUrd1miPcwWfMkmFPUMEWZ");
   const rows = all.map(({ publicKey, account: a }) => {
     const name = Buffer.isBuffer(a.name) || Array.isArray(a.name) ? Buffer.from(a.name).toString("utf8").replace(/\0+$/, "") : String(a.name ?? "");
     let price = null;
-    try { price = priceFromReserves(i80f48ToNumber(a.reserveYes), i80f48ToNumber(a.reserveNo), i80f48ToNumber(a.lEff)); } catch {}
+    try { price = +marketState(a).price.toFixed(4); } catch {}
     const endTs = Number(a.endTs?.toString?.() ?? a.endTs);
     return { market: publicKey.toBase58(), name, endTs, live: endTs > now && !a.resolved, price, strike: parseStrikeName(name) };
   });
