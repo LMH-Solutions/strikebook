@@ -1,0 +1,57 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>StrikeBook: oracle-resolved strike markets on the pm-AMM (devnet)</title>
+<style>body{font:15px/1.45 system-ui,sans-serif;max-width:980px;margin:32px auto;padding:0 16px;color:#111}table{border-collapse:collapse;width:100%;margin:8px 0 20px}
+td,th{padding:4px 8px;border-bottom:1px solid #e3e3e3;text-align:left;font-variant-numeric:tabular-nums}.yes{color:#0a7d32;font-weight:600}.no{color:#b3261e;font-weight:600}
+.kpi{display:flex;gap:12px;flex-wrap:wrap}.kpi div{border:1px solid #ddd;border-radius:8px;padding:10px 14px;min-width:120px}.kpi b{display:block;font-size:24px}
+.proof{color:#444;font-size:13px}code{font-size:12px}small{color:#666}</style></head><body>
+<h1>StrikeBook <small>devnet</small></h1>
+<p>Short-dated binary strike markets ("Will SOL be above $K at T?") on the Predict pm-AMM, seeded at a fair digital-option price from the
+live Pyth mark and realised vol, and <b>resolved by a keeper from the Pyth oracle</b>. Every resolution below carries its oracle proof and devnet transactions.</p>
+<p><small>Rule: YES iff the first Pyth PriceUpdateV2 print with publish_time &gt;= expiry is strictly above the strike. Program <code>GV1FMGHRYBjQLaghE5fnGuYCuCcpdt3GD5xEX3TwN16y</code>. Log generated 2026-10-31T13:31:03Z · schema <code>strikebook.resolution-log/v1</code> ·
+<a href="resolution-log.json">raw JSON</a></small></p>
+<div class="kpi"><div><b>10</b>markets resolved</div><div><b>5</b>ladders</div><div><b>3 / 7</b>YES / NO</div>
+<div><b>0.236</b>Brier (seed fair)<br><small>coin flip = 0.250</small></div><div><b>0</b>open markets</div></div>
+<h2>Ladders</h2><section><h3>SOL · expiry 2026-10-31T13:30:00Z</h3>
+<p class="proof">Settlement print: <b>$95.7150</b> ± 0.0479
+at publish_time 2026-10-31T13:30:04Z (+4s after expiry) · source <code>pyth-onchain 7UVimffxr9ow1uXYxsr4LHAcV58mLzhmwaeKvJ1pjLiE</code></p>
+<table><tr><th>Market</th><th>Strike</th><th>Seed fair YES</th><th>Result</th><th>Brier</th><th>Create tx</th><th>Resolve tx</th><th>Claims</th></tr><tr>
+<td><a href="https://pm-amm-devnet.vercel.app/market/203180473536829">SOL&gt;95.8@1793453400</a></td><td>$95.8000</td><td>48.5%</td>
+<td class="no">NO</td><td>0.235</td><td><a href="https://solscan.io/tx/2zhJygo8e3QVSB9yNJrS63puXi5qW1m6dJtEfC5e8H9YgindfMQywz1Yj8ZvJAcCEk97wcpbt85JoKAXhUW77rz7?cluster=devnet">2zhJygo8…</a></td><td><a href="https://solscan.io/tx/5mGpoJEDnkHo7gRh8p5rwcYsrDFSZ9KwuttVVow2SxtXyfLJR6s26SKBQxoiN19X4HF7V3SnWTT5osAsjPsixLx6?cluster=devnet">5mGpoJED…</a></td><td>2</td></tr></table></section>
+<section><h3>BTC · expiry 2026-10-31T13:15:00Z</h3>
+<p class="proof">Settlement print: <b>$77397.26</b> ± 36.6550
+at publish_time 2026-10-31T13:15:42Z (+42s after expiry) · source <code>pyth-onchain 4cSM2e6rvbGQUFiJbqytoVMi5GgghSMr8LwVrT9VPSPo</code></p>
+<table><tr><th>Market</th><th>Strike</th><th>Seed fair YES</th><th>Result</th><th>Brier</th><th>Create tx</th><th>Resolve tx</th><th>Claims</th></tr><tr>
+<td><a href="https://pm-amm-devnet.vercel.app/market/106136007457311">BTC&gt;77560@1793452500</a></td><td>$77560.00</td><td>24.3%</td>
+<td class="no">NO</td><td>0.059</td><td><a href="https://solscan.io/tx/4iVSPTpReYgMN8s3Jm9mGxz8uKjcWEcXjCehQaMjbZSXZbu5L6uUMHk5SBotUKys7FVw1JYShTWSd8UuM2oA8vuj?cluster=devnet">4iVSPTpR…</a></td><td><a href="https://solscan.io/tx/25DPaZoq5ZjCeH5XDp6hMqqjEmQjbaLESP9MGHgHZP9HBsqAd1Jen94d6ULkFyXMp38cTK2iNr6125tD3TqprUcp?cluster=devnet">25DPaZoq…</a></td><td>2</td></tr><tr>
+<td><a href="https://pm-amm-devnet.vercel.app/market/197954741242345">BTC&gt;77440@1793452500</a></td><td>$77440.00</td><td>52.1%</td>
+<td class="no">NO</td><td>0.272</td><td><a href="https://solscan.io/tx/2AJ9PQbZebbRs8bw11W4axJaYBBtRHpKWcdSqKZaqZF1ZH2XUUwSyC5tTUjNt5EaCo7k7SA96bDDdNxrfRS2nFwW?cluster=devnet">2AJ9PQbZ…</a></td><td><a href="https://solscan.io/tx/42diCaFuX9Ztai6Gxjqot2cnoc4H2MCmNMQYkRi8M7KwZo5Cmcn7L3dCmHSWCKpbL77P7mHL6ZnUbAk3bdbP8bsu?cluster=devnet">42diCaFu…</a></td><td>2</td></tr></table></section>
+<section><h3>SOL · expiry 2026-10-31T13:15:00Z</h3>
+<p class="proof">Settlement print: <b>$95.7471</b> ± 0.0412
+at publish_time 2026-10-31T13:15:04Z (+4s after expiry) · source <code>pyth-onchain 7UVimffxr9ow1uXYxsr4LHAcV58mLzhmwaeKvJ1pjLiE</code></p>
+<table><tr><th>Market</th><th>Strike</th><th>Seed fair YES</th><th>Result</th><th>Brier</th><th>Create tx</th><th>Resolve tx</th><th>Claims</th></tr><tr>
+<td><a href="https://pm-amm-devnet.vercel.app/market/146634236172071">SOL&gt;96.2@1793452500</a></td><td>$96.2000</td><td>22.6%</td>
+<td class="no">NO</td><td>0.051</td><td><a href="https://solscan.io/tx/5kvMrwYcTWacMun5wWWqhtMao8dwvEJ9qbaZPZZnDaGKuz4Yzn576jrSrVG2EKryMmvhhQR1ChfuQmmZGcafrRbF?cluster=devnet">5kvMrwYc…</a></td><td><a href="https://solscan.io/tx/5oSkJ5mA3izSwuDPMfwAcgcLNChfLL8JsQzxER8C4ehnH3so7hUu9hkvxoC7mLSb6px6JejVh1JxrHbVjLvtajbs?cluster=devnet">5oSkJ5mA…</a></td><td>2</td></tr><tr>
+<td><a href="https://pm-amm-devnet.vercel.app/market/46880303278553">SOL&gt;95.95@1793452500</a></td><td>$95.9500</td><td>53.0%</td>
+<td class="no">NO</td><td>0.281</td><td><a href="https://solscan.io/tx/4VwGQAxCoX1Q2uRbgsydFgjrKCSTkguWW4DLtH1AMFqTTjvnGiEbWYcE3WYbAxZpTgiS1MeiyKUFntVY4GxU2N81?cluster=devnet">4VwGQAxC…</a></td><td><a href="https://solscan.io/tx/3dywb5FEcrzX4CFdE36b6pRgjBoBu2YbJhy1vwHj4pXWAZUUpPTjkX8sePiKHLQiQKSASJm4P35YSYJvNZHYEvcf?cluster=devnet">3dywb5FE…</a></td><td>2</td></tr></table></section>
+<section><h3>SOL · expiry 2026-10-30T13:08:57Z</h3>
+<p class="proof">Settlement print: <b>$96.4400</b> ± –
+at publish_time 2026-10-30T13:09:00Z (+3s after expiry) · source <code>coinbase-1m-fallback</code></p>
+<table><tr><th>Market</th><th>Strike</th><th>Seed fair YES</th><th>Result</th><th>Brier</th><th>Create tx</th><th>Resolve tx</th><th>Claims</th></tr><tr>
+<td><a href="https://pm-amm-devnet.vercel.app/market/203772425105059">SOL&gt;96.68@1793365737</a></td><td>$96.6800</td><td>30.9%</td>
+<td class="no">NO</td><td>0.095</td><td><a href="https://solscan.io/tx/5uHJU6reSkZBySXg1uv61rhRB7Gw25DpYo2n1s2jeCDuxyxEkMrfDBDvEye81RtMwQufDoaknaKV1iPquDGnPPdo?cluster=devnet">5uHJU6re…</a></td><td><a href="https://solscan.io/tx/877jMrGLfiupfP8KtpdoiHMtdguDqbq8KAJM1c5sfyYoFncd8YTxjy7zN1UsVwecDAEc68PyBzvYEZ49nDMtFvR?cluster=devnet">877jMrGL…</a></td><td>2</td></tr><tr>
+<td><a href="https://pm-amm-devnet.vercel.app/market/3759492052350">SOL&gt;96.5@1793365737</a></td><td>$96.5000</td><td>70.6%</td>
+<td class="no">NO</td><td>0.498</td><td><a href="https://solscan.io/tx/5811JF7WXGXiMA3Tq9FGY8FdNypQkfQa9qb8VskCdC5SppU5Kto18tRHSEoHLJQYdG7s3azGTYACrfKFY2a9xCcW?cluster=devnet">5811JF7W…</a></td><td><a href="https://solscan.io/tx/4BwpEufcYXKJnDXVHkntAQTZEQjHZ8LggexPf9xWr7yT5p6hucH2VuabjeeBW3BpxavDiiEqurursHNzNT2MMpLV?cluster=devnet">4BwpEufc…</a></td><td>2</td></tr></table></section>
+<section><h3>SOL · expiry 2026-10-30T13:02:36Z</h3>
+<p class="proof">Settlement print: <b>$96.7034</b> ± 0.0632
+at publish_time 2026-10-30T13:02:38Z (+2s after expiry) · source <code>pyth-onchain 7UVimffxr9ow1uXYxsr4LHAcV58mLzhmwaeKvJ1pjLiE</code></p>
+<table><tr><th>Market</th><th>Strike</th><th>Seed fair YES</th><th>Result</th><th>Brier</th><th>Create tx</th><th>Resolve tx</th><th>Claims</th></tr><tr>
+<td><a href="https://pm-amm-devnet.vercel.app/market/175638794609923">SOL&gt;96.64@1793365356</a></td><td>$96.6400</td><td>25.3%</td>
+<td class="yes">YES</td><td>0.557</td><td><a href="https://solscan.io/tx/4dMuhLV6F9kzr1Ki8YfqsbRD2dHjNLbMgQWMZfqFP5vz1GUX3A78Mms9jCX79BREgJgRqRGZPNwehLtcUt3T1q6D?cluster=devnet">4dMuhLV6…</a></td><td><a href="https://solscan.io/tx/3ZN5xSuY2RKARcpNSx4LTHr9PqaPZUxJZ4wUNYNUuFg64hiYtuBwitM4dyHCJU61VEM7AZvpHRYE5SZv91ELhX23?cluster=devnet">3ZN5xSuY…</a></td><td>2</td></tr><tr>
+<td><a href="https://pm-amm-devnet.vercel.app/market/33688544903757">SOL&gt;96.52@1793365356</a></td><td>$96.5200</td><td>48.9%</td>
+<td class="yes">YES</td><td>0.261</td><td><a href="https://solscan.io/tx/4FbaeXKDsMdyDyTpw8mfL1knQFXWmatjFFSvx9XHDLsRPsDPZXRD3Vpt2WRScMXwT89MBMyCW48crQiTuoXvBKwg?cluster=devnet">4FbaeXKD…</a></td><td><a href="https://solscan.io/tx/hq6j6rYCYKg9TBWKsSpGty7dQycAuiHwb9tRvTbkswvHZxf1S9Sy9Czt2HgCS1ucRiM1qxhTH33s9r3WWHo7CNr?cluster=devnet">hq6j6rYC…</a></td><td>2</td></tr><tr>
+<td><a href="https://pm-amm-devnet.vercel.app/market/213252208319062">SOL&gt;96.38@1793365356</a></td><td>$96.3800</td><td>76.3%</td>
+<td class="yes">YES</td><td>0.056</td><td><a href="https://solscan.io/tx/5nWDr2G7zjAwtwjzeMrdp3wdh8dAMMgZ5Z3VTaMPXZaMz6pyXE65hgg69fU95nJTteNPMHUhbp1QBBEAYEs4dXcC?cluster=devnet">5nWDr2G7…</a></td><td><a href="https://solscan.io/tx/34BX2n7pXBAYFx5E5wXeJSz9HSUcZV2XkxYbsneukHXeSUZKYkjMamM4dzBj4RMGznHVpKMJ2TGHEfN8YiSZK1X7?cluster=devnet">34BX2n7p…</a></td><td>2</td></tr></table></section>
+<h2>Calibration of the pricing engine</h2><p><small>Seed fair YES vs realised YES rate. Small samples are noisy; this fills in as the keeper rolls ladders.</small></p>
+<table><tr><th>Seed fair bucket</th><th>n</th><th>Mean fair</th><th>YES rate</th></tr><tr><td>20.0%–40.0%</td><td>4</td><td>25.8%</td><td>25.0%</td></tr><tr><td>40.0%–60.0%</td><td>4</td><td>50.6%</td><td>25.0%</td></tr><tr><td>60.0%–80.0%</td><td>2</td><td>73.4%</td><td>50.0%</td></tr></table>
+<p><small>Oracle sources: pyth-onchain × 9, coinbase-1m-fallback × 1. Devnet test tokens only; no real money.</small></p>
+</body></html>

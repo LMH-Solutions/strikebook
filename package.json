@@ -8,10 +8,12 @@
     "fair": "node src/cli/fair.cjs",
     "markets": "node src/cli/markets.cjs",
     "serve": "node src/server.cjs",
-    "test": "node --test test/",
+    "test": "node --test test/*.test.cjs",
     "keeper": "node src/keeper.cjs",
     "demo": "node src/cli/demo.cjs",
-    "trade": "node src/cli/trade.cjs"
+    "trade": "node src/cli/trade.cjs",
+    "build": "node scripts/build-site.cjs",
+    "tick": "node src/keeper.cjs tick"
   },
   "engines": {
     "node": ">=20"

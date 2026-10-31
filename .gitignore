@@ -2,3 +2,4 @@ node_modules/
 *.keypair.json
 devnet-wallet.json
 .env
+data/keeper-state.json

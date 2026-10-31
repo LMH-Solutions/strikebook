@@ -15,7 +15,37 @@ const KEY_FILE = process.env.DEVNET_KEYPAIR || path.join(__dirname, "../../../.d
 function assertDevnet(rpc = RPC) {
   if (/mainnet/i.test(rpc) && !process.env.I_KNOW_THIS_IS_MAINNET) throw new Error(`refusing to sign against ${rpc}: devnet only`);
 }
-const connection = (rpc = RPC) => new Connection(rpc, "confirmed");
+// Confirm by polling getSignatureStatuses instead of websocket subscriptions: the keyless fallback RPCs
+// rate-limit / drop websockets, which made web3.js spam "signatureUnsubscribe" errors and stall.
+function pollingConfirm(conn, { intervalMs = 1500, timeoutMs = 90_000 } = {}) {
+  conn.confirmTransaction = async (strategy, commitment = "confirmed") => {
+    const sig = typeof strategy === "string" ? strategy : strategy.signature;
+    const until = Date.now() + timeoutMs;
+    for (;;) {
+      let st = null;
+      try { st = (await conn.getSignatureStatuses([sig])).value[0]; } catch {}
+      if (st && st.err) return { context: { slot: st.slot }, value: { err: st.err } };
+      if (st && (st.confirmationStatus === "finalized" || st.confirmationStatus === commitment || (commitment === "confirmed" && st.confirmationStatus === "confirmed")))
+        return { context: { slot: st.slot }, value: { err: null } };
+      if (Date.now() > until) throw new Error(`confirm timeout ${sig}`);
+      await new Promise((r) => setTimeout(r, intervalMs));
+    }
+  };
+  return conn;
+}
+const connection = (rpc = RPC) => pollingConfirm(new Connection(rpc, { commitment: "confirmed", disableRetryOnRateLimit: false }));
+// Keyless public devnet RPCs; reachability from the box flips day to day, so the keeper takes the first healthy one.
+const DEVNET_RPCS = ["https://api.devnet.solana.com", "https://solana-devnet.api.onfinality.io/public", "https://devnet.rpcpool.com", "https://explorer-api.devnet.solana.com"];
+async function pickRpc(candidates = process.env.RPC_URL ? [process.env.RPC_URL] : DEVNET_RPCS, { timeoutMs = 6000, fetchFn = fetch } = {}) {
+  for (const url of candidates) {
+    try {
+      const r = await fetchFn(url, { method: "POST", headers: { "content-type": "application/json" }, signal: AbortSignal.timeout(timeoutMs),
+        body: JSON.stringify({ jsonrpc: "2.0", id: 1, method: "getHealth" }) });
+      if (r.ok && (await r.json()).result === "ok") return url;
+    } catch {}
+  }
+  throw new Error(`no healthy devnet RPC among ${candidates.join(", ")}`);
+}
 
 function loadKeypair(file = KEY_FILE) {
   if (!fs.existsSync(file)) {
@@ -31,7 +61,7 @@ function readOnlyClient(conn = connection()) {
   return PmAmmClient.readOnly(conn, PROGRAM_ID, MUSDC);
 }
 function signingClient(kp = loadKeypair(), conn = connection()) {
-  assertDevnet();
+  assertDevnet(conn.rpcEndpoint);
   const { AnchorProvider, Wallet } = require("@anchor-lang/core");
   const { PmAmmClient } = require("@pm-amm/sdk");
   const provider = new AnchorProvider(conn, new Wallet(kp), { commitment: "confirmed" });
@@ -105,5 +135,5 @@ function quoteSwapState(s, direction, amountIn) {
 const quoteSwap = (m, direction, amountIn, now) => quoteSwapState(marketState(m, now), direction, amountIn);
 const minOutput = (q, slippageBps = 100) => Math.floor((q.out * (10_000 - slippageBps)) / 10_000);
 
-module.exports = { PROGRAM_ID, MUSDC, RPC, APP, KEY_FILE, assertDevnet, connection, loadKeypair, readOnlyClient, signingClient,
+module.exports = { PROGRAM_ID, MUSDC, RPC, DEVNET_RPCS, pickRpc, pollingConfirm, APP, KEY_FILE, assertDevnet, connection, loadKeypair, readOnlyClient, signingClient,
   faucet, balances, decodeName, toNum, marketState, quoteSwap, quoteSwapState, minOutput, FEE_BPS };

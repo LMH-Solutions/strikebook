@@ -16,7 +16,7 @@ the open pm-AMM program (`GV1FMGHRYBjQLaghE5fnGuYCuCcpdt3GD5xEX3TwN16y`). Every 
 ## Run
 ```bash
 npm install
-npm test                       # 13 unit tests: pricing, ladder planner, resolver rule, quote math, devnet guard
+npm test                       # unit tests: pricing, ladder planner, resolver rule, quote math, devnet guard, roller, resolution log, site
 npm run fair -- SOL 105 24     # live fair value: Pyth on-chain SOL/USD (mainnet, read-only) + Coinbase 1h realised vol
 npm run markets                # read-only list of live devnet pm-AMM markets with current YES price
 npm run serve                  # http://localhost:8787 dashboard: pricer, live StrikeBook ladder (fair vs pm-AMM edge), resolution log
@@ -25,7 +25,11 @@ npm run keeper -- status       # builder wallet, our markets, resolution count
 npm run keeper -- ladder --asset BTC --mins 360 --deposit 25
 npm run keeper -- resolve      # resolve every expired StrikeBook market from the oracle (authority-only)
 npm run keeper -- claim        # pull winnings + LP residuals back after resolution
-npm run keeper -- run --assets SOL,BTC --grid-hours 6   # long-running keeper: roll 6h ladders + auto-resolve
+npm run tick -- --dry          # M2 keeper pass, read-only: shows what it would resolve / create under the current SOL budget
+npm run tick                   # one idempotent pass: resolve due -> claim -> faucet (<=1/h) if short -> roll SOL+BTC ladders -> rebuild log
+npm run keeper -- run --poll 60   # same pass in a loop (needs an always-on host); flags: --assets --grid-hours --lead-mins --max-rungs --deposit
+npm run keeper -- log          # rebuild data/resolution-log.json from the jsonl logs
+npm run build                  # static dashboard -> docs/ (index.html + resolution-log.json), no JS/keys/server, GitHub-Pages ready
 ```
 **Devnet only.** The keeper signs with a throwaway devnet keypair (`../.devnet-keys/builder.json`, outside the repo,
 created on first run, funded by the pm-AMM faucet). Signing refuses any RPC URL containing "mainnet".
@@ -40,6 +44,14 @@ created on first run, funded by the pm-AMM faucet). Signing refuses any RPC URL 
 - Seeding: each rung opens at `initialPriceBps = round(Φ(d2) × 10⁴)` from the same spot and vol, so the AMM starts at
   fair value and trades away from it only on flow. The dashboard shows the gap (edge) live.
 
+## Keeper on scarce devnet SOL (M2)
+pm-AMM has no close-market instruction, so each market's ~0.035 SOL rent is gone for good and the faucet gives 0.2 SOL/h.
+The roller (`src/lib/roller.cjs`) therefore keeps **one live ladder per asset**, rolls it only once it has expired, and sizes
+it to the wallet: rungs are allocated round-robin across SOL/BTC, ATM (50%) first, then 25/75, then 10/90 (default max 3).
+If it can't afford the full ladder it asks the hourly faucet, and if it can't afford even one rung it skips with
+`low-balance`. Each `tick` is idempotent, so a cron job / scheduled routine every 15–60 min is enough (no always-on host).
+The RPC is the first healthy keyless devnet endpoint (`pickRpc`), or `RPC_URL`.
+
 ## Layout
 - `src/lib/pricing.cjs`: digital pricing, realized vol, strike ladder (uses `@pm-amm/sdk/math` Φ/Φ⁻¹)
 - `src/lib/feeds.cjs`: Pyth PriceUpdateV2 decoder (on-chain, read-only), Hermes fallback, Coinbase candles
@@ -48,6 +60,9 @@ created on first run, funded by the pm-AMM faucet). Signing refuses any RPC URL 
 - `src/lib/pmamm.cjs`: devnet constants, clients, faucet, devnet guard, CJS port of the official exact-quote helpers
 - `src/keeper.cjs`: create/resolve/claim/run keeper; `src/cli/demo.cjs`: end-to-end demo; `src/cli/trade.cjs`
 - `data/markets.jsonl`, `data/resolutions.jsonl`: creation + resolution logs (devnet)
+- `src/lib/roller.cjs`: pure tick planner (due markets, roll decisions, SOL/mUSDC budget, faucet need)
+- `src/lib/reslog.cjs`, `data/resolution-log.json`: joined seed + oracle-proof log with Brier/calibration stats (committed)
+- `src/lib/site.cjs`, `scripts/build-site.cjs`, `docs/`: static dashboard build
 - `src/server.cjs`, `public/index.html`: local dashboard
 - `src/cli/*`: CLIs
 
