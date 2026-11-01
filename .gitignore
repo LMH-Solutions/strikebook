@@ -3,3 +3,15 @@ node_modules/
 devnet-wallet.json
 .env
 data/keeper-state.json
+# secrets: never commit
+.devnet-keys/
+**/.devnet-keys/
+*.key
+*.pem
+*-keypair.json
+id.json
+builder.json
+.env.*
+credentials*
+data/tick.log
+data/*.lock

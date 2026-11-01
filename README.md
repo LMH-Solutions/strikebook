@@ -3,6 +3,28 @@
 **Perps-priced strike markets on Solana, built on the Predict pm-AMM.**
 Target: Solana Foundation *Perps and Prediction Markets* hackathon (main track) + PREDICT pm-AMM sponsor bounty.
 
+**Live dashboard (devnet):** https://lmh-solutions.github.io/strikebook/ (rebuilt by the keeper; raw data:
+[`resolution-log.json`](https://lmh-solutions.github.io/strikebook/resolution-log.json))
+
+## Devnet demo at a glance
+- A keeper (`npm run tick`, every 15 min) lists **ladders of short-dated SOL and BTC strike markets** on the pm-AMM devnet program,
+  each seeded at its fair digital-option price, then **resolves them from the on-chain Pyth print** at expiry and claims back.
+- So far: 10+ markets across 5+ ladders resolved, with 9 settled on the on-chain Pyth print (seconds after expiry). The fair-value seeds score
+  **Brier 0.236 vs 0.25** for a coin flip (the dashboard shows the current figure and calibration buckets).
+- Every market, oracle print (price, confidence, publish_time, lag) and devnet transaction is logged in `data/` and
+  linked from the dashboard so anyone can audit the settlement.
+- Example market on the pm-AMM UI: https://pm-amm-devnet.vercel.app/market/33688544903757
+- Devnet test tokens only. No real money, no mainnet signing (the signer refuses any `mainnet` RPC URL).
+
+## Quick start
+```bash
+git clone https://github.com/LMH-Solutions/strikebook && cd strikebook
+npm install
+npm test              # 23 unit tests, no network needed
+npm run tick -- --dry # read-only: what the keeper would do right now
+npm run build         # regenerate docs/ (static dashboard)
+```
+
 "Will SOL be above $105 at 4 PM tomorrow?" StrikeBook lists ladders of short-dated binary strike markets on
 the open pm-AMM program (`GV1FMGHRYBjQLaghE5fnGuYCuCcpdt3GD5xEX3TwN16y`). Every strike gets:
 
@@ -66,4 +88,4 @@ The RPC is the first healthy keyless devnet endpoint (`pickRpc`), or `RPC_URL`.
 - `src/server.cjs`, `public/index.html`: local dashboard
 - `src/cli/*`: CLIs
 
-MIT License.
+MIT License, see `LICENSE`.
