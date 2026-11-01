@@ -1,12 +1,12 @@
 {
   "schema": "strikebook.resolution-log/v1",
-  "generatedAt": 1793453463,
+  "generatedAt": 1793541679,
   "cluster": "devnet",
   "program": "GV1FMGHRYBjQLaghE5fnGuYCuCcpdt3GD5xEX3TwN16y",
   "app": "https://pm-amm-devnet.vercel.app",
   "rule": "YES iff the first Pyth PriceUpdateV2 print with publish_time >= expiry is strictly above the strike",
   "stats": {
-    "created": 10,
+    "created": 14,
     "resolved": 10,
     "yes": 3,
     "no": 7,
@@ -74,7 +74,7 @@
         "yesRate": null
       }
     ],
-    "openMarkets": 0
+    "openMarkets": 4
   },
   "ladders": [
     {
