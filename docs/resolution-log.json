@@ -1,6 +1,6 @@
 {
   "schema": "strikebook.resolution-log/v1",
-  "generatedAt": 1793652132,
+  "generatedAt": 1793652340,
   "cluster": "devnet",
   "program": "GV1FMGHRYBjQLaghE5fnGuYCuCcpdt3GD5xEX3TwN16y",
   "app": "https://pm-amm-devnet.vercel.app",
@@ -76,17 +76,17 @@
     ],
     "openMarkets": 4,
     "traction": {
-      "trades": 23,
-      "volumeUsdc": 155.152,
-      "feesUsdc": 3.10304,
-      "lpFeesUsdc": 1.55152,
-      "markets": 4,
-      "yes": 3,
+      "trades": 25,
+      "volumeUsdc": 165.327,
+      "feesUsdc": 3.30654,
+      "lpFeesUsdc": 1.65327,
+      "markets": 6,
+      "yes": 5,
       "no": 20,
-      "meanGapClosed": 0.0766,
-      "expectedEdgeUsdc": 16.180027,
+      "meanGapClosed": 0.076,
+      "expectedEdgeUsdc": 17.098571,
       "firstAt": 1793628172,
-      "lastAt": 1793639753
+      "lastAt": 1793652340
     }
   },
   "ladders": [
@@ -1384,6 +1384,40 @@
     }
   ],
   "trades": [
+    {
+      "at": 1793652340,
+      "market": "EzzeAX654Dy2DJkpuNnCQeyydTYwpNfwVMuyHUASS84r",
+      "name": "SOL>91@1793664000",
+      "asset": "SOL",
+      "side": "yes",
+      "amountUsdc": 6.545,
+      "tokensOut": 11.286748,
+      "feeUsdc": 0.1309,
+      "pModel": 0.637101,
+      "ammBefore": 0.5239,
+      "ammAfter": 0.612103,
+      "spot": 91.34817170000001,
+      "sigmaAnnual": 0.557684,
+      "tx": "KkHQ61SciacMS3dG8cHAitm9xXxhjJLiYwyMVN6dMDChvu9ogsKpvwpYe8744FeQ5wzJhsLCbxgZa5ty6kigC8Y",
+      "outcome": null
+    },
+    {
+      "at": 1793652338,
+      "market": "3AuXAgKSjh9C79MEApA7yDWfPytvD7qpRvjMm5wiP2vd",
+      "name": "BTC>76700@1793664000",
+      "asset": "BTC",
+      "side": "yes",
+      "amountUsdc": 3.63,
+      "tokensOut": 6.833449,
+      "feeUsdc": 0.0726,
+      "pModel": 0.571124,
+      "ammBefore": 0.495,
+      "ammAfter": 0.546116,
+      "spot": 76797.19236962,
+      "sigmaAnnual": 0.360413,
+      "tx": "52Was729GXWp8tBYV8RZGj63RhJa3f6RoXwpiqVKnrZwhQ2NkyKW2wqRjeukKQi4ThNZALhEsBH2NymGFDcCwXbR",
+      "outcome": null
+    },
     {
       "at": 1793639753,
       "market": "HmQ4zVPFjfKWudCQKzS7KRLfARB3evCvS3WUN6z9tgY2",
