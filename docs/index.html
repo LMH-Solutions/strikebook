@@ -7,11 +7,27 @@ td,th{padding:4px 8px;border-bottom:1px solid #e3e3e3;text-align:left;font-varia
 <h1>StrikeBook <small>devnet</small></h1>
 <p>Short-dated binary strike markets ("Will SOL be above $K at T?") on the Predict pm-AMM, seeded at a fair digital-option price from the
 live Pyth mark and realised vol, and <b>resolved by a keeper from the Pyth oracle</b>. Every resolution below carries its oracle proof and devnet transactions.</p>
-<p><small>Rule: YES iff the first Pyth PriceUpdateV2 print with publish_time &gt;= expiry is strictly above the strike. Program <code>GV1FMGHRYBjQLaghE5fnGuYCuCcpdt3GD5xEX3TwN16y</code>. Log generated 2026-11-02T11:17:22Z · schema <code>strikebook.resolution-log/v1</code> ·
+<p><small>Rule: YES iff the first Pyth PriceUpdateV2 print with publish_time &gt;= expiry is strictly above the strike. Program <code>GV1FMGHRYBjQLaghE5fnGuYCuCcpdt3GD5xEX3TwN16y</code>. Log generated 2026-11-02T12:13:00Z · schema <code>strikebook.resolution-log/v1</code> ·
 <a href="resolution-log.json">raw JSON</a></small></p>
-<div class="kpi"><div><b>22</b>markets resolved</div><div><b>11</b>ladders</div><div><b>6 / 16</b>YES / NO</div>
-<div><b>0.192</b>Brier (seed fair)<br><small>coin flip = 0.250</small></div><div><b>4</b>open markets</div></div>
-<h2>Ladders</h2><section><h3>BTC · expiry 2026-11-02T06:00:00Z</h3>
+<div class="kpi"><div><b>26</b>markets resolved</div><div><b>13</b>ladders</div><div><b>6 / 20</b>YES / NO</div>
+<div><b>0.185</b>Brier (seed fair)<br><small>coin flip = 0.250</small></div><div><b>4</b>open markets</div></div>
+<h2>Ladders</h2><section><h3>BTC · expiry 2026-11-02T12:00:00Z</h3>
+<p class="proof">Settlement print: <b>$77773.35</b> ± –
+at publish_time 2026-11-02T12:01:00Z (+60s after expiry) · source <code>coinbase-1m-fallback</code></p>
+<table><tr><th>Market</th><th>Strike</th><th>Seed fair YES</th><th>Result</th><th>Brier</th><th>Create tx</th><th>Resolve tx</th><th>Claims</th></tr><tr>
+<td><a href="https://pm-amm-devnet.vercel.app/market/42557878861924">BTC&gt;78100@1793620800</a></td><td>$78100.00</td><td>26.8%</td>
+<td class="no">NO</td><td>0.072</td><td><a href="https://solscan.io/tx/4SKVA3d2Mbs256WuEPJpNxBdfuC5EmHmrJgnwPA5ZJzZjmueWNHfsBk512eDghRU2Uap4rD1oqckdaXqcp1kvqYA?cluster=devnet">4SKVA3d2…</a></td><td><a href="https://solscan.io/tx/65AfwXgpwAZvNNKdL6yL45aWeBCi4FPnZmqpVfy9Z8t6m9nUcBiJsTMKC728CBmCNuzf3edEiC3hLfuCHvsM3Fm1?cluster=devnet">65AfwXgp…</a></td><td>2</td></tr><tr>
+<td><a href="https://pm-amm-devnet.vercel.app/market/173470623939053">BTC&gt;77900@1793620800</a></td><td>$77900.00</td><td>47.6%</td>
+<td class="no">NO</td><td>0.226</td><td><a href="https://solscan.io/tx/5BzMvYs1pMyh9T1VQKdY2BaTaZy7qCnkZbXyS9AkLzg9k52eRA2WEHHWNUAmq2LCd7QRJbeJMLqVPog1xjLhuSqY?cluster=devnet">5BzMvYs1…</a></td><td><a href="https://solscan.io/tx/3SXdu2ge7rMp6d1aYiiLGXjFUfjKeNZzRntZTGiQHScVUbja4ZCq1F3r2m2Aa2QKyfMfEx9tRJe3cfSxG1yyTPT1?cluster=devnet">3SXdu2ge…</a></td><td>2</td></tr></table></section>
+<section><h3>SOL · expiry 2026-11-02T12:00:00Z</h3>
+<p class="proof">Settlement print: <b>$93.9600</b> ± –
+at publish_time 2026-11-02T12:01:00Z (+60s after expiry) · source <code>coinbase-1m-fallback</code></p>
+<table><tr><th>Market</th><th>Strike</th><th>Seed fair YES</th><th>Result</th><th>Brier</th><th>Create tx</th><th>Resolve tx</th><th>Claims</th></tr><tr>
+<td><a href="https://pm-amm-devnet.vercel.app/market/203827932036811">SOL&gt;94.4@1793620800</a></td><td>$94.4000</td><td>25.0%</td>
+<td class="no">NO</td><td>0.063</td><td><a href="https://solscan.io/tx/517FcNKDstF9hGJmqUVDGv8pbJCYrxEr5H23bvKCyQApgeyrxxpsGoY6UFx44rGcgHKVvDYdtWhisdUqaXwnbPEP?cluster=devnet">517FcNKD…</a></td><td><a href="https://solscan.io/tx/3ytKRazpt9CN3xSwmcuidYRuQ6YdQGGh1SoTCHuH7oYRhmyDoFmFggWavYg1PW9uHiqo3967BKeivjiUyScmSSpF?cluster=devnet">3ytKRazp…</a></td><td>2</td></tr><tr>
+<td><a href="https://pm-amm-devnet.vercel.app/market/263265011208439">SOL&gt;94@1793620800</a></td><td>$94.0000</td><td>47.4%</td>
+<td class="no">NO</td><td>0.225</td><td><a href="https://solscan.io/tx/56z6r55gm1WerxpfofUfBetdR2mUtY9onA5CTrogij6BmYpW32EG2zh8ij7g5hVSCMXbfokayNe7C8C14ybeFSwE?cluster=devnet">56z6r55g…</a></td><td><a href="https://solscan.io/tx/5c6CEUMB5Ym4EvGBheRW31STTtcUix5Hut6S3Le9cs17hcCeZUun8PZNwhr51U364BbYCwRHyjYJFvgsmUnV4oVg?cluster=devnet">5c6CEUMB…</a></td><td>2</td></tr></table></section>
+<section><h3>BTC · expiry 2026-11-02T06:00:00Z</h3>
 <p class="proof">Settlement print: <b>$78243.86</b> ± –
 at publish_time 2026-11-02T06:01:00Z (+60s after expiry) · source <code>coinbase-1m-fallback</code></p>
 <table><tr><th>Market</th><th>Strike</th><th>Seed fair YES</th><th>Result</th><th>Brier</th><th>Create tx</th><th>Resolve tx</th><th>Claims</th></tr><tr>
@@ -100,6 +116,6 @@ at publish_time 2026-10-30T13:02:38Z (+2s after expiry) · source <code>pyth-onc
 <td><a href="https://pm-amm-devnet.vercel.app/market/213252208319062">SOL&gt;96.38@1793365356</a></td><td>$96.3800</td><td>76.3%</td>
 <td class="yes">YES</td><td>0.056</td><td><a href="https://solscan.io/tx/5nWDr2G7zjAwtwjzeMrdp3wdh8dAMMgZ5Z3VTaMPXZaMz6pyXE65hgg69fU95nJTteNPMHUhbp1QBBEAYEs4dXcC?cluster=devnet">5nWDr2G7…</a></td><td><a href="https://solscan.io/tx/34BX2n7pXBAYFx5E5wXeJSz9HSUcZV2XkxYbsneukHXeSUZKYkjMamM4dzBj4RMGznHVpKMJ2TGHEfN8YiSZK1X7?cluster=devnet">34BX2n7p…</a></td><td>2</td></tr></table></section>
 <h2>Calibration of the pricing engine</h2><p><small>Seed fair YES vs realised YES rate. Small samples are noisy; this fills in as the keeper rolls ladders.</small></p>
-<table><tr><th>Seed fair bucket</th><th>n</th><th>Mean fair</th><th>YES rate</th></tr><tr><td>20.0%–40.0%</td><td>10</td><td>24.8%</td><td>10.0%</td></tr><tr><td>40.0%–60.0%</td><td>10</td><td>50.0%</td><td>40.0%</td></tr><tr><td>60.0%–80.0%</td><td>2</td><td>73.4%</td><td>50.0%</td></tr></table>
-<p><small>Oracle sources: coinbase-1m-fallback × 13, pyth-onchain × 9. Devnet test tokens only; no real money.</small></p>
+<table><tr><th>Seed fair bucket</th><th>n</th><th>Mean fair</th><th>YES rate</th></tr><tr><td>20.0%–40.0%</td><td>12</td><td>25.0%</td><td>8.3%</td></tr><tr><td>40.0%–60.0%</td><td>12</td><td>49.6%</td><td>33.3%</td></tr><tr><td>60.0%–80.0%</td><td>2</td><td>73.4%</td><td>50.0%</td></tr></table>
+<p><small>Oracle sources: coinbase-1m-fallback × 17, pyth-onchain × 9. Devnet test tokens only; no real money.</small></p>
 </body></html>
