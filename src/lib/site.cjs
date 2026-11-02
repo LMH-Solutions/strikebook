@@ -19,6 +19,18 @@ function renderSite(log) {
 at publish_time ${iso(r0.oracle.publishTime)} (${r0.oracle.lagSecs >= 0 ? "+" : ""}${r0.oracle.lagSecs}s after expiry) · source <code>${esc(L.settleSource)}</code></p>
 <table><tr><th>Market</th><th>Strike</th><th>Seed fair YES</th><th>Result</th><th>Brier</th><th>Create tx</th><th>Resolve tx</th><th>Claims</th></tr>${rows}</table></section>`;
   }).join("\n");
+  const T = s.traction || { trades: 0, volumeUsdc: 0, feesUsdc: 0, lpFeesUsdc: 0, markets: 0 };
+  const tradeRows = (log.trades || []).slice(0, 25).map((t) => `<tr><td>${iso(t.at)}</td><td>${esc(t.name)}</td><td class="${esc(t.side)}">BUY ${esc(String(t.side).toUpperCase())}</td>
+<td>${Number(t.amountUsdc).toFixed(2)}</td><td>${pct(t.pModel)}</td><td>${pct(t.ammBefore)} → ${pct(t.ammAfter)}</td><td>${Number(t.feeUsdc).toFixed(4)}</td>
+<td>${t.outcome ? `<span class="${esc(t.outcome)}">${esc(t.outcome.toUpperCase())}</span>` : "open"}</td><td>${tx(t.tx, cl)}</td></tr>`).join("");
+  const traction = `<h2>Traction: edge re-centering trader</h2>
+<p><small>A separate devnet trader wallet prices every open rung with the same model (P(YES) = Φ(d2) from the live Pyth spot and 7-day realised vol)
+and buys the cheap side when the pm-AMM price is more than fee + 3 pts away, moving the price back toward the model. It pays the real 2% swap fee
+(half to the market creator/LP, half to the protocol).</small></p>
+<div class="kpi"><div><b>${T.trades}</b>trades</div><div><b>${Number(T.volumeUsdc).toFixed(2)}</b>volume (mUSDC)</div><div><b>${Number(T.feesUsdc).toFixed(3)}</b>swap fees (mUSDC)</div>
+<div><b>${Number(T.lpFeesUsdc).toFixed(3)}</b>fees to LP</div><div><b>${T.markets}</b>markets traded</div>
+<div><b>${T.meanGapClosed == null ? "–" : (T.meanGapClosed * 100).toFixed(1) + " pts"}</b>mean mispricing closed / trade</div></div>
+${tradeRows ? `<table><tr><th>Time (UTC)</th><th>Market</th><th>Side</th><th>mUSDC</th><th>Model YES</th><th>AMM YES before → after</th><th>Fee</th><th>Outcome</th><th>Tx</th></tr>${tradeRows}</table>` : "<p>No trades yet.</p>"}`;
   const cal = s.calibration.filter((b) => b.n).map((b) => `<tr><td>${pct(b.range[0])}–${pct(b.range[1])}</td><td>${b.n}</td><td>${pct(b.meanFair)}</td><td>${pct(b.yesRate)}</td></tr>`).join("");
   return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>StrikeBook: oracle-resolved strike markets on the pm-AMM (${esc(cl)})</title>
@@ -33,6 +45,7 @@ live Pyth mark and realised vol, and <b>resolved by a keeper from the Pyth oracl
 <a href="resolution-log.json">raw JSON</a></small></p>
 <div class="kpi"><div><b>${s.resolved}</b>markets resolved</div><div><b>${s.ladders}</b>ladders</div><div><b>${s.yes} / ${s.no}</b>YES / NO</div>
 <div><b>${s.brier == null ? "–" : s.brier.toFixed(3)}</b>Brier (seed fair)<br><small>coin flip = 0.250</small></div><div><b>${s.openMarkets}</b>open markets</div></div>
+${traction}
 <h2>Ladders</h2>${ladders || "<p>No resolved markets yet.</p>"}
 <h2>Calibration of the pricing engine</h2><p><small>Seed fair YES vs realised YES rate. Small samples are noisy; this fills in as the keeper rolls ladders.</small></p>
 <table><tr><th>Seed fair bucket</th><th>n</th><th>Mean fair</th><th>YES rate</th></tr>${cal}</table>

@@ -11,7 +11,8 @@
     "test": "node --test test/*.test.cjs",
     "keeper": "node src/keeper.cjs",
     "demo": "node src/cli/demo.cjs",
-    "trade": "node src/cli/trade.cjs",
+    "trade": "node src/trader.cjs run",
+    "swap": "node src/cli/trade.cjs",
     "build": "node scripts/build-site.cjs",
     "tick": "node src/keeper.cjs tick"
   },

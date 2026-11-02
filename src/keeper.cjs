@@ -27,6 +27,7 @@ const DATA = path.join(__dirname, "../data");
 const LOG = path.join(DATA, "resolutions.jsonl");
 const CREATED = path.join(DATA, "markets.jsonl");
 const CLAIMS = path.join(DATA, "claims.jsonl");
+const TRADES = path.join(DATA, "trades.jsonl"); // written by src/trader.cjs (edge re-centering trader)
 const RESLOG = path.join(DATA, "resolution-log.json");
 const STATE = path.join(DATA, "keeper-state.json"); // local only (gitignored): last faucet attempt
 const FAUCET_EVERY = 3600; // pm-AMM faucet: 1 claim / hour / wallet
@@ -128,7 +129,7 @@ async function claimResolved(client, me) {
 }
 
 function writeResolutionLog() {
-  const log = buildResolutionLog({ created: readJsonl(CREATED), resolved: readJsonl(LOG), claims: readJsonl(CLAIMS),
+  const log = buildResolutionLog({ created: readJsonl(CREATED), resolved: readJsonl(LOG), claims: readJsonl(CLAIMS), trades: readJsonl(TRADES),
     program: pm.PROGRAM_ID.toBase58(), app: pm.APP });
   fs.mkdirSync(DATA, { recursive: true });
   fs.writeFileSync(RESLOG, JSON.stringify(log, null, 2) + "\n");

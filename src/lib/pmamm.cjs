@@ -136,4 +136,4 @@ const quoteSwap = (m, direction, amountIn, now) => quoteSwapState(marketState(m,
 const minOutput = (q, slippageBps = 100) => Math.floor((q.out * (10_000 - slippageBps)) / 10_000);
 
 module.exports = { PROGRAM_ID, MUSDC, RPC, DEVNET_RPCS, pickRpc, pollingConfirm, APP, KEY_FILE, assertDevnet, connection, loadKeypair, readOnlyClient, signingClient,
-  faucet, balances, decodeName, toNum, marketState, quoteSwap, quoteSwapState, minOutput, FEE_BPS };
+  faucet, balances, decodeName, toNum, marketState, quoteSwap, quoteSwapState, minOutput, FEE_BPS, xFromY, yFromX };

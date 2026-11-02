@@ -15,3 +15,5 @@ builder.json
 credentials*
 data/tick.log
 data/*.lock
+data/trader-state.json
+trader.json

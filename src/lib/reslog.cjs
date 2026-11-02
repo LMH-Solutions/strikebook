@@ -1,9 +1,10 @@
 // Resolution log builder (pure). Joins our creation log (markets.jsonl: seed fair value, spot, vol) with the
 // resolution log (resolutions.jsonl: oracle proof + resolveMarket tx) into ONE static JSON the public dashboard
 // reads. Also scores the pricing engine: Brier score of the seed fair price vs outcome, and calibration buckets.
-const SCHEMA = "strikebook.resolution-log/v1";
+const SCHEMA = "strikebook.resolution-log/v1"; // v1 + additive `trades` / `stats.traction` (M2 edge-trader)
+const { tradeStats } = require("./trader.cjs");
 
-function buildResolutionLog({ created = [], resolved = [], claims = [], generatedAt = Math.floor(Date.now() / 1000), cluster = "devnet", program, app }) {
+function buildResolutionLog({ created = [], resolved = [], claims = [], trades = [], generatedAt = Math.floor(Date.now() / 1000), cluster = "devnet", program, app }) {
   const byMarket = new Map(created.map((c) => [c.market, c]));
   const seen = new Set();
   const rows = [];
@@ -52,8 +53,12 @@ function buildResolutionLog({ created = [], resolved = [], claims = [], generate
     stats: { created: created.length, resolved: rows.length, yes: rows.filter((r) => r.side === "yes").length, no: rows.filter((r) => r.side === "no").length,
       ladders: ladders.length, assets, oracleSources: sources,
       brier: brier == null ? null : +brier.toFixed(4), brierCoinFlip: 0.25, calibration: buckets,
-      openMarkets: created.filter((c) => !seen.has(c.market)).length },
+      openMarkets: created.filter((c) => !seen.has(c.market)).length, traction: tradeStats(trades) },
     ladders, resolutions: rows,
+    trades: trades.filter((t) => t.signature && !t.dry).sort((a, b) => b.at - a.at).map((t) => ({ at: t.at, market: t.market, name: t.name, asset: t.asset,
+      side: t.side, amountUsdc: t.amountIn / 1e6, tokensOut: t.quotedOut / 1e6, feeUsdc: t.fee / 1e6, pModel: t.pModel, ammBefore: t.ammBefore,
+      ammAfter: t.ammAfter ?? t.ammAfterEst, spot: t.spot, sigmaAnnual: t.sigmaAnnual, tx: t.signature,
+      outcome: seen.has(t.market) ? rows.find((r) => r.market === t.market).side : null })),
   };
 }
 
