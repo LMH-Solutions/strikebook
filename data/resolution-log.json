@@ -1,6 +1,6 @@
 {
   "schema": "strikebook.resolution-log/v1",
-  "generatedAt": 1793638951,
+  "generatedAt": 1793639754,
   "cluster": "devnet",
   "program": "GV1FMGHRYBjQLaghE5fnGuYCuCcpdt3GD5xEX3TwN16y",
   "app": "https://pm-amm-devnet.vercel.app",
@@ -76,17 +76,17 @@
     ],
     "openMarkets": 4,
     "traction": {
-      "trades": 21,
-      "volumeUsdc": 144.989,
-      "feesUsdc": 2.89978,
-      "lpFeesUsdc": 1.44989,
+      "trades": 23,
+      "volumeUsdc": 155.152,
+      "feesUsdc": 3.10304,
+      "lpFeesUsdc": 1.55152,
       "markets": 4,
       "yes": 3,
-      "no": 18,
-      "meanGapClosed": 0.0813,
-      "expectedEdgeUsdc": 15.922113,
+      "no": 20,
+      "meanGapClosed": 0.0766,
+      "expectedEdgeUsdc": 16.180027,
       "firstAt": 1793628172,
-      "lastAt": 1793637068
+      "lastAt": 1793639753
     }
   },
   "ladders": [
@@ -1212,6 +1212,40 @@
     }
   ],
   "trades": [
+    {
+      "at": 1793639753,
+      "market": "HmQ4zVPFjfKWudCQKzS7KRLfARB3evCvS3WUN6z9tgY2",
+      "name": "SOL>94.4@1793642400",
+      "asset": "SOL",
+      "side": "no",
+      "amountUsdc": 4.006,
+      "tokensOut": 4.146946,
+      "feeUsdc": 0.08012,
+      "pModel": 0.00388,
+      "ammBefore": 0.064394,
+      "ammAfter": 0.043323,
+      "spot": 93.14460719,
+      "sigmaAnnual": 0.549298,
+      "tx": "3QyRQoTFNg869zvX5sCWD8DSNL5ANkGobL7TfRfm1JQ52xiRCzXWy1dt4rEt2SFWw9KZhunHny6oeUYckhdebVsc",
+      "outcome": null
+    },
+    {
+      "at": 1793639752,
+      "market": "6QmTHnwyFkcdrj52yU7ViMUswFpbQXPZR6i1FhLdS5T9",
+      "name": "BTC>77900@1793642400",
+      "asset": "BTC",
+      "side": "no",
+      "amountUsdc": 6.157,
+      "tokensOut": 6.370065,
+      "feeUsdc": 0.12314,
+      "pModel": 0.01256,
+      "ammBefore": 0.070763,
+      "ammAfter": 0.037545,
+      "spot": 77327.10181736,
+      "sigmaAnnual": 0.359611,
+      "tx": "2vnFW8Fm66vEBH7p4J6kG6eA6kiDgjspV9p7WT3ZPRfGHSjSR2X7JmiqWAAkgiWpMyWZ73M4B9jKp4PbcxEXYRxV",
+      "outcome": null
+    },
     {
       "at": 1793637068,
       "market": "6QmTHnwyFkcdrj52yU7ViMUswFpbQXPZR6i1FhLdS5T9",
