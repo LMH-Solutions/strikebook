@@ -1,6 +1,6 @@
 {
   "schema": "strikebook.resolution-log/v1",
-  "generatedAt": 1793722568,
+  "generatedAt": 1793723452,
   "cluster": "devnet",
   "program": "GV1FMGHRYBjQLaghE5fnGuYCuCcpdt3GD5xEX3TwN16y",
   "app": "https://pm-amm-devnet.vercel.app",
@@ -76,17 +76,17 @@
     ],
     "openMarkets": 4,
     "traction": {
-      "trades": 128,
-      "volumeUsdc": 686.734,
-      "feesUsdc": 13.73468,
-      "lpFeesUsdc": 6.86734,
+      "trades": 130,
+      "volumeUsdc": 691.105,
+      "feesUsdc": 13.8221,
+      "lpFeesUsdc": 6.91105,
       "markets": 20,
       "yes": 58,
-      "no": 70,
-      "meanGapClosed": 0.0964,
-      "expectedEdgeUsdc": 90.601261,
+      "no": 72,
+      "meanGapClosed": 0.096,
+      "expectedEdgeUsdc": 90.899029,
       "firstAt": 1793628172,
-      "lastAt": 1793722566
+      "lastAt": 1793723450
     }
   },
   "ladders": [
@@ -1900,6 +1900,40 @@
     }
   ],
   "trades": [
+    {
+      "at": 1793723450,
+      "market": "DrMSL2oQr6FkhdA1hidLWSpXEW2dWsHekNtgMtBH11Xi",
+      "name": "BTC>77700@1793728800",
+      "asset": "BTC",
+      "side": "no",
+      "amountUsdc": 2.832,
+      "tokensOut": 4.063786,
+      "feeUsdc": 0.05664,
+      "pModel": 0.248103,
+      "ammBefore": 0.362788,
+      "ammAfter": 0.273102,
+      "spot": 77450.73907087,
+      "sigmaAnnual": 0.363732,
+      "tx": "4AykKTn6LtAdHy3rdoyrZQUQSz2PLQkVPZqaScSmx2qhYpV9LzWivwNTmaQsEPiBhzvZYW3ykTLarZwEvm43PCRQ",
+      "outcome": null
+    },
+    {
+      "at": 1793723448,
+      "market": "D5mQt8gi3bDBVEDCvZgQeuejb974etstAm9sZC5KY5kV",
+      "name": "SOL>93.6@1793728800",
+      "asset": "SOL",
+      "side": "no",
+      "amountUsdc": 1.539,
+      "tokensOut": 2.210738,
+      "feeUsdc": 0.03078,
+      "pModel": 0.270279,
+      "ammBefore": 0.340724,
+      "ammAfter": 0.295285,
+      "spot": 93.18482557,
+      "sigmaAnnual": 0.560862,
+      "tx": "2S7HqRwpkRgrfX1XsYuxmGmFkWdGm1Kfb3hUfD6pN81KmztMfuUHb7dzZEdmawBwtT5tjUYU1R3oe1u82mr5Jmpm",
+      "outcome": null
+    },
     {
       "at": 1793722566,
       "market": "ELQzMyDfPwVsHLD9Ad8Er72BBUMBb7vAA5hvQnuRzZEa",
