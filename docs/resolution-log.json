@@ -1,31 +1,31 @@
 {
   "schema": "strikebook.resolution-log/v1",
-  "generatedAt": 1793684784,
+  "generatedAt": 1793685694,
   "cluster": "devnet",
   "program": "GV1FMGHRYBjQLaghE5fnGuYCuCcpdt3GD5xEX3TwN16y",
   "app": "https://pm-amm-devnet.vercel.app",
   "rule": "YES iff the first Pyth PriceUpdateV2 print with publish_time >= expiry is strictly above the strike",
   "stats": {
-    "created": 38,
-    "resolved": 34,
+    "created": 42,
+    "resolved": 38,
     "yes": 8,
-    "no": 26,
-    "ladders": 17,
+    "no": 30,
+    "ladders": 19,
     "assets": {
       "BTC": {
-        "resolved": 14,
+        "resolved": 16,
         "yes": 2
       },
       "SOL": {
-        "resolved": 20,
+        "resolved": 22,
         "yes": 6
       }
     },
     "oracleSources": {
-      "coinbase-1m-fallback": 25,
-      "pyth-onchain": 9
+      "pyth-onchain": 13,
+      "coinbase-1m-fallback": 25
     },
-    "brier": 0.1928,
+    "brier": 0.1902,
     "brierCoinFlip": 0.25,
     "calibration": [
       {
@@ -42,18 +42,18 @@
           0.2,
           0.4
         ],
-        "n": 16,
-        "meanFair": 0.2534,
-        "yesRate": 0.125
+        "n": 18,
+        "meanFair": 0.2531,
+        "yesRate": 0.1111
       },
       {
         "range": [
           0.4,
           0.6
         ],
-        "n": 16,
-        "meanFair": 0.499,
-        "yesRate": 0.3125
+        "n": 18,
+        "meanFair": 0.5015,
+        "yesRate": 0.2778
       },
       {
         "range": [
@@ -90,6 +90,26 @@
     }
   },
   "ladders": [
+    {
+      "asset": "BTC",
+      "endTs": 1793685600,
+      "settlePrice": 76503.12726765001,
+      "settleSource": "pyth-onchain 4cSM2e6rvbGQUFiJbqytoVMi5GgghSMr8LwVrT9VPSPo",
+      "rungs": [
+        "Dbrpct5jzmsnKEV9UdnQmW7BPPHjm7vWsJTY9ZxVTc2L",
+        "DkHcZcYWZMWKHsLbFv9fvbnzHCujEfZysngSpo6gwDFC"
+      ]
+    },
+    {
+      "asset": "SOL",
+      "endTs": 1793685600,
+      "settlePrice": 91.54141087,
+      "settleSource": "pyth-onchain 7UVimffxr9ow1uXYxsr4LHAcV58mLzhmwaeKvJ1pjLiE",
+      "rungs": [
+        "6tiTh8QAfUe6ktH7GtjbWdKZAP5AgbPDB6H8E8i4ZBJu",
+        "9AJiFUvf7i5JHUFkdezJEVxV8egMVXHjCG2FvFGnXJza"
+      ]
+    },
     {
       "asset": "BTC",
       "endTs": 1793664000,
@@ -262,6 +282,158 @@
     }
   ],
   "resolutions": [
+    {
+      "market": "Dbrpct5jzmsnKEV9UdnQmW7BPPHjm7vWsJTY9ZxVTc2L",
+      "marketId": 7215255301101,
+      "name": "BTC>77100@1793685600",
+      "asset": "BTC",
+      "strike": 77100,
+      "endTs": 1793685600,
+      "seed": {
+        "fairYes": 0.25546388397003866,
+        "initialPriceBps": 2555,
+        "spot": 76633.27095013,
+        "sigmaAnnual": 0.36100380210822136,
+        "createdAt": 1793664663,
+        "createTx": "24wyVonYVStDYqfmpieD2nPGp6sURWvfkTfkz2MFMqBVoeqqAdR5K9B1Az77qK3qCyf7dJLYmYvbeGMsE9q7MYoz"
+      },
+      "side": "no",
+      "oracle": {
+        "price": 76503.12726765001,
+        "conf": 70.92190147,
+        "publishTime": 1793685633,
+        "source": "pyth-onchain 4cSM2e6rvbGQUFiJbqytoVMi5GgghSMr8LwVrT9VPSPo",
+        "lagSecs": 33
+      },
+      "resolveTx": "u3hETbJyURKL5kEg66Vj7pJxoh2ofbnFCGjs8UtcyNfSivSdm5AnRChDGzhoyxzGp4VUX94HvhfgwvHnXCpgmTB",
+      "resolvedAt": 1793685653,
+      "claims": [
+        {
+          "kind": "claimLpResiduals",
+          "tx": "56z5Db7Vwia6bKCsgRDBsAAy9RVFPXY2KQZE963bP1rYgyc5vFQucwa4gHiETerzL1QNQff8gWpjAzoUowpX5K5y"
+        },
+        {
+          "kind": "claimWinnings",
+          "tx": "UYtvhCPMP9gNXP9cEhh9JzyK9k7f1nXA9pTba7qFd3YqkXHzAQRdHLxDYC9uKKVMqF8QUzuEa7a21ubZqQQuC7j"
+        }
+      ],
+      "url": "https://pm-amm-devnet.vercel.app/market/7215255301101",
+      "brier": 0.065262
+    },
+    {
+      "market": "DkHcZcYWZMWKHsLbFv9fvbnzHCujEfZysngSpo6gwDFC",
+      "marketId": 24054925499502,
+      "name": "BTC>76600@1793685600",
+      "asset": "BTC",
+      "strike": 76600,
+      "endTs": 1793685600,
+      "seed": {
+        "fairYes": 0.5167632946712065,
+        "initialPriceBps": 5168,
+        "spot": 76633.27095013,
+        "sigmaAnnual": 0.36100380210822136,
+        "createdAt": 1793664665,
+        "createTx": "5uNzben1ox6kghgQQkGSmmQRBpZHNWC7sPo4uraGS3y6qMN43xYyMcJkZcMMeqB27oArYmUQu1p5NpcrRrE9ohdi"
+      },
+      "side": "no",
+      "oracle": {
+        "price": 76503.12726765001,
+        "conf": 70.92190147,
+        "publishTime": 1793685633,
+        "source": "pyth-onchain 4cSM2e6rvbGQUFiJbqytoVMi5GgghSMr8LwVrT9VPSPo",
+        "lagSecs": 33
+      },
+      "resolveTx": "25hJzXdWsPqpxEHGaBqdxsPo8tKiCnfy3RNSP8aKRQQXJBDLz6QM8a4eEouV1aqJ97q3x3NJqKNn4AGkix3mjGAB",
+      "resolvedAt": 1793685654,
+      "claims": [
+        {
+          "kind": "claimLpResiduals",
+          "tx": "4NebuySvxFDRoysCWg3LyRjTccneWwyNf2s3VDLFfUxAxRnmLM7mZj65ty1QnkZbKz2Sp9CJsS57sGHbYZN7ZC7c"
+        },
+        {
+          "kind": "claimWinnings",
+          "tx": "b8GX1HTaBhxNKnykpuP8auKX4bNJqJ92xqcNBEQFp88t3szs46Lsxfkbyp6Y6xahk2k8aexTEqdtgXuBob14dHZ"
+        }
+      ],
+      "url": "https://pm-amm-devnet.vercel.app/market/24054925499502",
+      "brier": 0.267044
+    },
+    {
+      "market": "6tiTh8QAfUe6ktH7GtjbWdKZAP5AgbPDB6H8E8i4ZBJu",
+      "marketId": 222840006464183,
+      "name": "SOL>92.8@1793685600",
+      "asset": "SOL",
+      "strike": 92.8,
+      "endTs": 1793685600,
+      "seed": {
+        "fairYes": 0.24677328264121762,
+        "initialPriceBps": 2468,
+        "spot": 91.89844891,
+        "sigmaAnnual": 0.5591938384136551,
+        "createdAt": 1793664659,
+        "createTx": "5w53LLyxuQPzZgayhftQsgAErU2QPannRCHn9xKxZFyeyhXrSGWUCL3KTLhoMVjrTBirs62nnXCAhcLPRrWXpRPK"
+      },
+      "side": "no",
+      "oracle": {
+        "price": 91.54141087,
+        "conf": 0.09259873,
+        "publishTime": 1793685642,
+        "source": "pyth-onchain 7UVimffxr9ow1uXYxsr4LHAcV58mLzhmwaeKvJ1pjLiE",
+        "lagSecs": 42
+      },
+      "resolveTx": "3nEW7F1EetCsyZQkNdg6rkgHv9XFDTk9eQhQxjwY72UBY4JWoomVjNtvpTuSAPApD6qFLQUSqPFWECVpvXVL4Egy",
+      "resolvedAt": 1793685648,
+      "claims": [
+        {
+          "kind": "claimLpResiduals",
+          "tx": "5geFWhe61ncALbs7XE9voXPrq1shLP65WYcCLfyZr6camumN4qitYJTBH3CTe35q4AQjutqyaCjJdYAWoUbEUbhd"
+        },
+        {
+          "kind": "claimWinnings",
+          "tx": "59kQVaSUzcVZsbvahcx7yJBHvMiQmwidP4rrqbbkPhNzBYa18sLgzLCBiftx5KDXrWSswxRU86w6kB5rd2naYKrT"
+        }
+      ],
+      "url": "https://pm-amm-devnet.vercel.app/market/222840006464183",
+      "brier": 0.060897
+    },
+    {
+      "market": "9AJiFUvf7i5JHUFkdezJEVxV8egMVXHjCG2FvFGnXJza",
+      "marketId": 219284728473565,
+      "name": "SOL>91.8@1793685600",
+      "asset": "SOL",
+      "strike": 91.8,
+      "endTs": 1793685600,
+      "seed": {
+        "fairYes": 0.5267796074440618,
+        "initialPriceBps": 5268,
+        "spot": 91.89844891,
+        "sigmaAnnual": 0.5591938384136551,
+        "createdAt": 1793664661,
+        "createTx": "5K5bMZtugJFVNdkybHu9a8Zu9wVgg4vKGq2Hu6dJq7KLudbfjd7oZMxC932e9U71zDBQy6JSo1KBPfSCC7rkWeuy"
+      },
+      "side": "no",
+      "oracle": {
+        "price": 91.54141087,
+        "conf": 0.09259873,
+        "publishTime": 1793685642,
+        "source": "pyth-onchain 7UVimffxr9ow1uXYxsr4LHAcV58mLzhmwaeKvJ1pjLiE",
+        "lagSecs": 42
+      },
+      "resolveTx": "3UAgUwzeLMwkFGTTczhG5YFctpBAx5uLvQyfNY8x76HnoK2zB3brPYvHpGdWZAoL5ZpmtTG8rTAwMSivkaDqkfWm",
+      "resolvedAt": 1793685649,
+      "claims": [
+        {
+          "kind": "claimLpResiduals",
+          "tx": "4EDUrWoZBgEPbQjuA4EDrxNivjdmcWbig4AkxomJ5oWkBKv8dD9qi6Y2aLEhQ1uA5KBB63qRVpQVRVCZB9EEixz5"
+        },
+        {
+          "kind": "claimWinnings",
+          "tx": "2k3sF1PLWREaHEF2MGZ7rFCUoZKLdYgrFDTphsDadFWGa48iK8v5ETR2MmGZn9gv413vD9U74ciZFvnMEmdQU8B"
+        }
+      ],
+      "url": "https://pm-amm-devnet.vercel.app/market/219284728473565",
+      "brier": 0.277497
+    },
     {
       "market": "BMRyvwMMuk1miabNQLjLtgMCNXeS7SUbuiHLaHQTFtFJ",
       "marketId": 163660010502429,
@@ -1571,7 +1743,7 @@
       "spot": 91.70114287,
       "sigmaAnnual": 0.56136,
       "tx": "5tAz22cYXuyg447JXaCVN6SfiY3TS4r41XHvNd2dGpcwws1Nk7VpCYHPYnXYZ7tXSRqecWVCKxAtPWfphkMffa94",
-      "outcome": null
+      "outcome": "no"
     },
     {
       "at": 1793683860,
@@ -1588,7 +1760,7 @@
       "spot": 76599.39189591,
       "sigmaAnnual": 0.36296,
       "tx": "3AGEopd2MAzSVzrPs7EL3rjVfrEvLMentNrNyohqCbEvkauZq2buGxv6qNVfR6vAWbjjFkJ59kGjQDXeup7EAJkr",
-      "outcome": null
+      "outcome": "no"
     },
     {
       "at": 1793683859,
@@ -1605,7 +1777,7 @@
       "spot": 91.73395594,
       "sigmaAnnual": 0.561392,
       "tx": "3NUSyjuBr7fD39ebrkriR3rmjWTFAvMUEZdbnx5qBgxNWG2MCJig6vVqnS7S7m5EDD8JGBNdAAEMUcc7g7nhVBtB",
-      "outcome": null
+      "outcome": "no"
     },
     {
       "at": 1793683857,
@@ -1622,7 +1794,7 @@
       "spot": 91.73395594,
       "sigmaAnnual": 0.561392,
       "tx": "NbTkLUiAzC43zKpsNycWhunGUo8yRKrZdfh5VLKScsqRZZqrcgsm6qpyKrjtTTJ2RXjLEDwbGyyeb4y4EzvrAVK",
-      "outcome": null
+      "outcome": "no"
     },
     {
       "at": 1793682951,
@@ -1639,7 +1811,7 @@
       "spot": 76704.97546995,
       "sigmaAnnual": 0.362562,
       "tx": "5yMTmDxrLfNxiuqV3MWHjPaSawgVAXSnAQ9ryCQ8mLXfMngdSndvto5pX1kyXSsrddMqEd3A7dG7wzQCMFYWSJA6",
-      "outcome": null
+      "outcome": "no"
     },
     {
       "at": 1793682949,
@@ -1656,7 +1828,7 @@
       "spot": 91.98289317,
       "sigmaAnnual": 0.560936,
       "tx": "5DM1FvH9PAYNDyz21afn3HQpPt5ZSW5wxbKWpt5j1mhuNCLtcgxNKcE3U5VYCQUCVmGcJK3YVGhuiPo6SfSHuRkn",
-      "outcome": null
+      "outcome": "no"
     },
     {
       "at": 1793682947,
@@ -1673,7 +1845,7 @@
       "spot": 91.98289317,
       "sigmaAnnual": 0.560936,
       "tx": "2RTGR5GNQvtSzjBxNWhCGAcjCa3JBt3fhwK7c2n1LAomH428ZjeTL4AiQjT1y22cMJTwhGCCFUBqsdUdB6yyvWJH",
-      "outcome": null
+      "outcome": "no"
     },
     {
       "at": 1793682042,
@@ -1690,7 +1862,7 @@
       "spot": 76819.0541299,
       "sigmaAnnual": 0.363484,
       "tx": "kVxAvrvFXTtGF3Z3YnqXggqwjJ3rdeZ9PQZzvdxs7hSoZcJu6Q19K23wcft84ansUp8Bjj6QJb8WcnggQSEGXDQ",
-      "outcome": null
+      "outcome": "no"
     },
     {
       "at": 1793681635,
@@ -1707,7 +1879,7 @@
       "spot": 92.1344168,
       "sigmaAnnual": 0.562491,
       "tx": "3jo1hVMB3wNyn3MhEwPqjCMP32dVnovFEg79soZitH2VEf3hd9pFrwKCMFDh4uPdmdCowvMxZp9PZx9iGbomdVTF",
-      "outcome": null
+      "outcome": "no"
     },
     {
       "at": 1793680262,
@@ -1724,7 +1896,7 @@
       "spot": 76990.40000000001,
       "sigmaAnnual": 0.363904,
       "tx": "SGGd9oPA4wsFHCaep1jjEGKBAo39PB5A4zAc7HJeqM7SgbWXquADGgnpbgCNr2fFe77KRh4Hymfs6hYW1Qcuhhd",
-      "outcome": null
+      "outcome": "no"
     },
     {
       "at": 1793680259,
@@ -1741,7 +1913,7 @@
       "spot": 76990.40000000001,
       "sigmaAnnual": 0.363904,
       "tx": "2YXed32J4rUuu8hWaJDQWHhZBPVy4vqDRNyptK7cx5yFLmCc6sRzracf1zy6st58FYNhLwArDzXCYhFvyBUae3Gg",
-      "outcome": null
+      "outcome": "no"
     },
     {
       "at": 1793680257,
@@ -1758,7 +1930,7 @@
       "spot": 92.36753048,
       "sigmaAnnual": 0.563161,
       "tx": "3vvBsJQTx3nUTpcLX1XpaBvuQdUt7TARmc5HxqkyhFHCSBVGTx59sAisg1agRoyJxPLpi8Nqd3QhgmhiFXydwNz1",
-      "outcome": null
+      "outcome": "no"
     },
     {
       "at": 1793680255,
@@ -1775,7 +1947,7 @@
       "spot": 92.36753048,
       "sigmaAnnual": 0.563161,
       "tx": "4SVbmvi9c89waPzB6L8Lpp4Aox1fo9NwVgiie5daz3y6ibdYwjxAQBN9znjSct3U8zK4ToHAxgrqpRgkJBst9n9r",
-      "outcome": null
+      "outcome": "no"
     },
     {
       "at": 1793679340,
@@ -1792,7 +1964,7 @@
       "spot": 92.18339136,
       "sigmaAnnual": 0.562211,
       "tx": "3G1YuZuNgMimWBddNpe9qdBeKen9LZP7yFgUGiMKiRE7PXP4Zi9H5fZsw2EN56yYXWcB7RcAPMXpmwGEgFBSVi1N",
-      "outcome": null
+      "outcome": "no"
     },
     {
       "at": 1793678451,
@@ -1809,7 +1981,7 @@
       "spot": 76796.65922337,
       "sigmaAnnual": 0.364125,
       "tx": "2MDPtwVBXnV2BdKScKNEecfJ3Uiiv5yJUUSw5BEKUy81mveq28wnFtimcqMfRAh6VjGKrVZLB2nsn7XYyGLsP3xN",
-      "outcome": null
+      "outcome": "no"
     },
     {
       "at": 1793678449,
@@ -1826,7 +1998,7 @@
       "spot": 92.00707881,
       "sigmaAnnual": 0.562234,
       "tx": "4pMMmxctSokRmB1ME2nijJCyRxkuvb1Ch5jzAEBzTQvrdspU2W7gRy7LeJgbZYLsihYphZWGLSfCoaYawVbk9jJ",
-      "outcome": null
+      "outcome": "no"
     },
     {
       "at": 1793677544,
@@ -1843,7 +2015,7 @@
       "spot": 76632.98607348,
       "sigmaAnnual": 0.363507,
       "tx": "Sk1siK8qtEgRxwTcrwawiVXVJDjTZqsHC4X4XYmCUG5T2aq27eAPfzDyxtyh6u8Qr2eHvxiB1W6RgKNsGtyA6NG",
-      "outcome": null
+      "outcome": "no"
     },
     {
       "at": 1793677542,
@@ -1860,7 +2032,7 @@
       "spot": 76632.98607348,
       "sigmaAnnual": 0.363507,
       "tx": "2JLdHeZxX5ZK2H2XfdBgjSJJXzwAksvcBFccqpza6hEAqWpdmqA4ZJZYAncpHcV76815Npz6Sf7v7G4t7foSehbb",
-      "outcome": null
+      "outcome": "no"
     },
     {
       "at": 1793676656,
@@ -1877,7 +2049,7 @@
       "spot": 76680.39157918,
       "sigmaAnnual": 0.36365,
       "tx": "2Miays2kaTH281Ph5dEcVcMbm8Jwg5dnSwK1f6Fmpkm11H4sV1C5bpFh2RkD8x4jjaf3wjofD5gLbkWbmtwaWFcJ",
-      "outcome": null
+      "outcome": "no"
     },
     {
       "at": 1793676654,
@@ -1894,7 +2066,7 @@
       "spot": 76680.39157918,
       "sigmaAnnual": 0.36365,
       "tx": "RJQwDswixkQHdeKyYJbSExdRFUuyzySBZHrp8FPCJaGQKgF8iBZ7iY1iqbPyyECscoLGRxcULWYsJNPADQnPoGF",
-      "outcome": null
+      "outcome": "no"
     },
     {
       "at": 1793676652,
@@ -1911,7 +2083,7 @@
       "spot": 91.74289254,
       "sigmaAnnual": 0.561491,
       "tx": "47P3UpdmSd18Wd7TpbMas1LB7xgvtNbmWy5myFFAbXAyGXjG2PHt5bybit6owziFHc2ptjmQ1Ggua92uDtgLQekq",
-      "outcome": null
+      "outcome": "no"
     },
     {
       "at": 1793675746,
@@ -1928,7 +2100,7 @@
       "spot": 76815.13122881,
       "sigmaAnnual": 0.364081,
       "tx": "28bb2JBVvKYEFSqE4jn8pQxvwVBWb75iwe15HB3SprLLjWr7MCHW93NsBNRWULEtBYFLwDXeFziLyquam8CY1uAd",
-      "outcome": null
+      "outcome": "no"
     },
     {
       "at": 1793675744,
@@ -1945,7 +2117,7 @@
       "spot": 76815.13122881,
       "sigmaAnnual": 0.364081,
       "tx": "3WX5WRzBLEJys5HQSyB35PmTE7rniVDHS4tste6hRBQtQdq2hkQRMQGU9LaeXyunWvPv9RChgqBF24mwsTQcSd9h",
-      "outcome": null
+      "outcome": "no"
     },
     {
       "at": 1793675742,
@@ -1962,7 +2134,7 @@
       "spot": 92.04978788,
       "sigmaAnnual": 0.562524,
       "tx": "YrVUzy6qyrhfvpr87d1DstYYaM3o4QGneuVezhxoJR63nQH51wzkqtiSSTSnbbAzLx5sLUKx1AAHjiDHqngwT72",
-      "outcome": null
+      "outcome": "no"
     },
     {
       "at": 1793674855,
@@ -1979,7 +2151,7 @@
       "spot": 76587.33946175,
       "sigmaAnnual": 0.363137,
       "tx": "fufJhHhczqhxPqshNzDgnHof6671sYosy3TaHx1eJRxzYUraLJS6KNDb8Q7o6Z3KSTzkKJT323dc3GArWezJxFA",
-      "outcome": null
+      "outcome": "no"
     },
     {
       "at": 1793674852,
@@ -1996,7 +2168,7 @@
       "spot": 76587.33946175,
       "sigmaAnnual": 0.363137,
       "tx": "4SRHTLtXMbDmg4kPD49Ucc5JQW7bjFRNVtBtiU7gtckwjbVKaV3RxAqE5eS4a3q8YxEy2xX3cSomTSAvaL2xkK32",
-      "outcome": null
+      "outcome": "no"
     },
     {
       "at": 1793674851,
@@ -2013,7 +2185,7 @@
       "spot": 91.63539258,
       "sigmaAnnual": 0.561426,
       "tx": "544oEauwbwxHDcuaiAKGZube5UEXxmy26siQLG6eXPc12MbxvtPc4EytZQ19FFdPpK9TGJfqdeRxwEJkrqxF2bZK",
-      "outcome": null
+      "outcome": "no"
     },
     {
       "at": 1793674849,
@@ -2030,7 +2202,7 @@
       "spot": 91.63539258,
       "sigmaAnnual": 0.561426,
       "tx": "4ovFCZyaEAQRecS5nnKaKnzsBXaoofi9oqhd2VibAhPw3SWKLkRrp4FmWPRwdVhv5QJAFLJUk4NSZZNtGPFAnBAz",
-      "outcome": null
+      "outcome": "no"
     },
     {
       "at": 1793673983,
@@ -2047,7 +2219,7 @@
       "spot": 76782.84246559,
       "sigmaAnnual": 0.362169,
       "tx": "4PhL8CcU1PhbGh62RLK3uxSazUvG6TBrBB9MNzwqVubz3J4gPppUdnDvhHpwbZMwjcewKAfAG5QmZErGqpy8iuvV",
-      "outcome": null
+      "outcome": "no"
     },
     {
       "at": 1793673981,
@@ -2064,7 +2236,7 @@
       "spot": 76782.84246559,
       "sigmaAnnual": 0.362169,
       "tx": "3ikgz6L9ppX8Y8G2x6ZmTghSF5YTwQ3Ys2YDtpiBqsiZia4Jrsbcyr7bC5HcgUgfqxV7yjmZaB3KD8NXQPh21PuQ",
-      "outcome": null
+      "outcome": "no"
     },
     {
       "at": 1793671684,
@@ -2081,7 +2253,7 @@
       "spot": 76915.78985765,
       "sigmaAnnual": 0.361661,
       "tx": "5Tk7TvAWquqbTvpXQX5WNPPL3t5kLoTGR2cTEMRKGs35XRdBBu1MKKPWMgfsnagpBiRquHFoKES7vcARf1mGVHNy",
-      "outcome": null
+      "outcome": "no"
     },
     {
       "at": 1793671682,
@@ -2098,7 +2270,7 @@
       "spot": 76915.78985765,
       "sigmaAnnual": 0.361661,
       "tx": "3xKiCWgasWqK8C8rxFGm9LXfoVNGbDNZ7SHGQcdMoLMZfRvTRo3FAa5QWr36rLvvvLxAhSCFzAuBxwCEji71YcKk",
-      "outcome": null
+      "outcome": "no"
     },
     {
       "at": 1793671680,
@@ -2115,7 +2287,7 @@
       "spot": 92.01273921,
       "sigmaAnnual": 0.560044,
       "tx": "5i4KZ8JjnUMgpL2xoFrLfP7frDKa9E3gLt2hqDN4HyQjouTxCycoBWUPWhsn4FWYkxDeFGmp3c6egmgPvsPkEyMn",
-      "outcome": null
+      "outcome": "no"
     },
     {
       "at": 1793671678,
@@ -2132,7 +2304,7 @@
       "spot": 92.01273921,
       "sigmaAnnual": 0.560044,
       "tx": "2gmf6Ni2gmrDuXW3AvPsRdhjx88bczGLDBZrmd23GpgcbLF4EBCjhPz8qcRWcxcbKLGbcWWh7sta5F4U1U9hM9oW",
-      "outcome": null
+      "outcome": "no"
     },
     {
       "at": 1793669715,
@@ -2149,7 +2321,7 @@
       "spot": 77120.44917728,
       "sigmaAnnual": 0.361802,
       "tx": "4oq47G37FPk2Fojr59gkZnkH253KKpNpmdcywcRiGjiXcWv876kms4tWvxP1ffuiJNmjKak8juzDiSc4h6xPVvPv",
-      "outcome": null
+      "outcome": "no"
     },
     {
       "at": 1793669713,
@@ -2166,7 +2338,7 @@
       "spot": 77120.44917728,
       "sigmaAnnual": 0.361802,
       "tx": "67oBhaYDmq2nrmBJ8HFw5Mw7X1KjVcdbwbw5Dxz3HbAMUuhmeHbmP3QHMvXu32QRCrAFJH4o1HtGvhTws9TY7oR7",
-      "outcome": null
+      "outcome": "no"
     },
     {
       "at": 1793665850,
@@ -2183,7 +2355,7 @@
       "spot": 76937.9688328,
       "sigmaAnnual": 0.361554,
       "tx": "39VeJ1MT6w6mSmSsJiTxVxjsLTng45GHPmKxeQs9PTktkDGYySXzbqJQix6dMZnLuf474RTocPpKqMGgbtLCquuY",
-      "outcome": null
+      "outcome": "no"
     },
     {
       "at": 1793665848,
@@ -2200,7 +2372,7 @@
       "spot": 76937.9688328,
       "sigmaAnnual": 0.361554,
       "tx": "rjv3fpwKfQ3wPv3YFuycrHXvwJeddFcPH7z3esZQqe1EgXmGqjd2g6gtnP2YsfDMkfZ8kBjUrc7XrveiWdexAf5",
-      "outcome": null
+      "outcome": "no"
     },
     {
       "at": 1793665846,
@@ -2217,7 +2389,7 @@
       "spot": 92.37268184,
       "sigmaAnnual": 0.56074,
       "tx": "4DooGFXZWX56UbvxiDMAX5AxJfhUCyWPQ79Yrvqaf5kzkePymu8BjDR7fACGum2nqjPYnbETRM2S8YdvinEu9pmS",
-      "outcome": null
+      "outcome": "no"
     },
     {
       "at": 1793665844,
@@ -2234,7 +2406,7 @@
       "spot": 92.37268184,
       "sigmaAnnual": 0.56074,
       "tx": "59Re31GuMoPDooTM2sEncpTFjt456hKqVZtbK2xL295Ponq4kouHMGpi7trVs6adfLfb73tqvz83ezA5nijB4151",
-      "outcome": null
+      "outcome": "no"
     },
     {
       "at": 1793663020,
