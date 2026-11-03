@@ -1,6 +1,6 @@
 {
   "schema": "strikebook.resolution-log/v1",
-  "generatedAt": 1793721662,
+  "generatedAt": 1793722568,
   "cluster": "devnet",
   "program": "GV1FMGHRYBjQLaghE5fnGuYCuCcpdt3GD5xEX3TwN16y",
   "app": "https://pm-amm-devnet.vercel.app",
@@ -76,17 +76,17 @@
     ],
     "openMarkets": 4,
     "traction": {
-      "trades": 126,
-      "volumeUsdc": 681.624,
-      "feesUsdc": 13.63248,
-      "lpFeesUsdc": 6.81624,
+      "trades": 128,
+      "volumeUsdc": 686.734,
+      "feesUsdc": 13.73468,
+      "lpFeesUsdc": 6.86734,
       "markets": 20,
       "yes": 58,
-      "no": 68,
-      "meanGapClosed": 0.0966,
-      "expectedEdgeUsdc": 89.835091,
+      "no": 70,
+      "meanGapClosed": 0.0964,
+      "expectedEdgeUsdc": 90.601261,
       "firstAt": 1793628172,
-      "lastAt": 1793721660
+      "lastAt": 1793722566
     }
   },
   "ladders": [
@@ -1900,6 +1900,40 @@
     }
   ],
   "trades": [
+    {
+      "at": 1793722566,
+      "market": "ELQzMyDfPwVsHLD9Ad8Er72BBUMBb7vAA5hvQnuRzZEa",
+      "name": "SOL>92.8@1793728800",
+      "asset": "SOL",
+      "side": "no",
+      "amountUsdc": 1.573,
+      "tokensOut": 7.121951,
+      "feeUsdc": 0.03146,
+      "pModel": 0.729293,
+      "ammBefore": 0.811357,
+      "ammAfter": 0.754288,
+      "spot": 93.25006374,
+      "sigmaAnnual": 0.559789,
+      "tx": "3D3VaWdtVdqt1JnVXfHka51bsinxrSYtA3NZ8EVboCVtNsLYn75cpX23MV98qDC2sLfZDu8E5cTMBXJvzKaBeHbD",
+      "outcome": null
+    },
+    {
+      "at": 1793722564,
+      "market": "D5mQt8gi3bDBVEDCvZgQeuejb974etstAm9sZC5KY5kV",
+      "name": "SOL>93.6@1793728800",
+      "asset": "SOL",
+      "side": "no",
+      "amountUsdc": 3.537,
+      "tokensOut": 5.769902,
+      "feeUsdc": 0.07074,
+      "pModel": 0.315724,
+      "ammBefore": 0.459328,
+      "ammAfter": 0.340724,
+      "spot": 93.25006374,
+      "sigmaAnnual": 0.559789,
+      "tx": "3NGpq2PrCEUptsKKoxxE7cUbihENG4n82AeW8mzaipyc2JM84TMEyXJjbKeeUUmU3kme6XnRMrfssdhDbvuhsCwx",
+      "outcome": null
+    },
     {
       "at": 1793721660,
       "market": "ELQzMyDfPwVsHLD9Ad8Er72BBUMBb7vAA5hvQnuRzZEa",
