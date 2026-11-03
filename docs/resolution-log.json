@@ -1,6 +1,6 @@
 {
   "schema": "strikebook.resolution-log/v1",
-  "generatedAt": 1793665851,
+  "generatedAt": 1793669715,
   "cluster": "devnet",
   "program": "GV1FMGHRYBjQLaghE5fnGuYCuCcpdt3GD5xEX3TwN16y",
   "app": "https://pm-amm-devnet.vercel.app",
@@ -76,17 +76,17 @@
     ],
     "openMarkets": 4,
     "traction": {
-      "trades": 39,
-      "volumeUsdc": 256.834,
-      "feesUsdc": 5.13668,
-      "lpFeesUsdc": 2.56834,
+      "trades": 41,
+      "volumeUsdc": 272.597,
+      "feesUsdc": 5.45194,
+      "lpFeesUsdc": 2.72597,
       "markets": 12,
-      "yes": 16,
+      "yes": 18,
       "no": 23,
-      "meanGapClosed": 0.0921,
-      "expectedEdgeUsdc": 29.861786,
+      "meanGapClosed": 0.0929,
+      "expectedEdgeUsdc": 31.464603,
       "firstAt": 1793628172,
-      "lastAt": 1793665850
+      "lastAt": 1793669715
     }
   },
   "ladders": [
@@ -1556,6 +1556,40 @@
     }
   ],
   "trades": [
+    {
+      "at": 1793669715,
+      "market": "DkHcZcYWZMWKHsLbFv9fvbnzHCujEfZysngSpo6gwDFC",
+      "name": "BTC>76600@1793685600",
+      "asset": "BTC",
+      "side": "yes",
+      "amountUsdc": 12.581,
+      "tokensOut": 17.179874,
+      "feeUsdc": 0.25162,
+      "pModel": 0.796672,
+      "ammBefore": 0.660104,
+      "ammAfter": 0.771675,
+      "spot": 77120.44917728,
+      "sigmaAnnual": 0.361802,
+      "tx": "4oq47G37FPk2Fojr59gkZnkH253KKpNpmdcywcRiGjiXcWv876kms4tWvxP1ffuiJNmjKak8juzDiSc4h6xPVvPv",
+      "outcome": null
+    },
+    {
+      "at": 1793669713,
+      "market": "Dbrpct5jzmsnKEV9UdnQmW7BPPHjm7vWsJTY9ZxVTc2L",
+      "name": "BTC>77100@1793685600",
+      "asset": "BTC",
+      "side": "yes",
+      "amountUsdc": 3.182,
+      "tokensOut": 7.194064,
+      "feeUsdc": 0.06364,
+      "pModel": 0.511406,
+      "ammBefore": 0.381331,
+      "ammAfter": 0.486381,
+      "spot": 77120.44917728,
+      "sigmaAnnual": 0.361802,
+      "tx": "67oBhaYDmq2nrmBJ8HFw5Mw7X1KjVcdbwbw5Dxz3HbAMUuhmeHbmP3QHMvXu32QRCrAFJH4o1HtGvhTws9TY7oR7",
+      "outcome": null
+    },
     {
       "at": 1793665850,
       "market": "DkHcZcYWZMWKHsLbFv9fvbnzHCujEfZysngSpo6gwDFC",
