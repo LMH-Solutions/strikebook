@@ -1,6 +1,6 @@
 {
   "schema": "strikebook.resolution-log/v1",
-  "generatedAt": 1793677544,
+  "generatedAt": 1793678451,
   "cluster": "devnet",
   "program": "GV1FMGHRYBjQLaghE5fnGuYCuCcpdt3GD5xEX3TwN16y",
   "app": "https://pm-amm-devnet.vercel.app",
@@ -76,17 +76,17 @@
     ],
     "openMarkets": 4,
     "traction": {
-      "trades": 59,
-      "volumeUsdc": 346.037,
-      "feesUsdc": 6.92074,
-      "lpFeesUsdc": 3.46037,
+      "trades": 61,
+      "volumeUsdc": 355.447,
+      "feesUsdc": 7.10894,
+      "lpFeesUsdc": 3.55447,
       "markets": 12,
-      "yes": 21,
+      "yes": 23,
       "no": 38,
       "meanGapClosed": 0.0904,
-      "expectedEdgeUsdc": 40.581667,
+      "expectedEdgeUsdc": 41.527459,
       "firstAt": 1793628172,
-      "lastAt": 1793677544
+      "lastAt": 1793678451
     }
   },
   "ladders": [
@@ -1556,6 +1556,40 @@
     }
   ],
   "trades": [
+    {
+      "at": 1793678451,
+      "market": "DkHcZcYWZMWKHsLbFv9fvbnzHCujEfZysngSpo6gwDFC",
+      "name": "BTC>76600@1793685600",
+      "asset": "BTC",
+      "side": "yes",
+      "amountUsdc": 5.613,
+      "tokensOut": 9.103191,
+      "feeUsdc": 0.11226,
+      "pModel": 0.678993,
+      "ammBefore": 0.55338,
+      "ammAfter": 0.653989,
+      "spot": 76796.65922337,
+      "sigmaAnnual": 0.364125,
+      "tx": "2MDPtwVBXnV2BdKScKNEecfJ3Uiiv5yJUUSw5BEKUy81mveq28wnFtimcqMfRAh6VjGKrVZLB2nsn7XYyGLsP3xN",
+      "outcome": null
+    },
+    {
+      "at": 1793678449,
+      "market": "9AJiFUvf7i5JHUFkdezJEVxV8egMVXHjCG2FvFGnXJza",
+      "name": "SOL>91.8@1793685600",
+      "asset": "SOL",
+      "side": "yes",
+      "amountUsdc": 3.797,
+      "tokensOut": 6.920065,
+      "feeUsdc": 0.07594,
+      "pModel": 0.603288,
+      "ammBefore": 0.496893,
+      "ammAfter": 0.578289,
+      "spot": 92.00707881,
+      "sigmaAnnual": 0.562234,
+      "tx": "4pMMmxctSokRmB1ME2nijJCyRxkuvb1Ch5jzAEBzTQvrdspU2W7gRy7LeJgbZYLsihYphZWGLSfCoaYawVbk9jJ",
+      "outcome": null
+    },
     {
       "at": 1793677544,
       "market": "DkHcZcYWZMWKHsLbFv9fvbnzHCujEfZysngSpo6gwDFC",
