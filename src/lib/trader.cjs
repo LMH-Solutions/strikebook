@@ -59,6 +59,24 @@ function decideTrade({ s, pModel, held = 0, budget = Infinity, cfg = {} }) {
     ammBefore: s.price, ammAfterEst: after, pModel, gap, evMicro: Math.round(ev) };
 }
 
+// Exit rule (pure; on-chain sell wiring via yesToUsdc/noToUsdc is the next step). Holding `tokens` (micro) of `side`, sell when the
+// AMM bid for that side, net of the fee, beats the model's expected payoff by `margin`. Proceeds use a linear marginal-price estimate, so
+// only `maxFraction` of inventory is sold per pass (price impact makes larger sells worse than the estimate).
+function decideExit({ s, pModel, side, tokens, cfg = {} }) {
+  const c = { ...DEFAULTS, maxFraction: 0.5, ...cfg };
+  if (s.resolved || s.expired) return { action: "hold", reason: "closed" };
+  if (!(tokens > 0)) return { action: "hold", reason: "no-inventory" };
+  if (!(pModel > 0 && pModel < 1)) return { action: "hold", reason: "model-degenerate" };
+  const pSide = side === "yes" ? pModel : 1 - pModel;
+  const bid = (side === "yes" ? s.price : 1 - s.price) * (1 - FEE);
+  const edge = bid - pSide;
+  if (edge < c.margin + 0.01) return { action: "hold", reason: "no-exit-edge", edge };
+  const amount = Math.floor(tokens * c.maxFraction);
+  const estProceeds = Math.floor(amount * bid);
+  if (estProceeds < c.minTradeUsdc * 1e6) return { action: "hold", reason: "too-small", edge };
+  return { action: "sell", side, dir: side === "yes" ? "yesToUsdc" : "noToUsdc", amount, estProceeds, edge, pModel, ammBefore: s.price };
+}
+
 // Traction stats for the dashboard from data/trades.jsonl records.
 function tradeStats(trades) {
   const real = trades.filter((t) => t.signature && !t.dry);
@@ -73,4 +91,4 @@ function tradeStats(trades) {
     firstAt: real.length ? Math.min(...real.map((t) => t.at)) : null, lastAt: real.length ? Math.max(...real.map((t) => t.at)) : null };
 }
 
-module.exports = { decideTrade, modelProb, stateAfterBuy, tradeStats, DEFAULTS, FEE };
+module.exports = { decideTrade, decideExit, modelProb, stateAfterBuy, tradeStats, DEFAULTS, FEE };
