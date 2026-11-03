@@ -1,6 +1,6 @@
 {
   "schema": "strikebook.resolution-log/v1",
-  "generatedAt": 1793672168,
+  "generatedAt": 1793673983,
   "cluster": "devnet",
   "program": "GV1FMGHRYBjQLaghE5fnGuYCuCcpdt3GD5xEX3TwN16y",
   "app": "https://pm-amm-devnet.vercel.app",
@@ -76,17 +76,17 @@
     ],
     "openMarkets": 4,
     "traction": {
-      "trades": 45,
-      "volumeUsdc": 282.869,
-      "feesUsdc": 5.65738,
-      "lpFeesUsdc": 2.82869,
+      "trades": 47,
+      "volumeUsdc": 289.815,
+      "feesUsdc": 5.7963,
+      "lpFeesUsdc": 2.89815,
       "markets": 12,
       "yes": 18,
-      "no": 27,
-      "meanGapClosed": 0.09,
-      "expectedEdgeUsdc": 32.454985,
+      "no": 29,
+      "meanGapClosed": 0.0898,
+      "expectedEdgeUsdc": 33.332377,
       "firstAt": 1793628172,
-      "lastAt": 1793671684
+      "lastAt": 1793673983
     }
   },
   "ladders": [
@@ -1556,6 +1556,40 @@
     }
   ],
   "trades": [
+    {
+      "at": 1793673983,
+      "market": "DkHcZcYWZMWKHsLbFv9fvbnzHCujEfZysngSpo6gwDFC",
+      "name": "BTC>76600@1793685600",
+      "asset": "BTC",
+      "side": "no",
+      "amountUsdc": 2.832,
+      "tokensOut": 9.080439,
+      "feeUsdc": 0.05664,
+      "pModel": 0.632876,
+      "ammBefore": 0.729602,
+      "ammAfter": 0.657869,
+      "spot": 76782.84246559,
+      "sigmaAnnual": 0.362169,
+      "tx": "4PhL8CcU1PhbGh62RLK3uxSazUvG6TBrBB9MNzwqVubz3J4gPppUdnDvhHpwbZMwjcewKAfAG5QmZErGqpy8iuvV",
+      "outcome": null
+    },
+    {
+      "at": 1793673981,
+      "market": "Dbrpct5jzmsnKEV9UdnQmW7BPPHjm7vWsJTY9ZxVTc2L",
+      "name": "BTC>77100@1793685600",
+      "asset": "BTC",
+      "side": "no",
+      "amountUsdc": 4.114,
+      "tokensOut": 6.196608,
+      "feeUsdc": 0.08228,
+      "pModel": 0.275451,
+      "ammBefore": 0.400011,
+      "ammAfter": 0.300456,
+      "spot": 76782.84246559,
+      "sigmaAnnual": 0.362169,
+      "tx": "3ikgz6L9ppX8Y8G2x6ZmTghSF5YTwQ3Ys2YDtpiBqsiZia4Jrsbcyr7bC5HcgUgfqxV7yjmZaB3KD8NXQPh21PuQ",
+      "outcome": null
+    },
     {
       "at": 1793671684,
       "market": "DkHcZcYWZMWKHsLbFv9fvbnzHCujEfZysngSpo6gwDFC",
