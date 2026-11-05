@@ -1,31 +1,31 @@
 {
   "schema": "strikebook.resolution-log/v1",
-  "generatedAt": 1793799939,
+  "generatedAt": 1793911217,
   "cluster": "devnet",
   "program": "GV1FMGHRYBjQLaghE5fnGuYCuCcpdt3GD5xEX3TwN16y",
   "app": "https://pm-amm-devnet.vercel.app",
   "rule": "YES iff the first Pyth PriceUpdateV2 print with publish_time >= expiry is strictly above the strike",
   "stats": {
-    "created": 58,
-    "resolved": 54,
-    "yes": 16,
+    "created": 62,
+    "resolved": 58,
+    "yes": 20,
     "no": 38,
-    "ladders": 27,
+    "ladders": 29,
     "assets": {
       "BTC": {
-        "resolved": 24,
-        "yes": 6
+        "resolved": 26,
+        "yes": 8
       },
       "SOL": {
-        "resolved": 30,
-        "yes": 10
+        "resolved": 32,
+        "yes": 12
       }
     },
     "oracleSources": {
-      "coinbase-1m-fallback": 41,
+      "coinbase-1m-fallback": 45,
       "pyth-onchain": 13
     },
-    "brier": 0.197,
+    "brier": 0.2115,
     "brierCoinFlip": 0.25,
     "calibration": [
       {
@@ -42,18 +42,18 @@
           0.2,
           0.4
         ],
-        "n": 26,
-        "meanFair": 0.2522,
-        "yesRate": 0.1538
+        "n": 28,
+        "meanFair": 0.2515,
+        "yesRate": 0.2143
       },
       {
         "range": [
           0.4,
           0.6
         ],
-        "n": 26,
-        "meanFair": 0.5001,
-        "yesRate": 0.4231
+        "n": 28,
+        "meanFair": 0.5005,
+        "yesRate": 0.4643
       },
       {
         "range": [
@@ -90,6 +90,26 @@
     }
   },
   "ladders": [
+    {
+      "asset": "BTC",
+      "endTs": 1793815200,
+      "settlePrice": 80488,
+      "settleSource": "coinbase-1m-fallback",
+      "rungs": [
+        "DD3899xqkGiXgaPFafzC1F7Hs1izSiLvg9AEuXpAepmU",
+        "DPZ1EjCeGzdEJWNEZVW2CrDDaqybAyKDrEYpWDaoKFbp"
+      ]
+    },
+    {
+      "asset": "SOL",
+      "endTs": 1793815200,
+      "settlePrice": 95.79,
+      "settleSource": "coinbase-1m-fallback",
+      "rungs": [
+        "EYEnKgDxxSAvaARMTdjc2gYfhoFCdC222ixawhRiwrkj",
+        "7BQD3rtRGAftWBZcW7q53JtnQuw9Y3sk6Gy9PfrhXzyo"
+      ]
+    },
     {
       "asset": "BTC",
       "endTs": 1793772000,
@@ -362,6 +382,158 @@
     }
   ],
   "resolutions": [
+    {
+      "market": "DD3899xqkGiXgaPFafzC1F7Hs1izSiLvg9AEuXpAepmU",
+      "marketId": 178696870037099,
+      "name": "BTC>78800@1793815200",
+      "asset": "BTC",
+      "strike": 78800,
+      "endTs": 1793815200,
+      "seed": {
+        "fairYes": 0.23471206027768704,
+        "initialPriceBps": 2347,
+        "spot": 78320.40075456,
+        "sigmaAnnual": 0.38445045266745537,
+        "createdAt": 1793799827,
+        "createTx": "3B7uQyqHGmQQdcxwW3CRQqiC2NBPzFBqSwLg9hSdwzGwMxS8aXV3RGuP2kcHWiuur411JNPzVVaN7BZjHcvmHGyT"
+      },
+      "side": "yes",
+      "oracle": {
+        "price": 80488,
+        "conf": null,
+        "publishTime": 1793815260,
+        "source": "coinbase-1m-fallback",
+        "lagSecs": 60
+      },
+      "resolveTx": "5SNpgrXrD1ubC9LF4SgojRb72ETEYajfPjKMnkgd2FL17dgCUhy4HtL4yfatxaBcLR1voBMZfbuqKb15yZk8CRot",
+      "resolvedAt": 1793911182,
+      "claims": [
+        {
+          "kind": "claimLpResiduals",
+          "tx": "4a4GHDrf5kpe2mkrCGBw4H8WAUQB87xx77pVfBt2uBKLTNE3YFbgktezsQct89fX1GfoPn62gcyxA6m5YG1TdfAZ"
+        },
+        {
+          "kind": "claimWinnings",
+          "tx": "SzayzT4JaAPSaNsw9a3vSNEb34SW65raRWFERYzqtGXjwnzTDwQUzbfs9h4Z7afgWWri7ymVCEMtuYFtAGAKg5k"
+        }
+      ],
+      "url": "https://pm-amm-devnet.vercel.app/market/178696870037099",
+      "brier": 0.585666
+    },
+    {
+      "market": "DPZ1EjCeGzdEJWNEZVW2CrDDaqybAyKDrEYpWDaoKFbp",
+      "marketId": 170095772084209,
+      "name": "BTC>78300@1793815200",
+      "asset": "BTC",
+      "strike": 78300,
+      "endTs": 1793815200,
+      "seed": {
+        "fairYes": 0.5105487100003023,
+        "initialPriceBps": 5105,
+        "spot": 78320.40075456,
+        "sigmaAnnual": 0.38445045266745537,
+        "createdAt": 1793799828,
+        "createTx": "4Sox1djtt9mown2Zu4ZTiG9sxC8ATnYHBGYicitu5csRR7iN9Ts7QLNKhug8iv6hzGwHeegyNhZCt6EhWtFgfKYP"
+      },
+      "side": "yes",
+      "oracle": {
+        "price": 80488,
+        "conf": null,
+        "publishTime": 1793815260,
+        "source": "coinbase-1m-fallback",
+        "lagSecs": 60
+      },
+      "resolveTx": "3pGVfh296hAetvirq6dcmKTra6ZPcueRCBHCbsrwpcFic4Rd6rDPCmL2U6A6eCukPF2DLU75o5KG99Y21EKokfac",
+      "resolvedAt": 1793911183,
+      "claims": [
+        {
+          "kind": "claimLpResiduals",
+          "tx": "3g98XiFL6SL145Wac8pSVD6bCzsZ29VVn5ffvBz6GaMtUGdSeopBnSbc2hBjFVj6TigDQBs1jLjwfQv1p84xDLqG"
+        },
+        {
+          "kind": "claimWinnings",
+          "tx": "3QbHKVbSsqUJQ4og3xuqgZDQDDP2X6nzCs9F9bYZNVjhoHfnJc3zogqdGWmaSvUHF8A9fYztyFjqagcMDJ81oCCh"
+        }
+      ],
+      "url": "https://pm-amm-devnet.vercel.app/market/170095772084209",
+      "brier": 0.239563
+    },
+    {
+      "market": "EYEnKgDxxSAvaARMTdjc2gYfhoFCdC222ixawhRiwrkj",
+      "marketId": 39132714425360,
+      "name": "SOL>93.6@1793815200",
+      "asset": "SOL",
+      "strike": 93.6,
+      "endTs": 1793815200,
+      "seed": {
+        "fairYes": 0.2517597723028002,
+        "initialPriceBps": 2518,
+        "spot": 92.81132742,
+        "sigmaAnnual": 0.578309297217956,
+        "createdAt": 1793799823,
+        "createTx": "2eygK7jwPB8DiQf98vgMLig1CneZRCdEogzgn1SqRkB5SpwMg2mpQvGRgCsarNuB9nfqHzeyjpU6W8dqSXeYJ9Pv"
+      },
+      "side": "yes",
+      "oracle": {
+        "price": 95.79,
+        "conf": null,
+        "publishTime": 1793815260,
+        "source": "coinbase-1m-fallback",
+        "lagSecs": 60
+      },
+      "resolveTx": "5pPNxb8X45bZnLPrGqDAxqLXnEkJQsy9AqxEVbDCud9PXsH7nmHNHg94xSamiyrkSM2LdqZYasuR6hUuTGmcQhQj",
+      "resolvedAt": 1793911185,
+      "claims": [
+        {
+          "kind": "claimLpResiduals",
+          "tx": "3FrFwnmNnt8wjrA3maNVPgGVG4tvyLge3nuDf3hUz3E4bo2ALzc8wqgqcgKXy7Bnzu75Ncdz8TgS7PRJF2RrPcQa"
+        },
+        {
+          "kind": "claimWinnings",
+          "tx": "3t9mvLd2Deasrr616TqWpGfLyW8mRBqU6kBQ6Hv5bjnDcaWGvHBL5o45UAesnmGVNnPb1XaAEYyZaJzYMj2kwnsa"
+        }
+      ],
+      "url": "https://pm-amm-devnet.vercel.app/market/39132714425360",
+      "brier": 0.559863
+    },
+    {
+      "market": "7BQD3rtRGAftWBZcW7q53JtnQuw9Y3sk6Gy9PfrhXzyo",
+      "marketId": 95139073364670,
+      "name": "SOL>92.8@1793815200",
+      "asset": "SOL",
+      "strike": 92.8,
+      "endTs": 1793815200,
+      "seed": {
+        "fairYes": 0.5012653980347394,
+        "initialPriceBps": 5013,
+        "spot": 92.81132742,
+        "sigmaAnnual": 0.578309297217956,
+        "createdAt": 1793799825,
+        "createTx": "4jQBxH32GHnXNGppuT4J7sUtwLhfyFSgpP7jrBeyT7YEWcg1Xu5rL3PWYPTALxgCzfoTsqFbL8yMXrLzfXEK5pvH"
+      },
+      "side": "yes",
+      "oracle": {
+        "price": 95.79,
+        "conf": null,
+        "publishTime": 1793815260,
+        "source": "coinbase-1m-fallback",
+        "lagSecs": 60
+      },
+      "resolveTx": "2soPz41twbhJcDrQ9f7aHHDmQFGraNxrZ3ecGEgJQwBDbrBDXRr2iHsFDZLTMaSLVCpoFFBhBT2iSqVFxcfasc6W",
+      "resolvedAt": 1793911180,
+      "claims": [
+        {
+          "kind": "claimLpResiduals",
+          "tx": "2hsFX7sRFHeLCwL5HoeD22CT9iSX1hfRuoQUPsgS9LnaaajjQYUpZx1P4fRH3sudSvNyewFqsdQ5BQKDgBbtPBDD"
+        },
+        {
+          "kind": "claimWinnings",
+          "tx": "4wfQUTgnFStFWnUHRLpctUJuYTvNWeDot2UdRQA3nGcgUAcreGoLCxzTtXFr6QTQVAvehMpctFyJ6gDaZAQR84BS"
+        }
+      ],
+      "url": "https://pm-amm-devnet.vercel.app/market/95139073364670",
+      "brier": 0.248736
+    },
     {
       "market": "514uCdAjst7EeMacfYhxf7x5BCCdQJ5TBBiQm1RMpPwh",
       "marketId": 108334858114059,
