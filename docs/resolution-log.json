@@ -1,6 +1,6 @@
 {
   "schema": "strikebook.resolution-log/v1",
-  "generatedAt": 1794094645,
+  "generatedAt": 1794095318,
   "cluster": "devnet",
   "program": "GV1FMGHRYBjQLaghE5fnGuYCuCcpdt3GD5xEX3TwN16y",
   "app": "https://pm-amm-devnet.vercel.app",
@@ -76,17 +76,17 @@
     ],
     "openMarkets": 4,
     "traction": {
-      "trades": 192,
-      "volumeUsdc": 1038.531,
-      "feesUsdc": 20.77062,
-      "lpFeesUsdc": 10.38531,
+      "trades": 194,
+      "volumeUsdc": 1053.927,
+      "feesUsdc": 21.07854,
+      "lpFeesUsdc": 10.53927,
       "markets": 36,
-      "yes": 77,
+      "yes": 79,
       "no": 115,
-      "meanGapClosed": 0.0979,
-      "expectedEdgeUsdc": 139.243908,
+      "meanGapClosed": 0.1002,
+      "expectedEdgeUsdc": 143.377676,
       "firstAt": 1793628172,
-      "lastAt": 1794094644
+      "lastAt": 1794095318
     }
   },
   "ladders": [
@@ -3104,6 +3104,40 @@
     }
   ],
   "trades": [
+    {
+      "at": 1794095318,
+      "market": "F7m8HSe7nEQMR5nS6DEtAQRwMdJRYTWRg86FbAkUgzTD",
+      "name": "SOL>89.4@1794096000",
+      "asset": "SOL",
+      "side": "yes",
+      "amountUsdc": 11.12,
+      "tokensOut": 16.142483,
+      "feeUsdc": 0.2224,
+      "pModel": 0.898881,
+      "ammBefore": 0.432062,
+      "ammAfter": 0.874024,
+      "spot": 89.69116681,
+      "sigmaAnnual": 0.546967,
+      "tx": "5rwgirhQDawE4VWn11AfifXq3nB67jgG6eNg4NiqszJ7R7msjJD9eDEh1ocrpvWtHu4jSMtnoNgBn4aJpCU77Y6N",
+      "outcome": null
+    },
+    {
+      "at": 1794095316,
+      "market": "AeoZDBecJ3DZGvD1d2ZCNWEqouMn9SGsgqWMKAqtc7ff",
+      "name": "BTC>75700@1794096000",
+      "asset": "BTC",
+      "side": "yes",
+      "amountUsdc": 4.276,
+      "tokensOut": 6.660446,
+      "feeUsdc": 0.08552,
+      "pModel": 0.753643,
+      "ammBefore": 0.523492,
+      "ammAfter": 0.728619,
+      "spot": 75792.93779221,
+      "sigmaAnnual": 0.383266,
+      "tx": "3gWBTVZu8Z8qgEfVvYE9tC77jReQH9X3TWMjjFq74GzzZMzwop52sF17HyvVpwws87ADuxapoaNKq3gKkReRhCEr",
+      "outcome": null
+    },
     {
       "at": 1794094644,
       "market": "F7m8HSe7nEQMR5nS6DEtAQRwMdJRYTWRg86FbAkUgzTD",
