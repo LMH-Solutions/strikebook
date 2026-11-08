@@ -1,6 +1,6 @@
 {
   "schema": "strikebook.resolution-log/v1",
-  "generatedAt": 1794154542,
+  "generatedAt": 1794155740,
   "cluster": "devnet",
   "program": "GV1FMGHRYBjQLaghE5fnGuYCuCcpdt3GD5xEX3TwN16y",
   "app": "https://pm-amm-devnet.vercel.app",
@@ -76,17 +76,17 @@
     ],
     "openMarkets": 8,
     "traction": {
-      "trades": 211,
-      "volumeUsdc": 1107.604,
-      "feesUsdc": 22.15208,
-      "lpFeesUsdc": 11.07604,
+      "trades": 214,
+      "volumeUsdc": 1116.455,
+      "feesUsdc": 22.3291,
+      "lpFeesUsdc": 11.16455,
       "markets": 42,
       "yes": 86,
-      "no": 125,
-      "meanGapClosed": 0.0961,
-      "expectedEdgeUsdc": 147.239005,
+      "no": 128,
+      "meanGapClosed": 0.0955,
+      "expectedEdgeUsdc": 147.8324,
       "firstAt": 1793628172,
-      "lastAt": 1794154542
+      "lastAt": 1794155739
     }
   },
   "ladders": [
@@ -3276,6 +3276,57 @@
     }
   ],
   "trades": [
+    {
+      "at": 1794155739,
+      "market": "8uKLQN4aktk5KAxEg3wVbWSrPz1KSELxDPrhemDJeAZB",
+      "name": "SOL>89.4@1794160800",
+      "asset": "SOL",
+      "side": "no",
+      "amountUsdc": 3.062,
+      "tokensOut": 6.676803,
+      "feeUsdc": 0.06124,
+      "pModel": 0.48068,
+      "ammBefore": 0.595027,
+      "ammAfter": 0.505675,
+      "spot": 89.37203132,
+      "sigmaAnnual": 0.549162,
+      "tx": "42LeMX9UGCz2eD7eM7V6Vrr52RNRuDodd5qE6nuNz9afjPk6NECqgePfodyp1w36hebjZmETXRH6jpXFwvTfuVTr",
+      "outcome": null
+    },
+    {
+      "at": 1794155737,
+      "market": "612f91CTq2MFgDgD94j499ivnofBjrVDLDafTPUYJfdJ",
+      "name": "SOL>90.4@1794160800",
+      "asset": "SOL",
+      "side": "no",
+      "amountUsdc": 4.238,
+      "tokensOut": 4.620672,
+      "feeUsdc": 0.08476,
+      "pModel": 0.049789,
+      "ammBefore": 0.131392,
+      "ammAfter": 0.074786,
+      "spot": 89.37203132,
+      "sigmaAnnual": 0.549162,
+      "tx": "47ACvdqjcX3vxTs2Y41KThqxCAQgx8Rf7u3RakbV8JFpzbJyQV1nwpgbbv99btr7BD2TpZKwxknmD6a6DUUgn9u2",
+      "outcome": null
+    },
+    {
+      "at": 1794155735,
+      "market": "28jiaoWWE7vThcsC3ZHeHz2wfkbbkza1GYPt2EVmFddY",
+      "name": "BTC>76400@1794160800",
+      "asset": "BTC",
+      "side": "no",
+      "amountUsdc": 1.551,
+      "tokensOut": 1.762741,
+      "feeUsdc": 0.03102,
+      "pModel": 0.100047,
+      "ammBefore": 0.150944,
+      "ammAfter": 0.125046,
+      "spot": 75929.07383654,
+      "sigmaAnnual": 0.381458,
+      "tx": "4Bz9PYLUok7MR4NprKhLxqXq8Da3skV3G9DkgfL3M3RayDD5XHmsoFMHFyzAhgT5GcDFfrvRo42iJeMCCzAiWuht",
+      "outcome": null
+    },
     {
       "at": 1794154542,
       "market": "28jiaoWWE7vThcsC3ZHeHz2wfkbbkza1GYPt2EVmFddY",
