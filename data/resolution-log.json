@@ -1,6 +1,6 @@
 {
   "schema": "strikebook.resolution-log/v1",
-  "generatedAt": 1794145392,
+  "generatedAt": 1794145540,
   "cluster": "devnet",
   "program": "GV1FMGHRYBjQLaghE5fnGuYCuCcpdt3GD5xEX3TwN16y",
   "app": "https://pm-amm-devnet.vercel.app",
@@ -76,17 +76,17 @@
     ],
     "openMarkets": 8,
     "traction": {
-      "trades": 202,
-      "volumeUsdc": 1081.433,
-      "feesUsdc": 21.62866,
-      "lpFeesUsdc": 10.81433,
-      "markets": 41,
+      "trades": 204,
+      "volumeUsdc": 1085.301,
+      "feesUsdc": 21.70602,
+      "lpFeesUsdc": 10.85301,
+      "markets": 42,
       "yes": 82,
-      "no": 120,
-      "meanGapClosed": 0.0982,
-      "expectedEdgeUsdc": 145.51238,
+      "no": 122,
+      "meanGapClosed": 0.0975,
+      "expectedEdgeUsdc": 145.669766,
       "firstAt": 1793628172,
-      "lastAt": 1794145392
+      "lastAt": 1794145539
     }
   },
   "ladders": [
@@ -3276,6 +3276,40 @@
     }
   ],
   "trades": [
+    {
+      "at": 1794145539,
+      "market": "8uKLQN4aktk5KAxEg3wVbWSrPz1KSELxDPrhemDJeAZB",
+      "name": "SOL>89.4@1794160800",
+      "asset": "SOL",
+      "side": "no",
+      "amountUsdc": 2.02,
+      "tokensOut": 3.689701,
+      "feeUsdc": 0.0404,
+      "pModel": 0.424195,
+      "ammBefore": 0.477797,
+      "ammAfter": 0.449195,
+      "spot": 89.20068181,
+      "sigmaAnnual": 0.547996,
+      "tx": "4fbe9oBdHs4y6wcwwt8JYH5uptHFYG9rDnNCgeVSg69K1VDK3DCP3Xwzpp3nDG2VomraTBipS3hAff1aYRhgUWDE",
+      "outcome": null
+    },
+    {
+      "at": 1794145538,
+      "market": "28jiaoWWE7vThcsC3ZHeHz2wfkbbkza1GYPt2EVmFddY",
+      "name": "BTC>76400@1794160800",
+      "asset": "BTC",
+      "side": "no",
+      "amountUsdc": 1.848,
+      "tokensOut": 2.339606,
+      "feeUsdc": 0.03696,
+      "pModel": 0.18754,
+      "ammBefore": 0.2396,
+      "ammAfter": 0.212548,
+      "spot": 75835.42975272,
+      "sigmaAnnual": 0.381893,
+      "tx": "93FCNnFdtijTs75KztdzMr5oPSNGNs5fDdq7tpcvDqTiRApuatGCncUDCTW4czYebWhucbDsq4sxAqqdQvjsTJo",
+      "outcome": null
+    },
     {
       "at": 1794145392,
       "market": "8uKLQN4aktk5KAxEg3wVbWSrPz1KSELxDPrhemDJeAZB",
