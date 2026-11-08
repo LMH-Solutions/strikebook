@@ -7,7 +7,7 @@ td,th{padding:4px 8px;border-bottom:1px solid #e3e3e3;text-align:left;font-varia
 <h1>StrikeBook <small>devnet</small></h1>
 <p>Short-dated binary strike markets ("Will SOL be above $K at T?") on the Predict pm-AMM, seeded at a fair digital-option price from the
 live Pyth mark and realised vol, and <b>resolved by a keeper from the Pyth oracle</b>. Every resolution below carries its oracle proof and devnet transactions.</p>
-<p><small>Rule: YES iff the first Pyth PriceUpdateV2 print with publish_time &gt;= expiry is strictly above the strike. Program <code>GV1FMGHRYBjQLaghE5fnGuYCuCcpdt3GD5xEX3TwN16y</code>. Log generated 2026-11-08T23:20:48Z · schema <code>strikebook.resolution-log/v1</code> ·
+<p><small>Rule: YES iff the first Pyth PriceUpdateV2 print with publish_time &gt;= expiry is strictly above the strike. Program <code>GV1FMGHRYBjQLaghE5fnGuYCuCcpdt3GD5xEX3TwN16y</code>. Log generated 2026-11-08T23:36:53Z · schema <code>strikebook.resolution-log/v1</code> ·
 <a href="resolution-log.json">raw JSON</a></small></p>
 <div class="kpi"><div><b>78</b>markets resolved</div><div><b>39</b>ladders</div><div><b>21 / 57</b>YES / NO</div>
 <div><b>0.198</b>Brier (seed fair)<br><small>coin flip = 0.250</small></div><div><b>8</b>open markets</div></div>
@@ -15,10 +15,12 @@ live Pyth mark and realised vol, and <b>resolved by a keeper from the Pyth oracl
 <p><small>A separate devnet trader wallet prices every open rung with the same model (P(YES) = Φ(d2) from the live Pyth spot and 7-day realised vol)
 and buys the cheap side when the pm-AMM price is more than fee + 3 pts away, moving the price back toward the model. It pays the real 2% swap fee
 (half to the market creator/LP, half to the protocol).</small></p>
-<div class="kpi"><div><b>238</b>trades</div><div><b>1314.89</b>volume (mUSDC)</div><div><b>26.298</b>swap fees (mUSDC)</div>
-<div><b>13.149</b>fees to LP</div><div><b>46</b>markets traded</div>
+<div class="kpi"><div><b>239</b>trades</div><div><b>1325.31</b>volume (mUSDC)</div><div><b>26.506</b>swap fees (mUSDC)</div>
+<div><b>13.253</b>fees to LP</div><div><b>46</b>markets traded</div>
 <div><b>9.9 pts</b>mean mispricing closed / trade</div></div>
-<table><tr><th>Time (UTC)</th><th>Market</th><th>Side</th><th>mUSDC</th><th>Model YES</th><th>AMM YES before → after</th><th>Fee</th><th>Outcome</th><th>Tx</th></tr><tr><td>2026-11-08T23:20:48Z</td><td>BTC&gt;75700@1794182400</td><td class="yes">BUY YES</td>
+<table><tr><th>Time (UTC)</th><th>Market</th><th>Side</th><th>mUSDC</th><th>Model YES</th><th>AMM YES before → after</th><th>Fee</th><th>Outcome</th><th>Tx</th></tr><tr><td>2026-11-08T23:36:52Z</td><td>BTC&gt;75700@1794182400</td><td class="no">BUY NO</td>
+<td>10.42</td><td>0.3%</td><td>15.0% → 3.7%</td><td>0.2084</td>
+<td>open</td><td><a href="https://solscan.io/tx/jhTsNk58Qfyesw6TsD9rEGjKPNVfwrRTBNvnu7GdfRj6Z1BCAAWzMqQu8dHYCL8hxjiPNS41px6Bhxe2LNzDjQZ?cluster=devnet">jhTsNk58…</a></td></tr><tr><td>2026-11-08T23:20:48Z</td><td>BTC&gt;75700@1794182400</td><td class="yes">BUY YES</td>
 <td>1.13</td><td>17.5%</td><td>4.9% → 15.0%</td><td>0.0226</td>
 <td>open</td><td><a href="https://solscan.io/tx/Ah3m7np3voNuq6ZQngt2z47CGEdY9AsTUHbuLWyqDjWigyzD7mU3beYwYCRUUwEm42NqMZu3t9tMiSqg3VbpZt7?cluster=devnet">Ah3m7np3…</a></td></tr><tr><td>2026-11-08T22:56:55Z</td><td>SOL&gt;89@1794182400</td><td class="no">BUY NO</td>
 <td>2.16</td><td>0.0%</td><td>5.6% → 4.7%</td><td>0.0432</td>
@@ -66,9 +68,7 @@ and buys the cheap side when the pm-AMM price is more than fee + 3 pts away, mov
 <td>2.71</td><td>2.4%</td><td>7.5% → 4.9%</td><td>0.0543</td>
 <td><span class="no">NO</span></td><td><a href="https://solscan.io/tx/3Ldu6kApqBJzWcTVQcYNpbmHPHLSJecAhx9byHQApPJL7VnxUX5aVR5Ra9agr1CKvt8z6rMaHwNK5KLDy6cfNzYp?cluster=devnet">3Ldu6kAp…</a></td></tr><tr><td>2026-11-08T16:48:35Z</td><td>BTC&gt;76400@1794160800</td><td class="no">BUY NO</td>
 <td>2.15</td><td>6.8%</td><td>12.5% → 9.3%</td><td>0.0429</td>
-<td><span class="no">NO</span></td><td><a href="https://solscan.io/tx/2wP8TWfGALtspeXqMfiYv4n8VbSZ9sSjKHWPLXTDp2dArVPm1ti1aQK8A26KEU57JKvLP1wXs6zLrsFDGWttyoEA?cluster=devnet">2wP8TWfG…</a></td></tr><tr><td>2026-11-08T16:35:39Z</td><td>SOL&gt;89.4@1794160800</td><td class="no">BUY NO</td>
-<td>3.06</td><td>48.1%</td><td>59.5% → 50.6%</td><td>0.0612</td>
-<td><span class="no">NO</span></td><td><a href="https://solscan.io/tx/42LeMX9UGCz2eD7eM7V6Vrr52RNRuDodd5qE6nuNz9afjPk6NECqgePfodyp1w36hebjZmETXRH6jpXFwvTfuVTr?cluster=devnet">42LeMX9U…</a></td></tr></table>
+<td><span class="no">NO</span></td><td><a href="https://solscan.io/tx/2wP8TWfGALtspeXqMfiYv4n8VbSZ9sSjKHWPLXTDp2dArVPm1ti1aQK8A26KEU57JKvLP1wXs6zLrsFDGWttyoEA?cluster=devnet">2wP8TWfG…</a></td></tr></table>
 <h2>Ladders</h2><section><h3>BTC · expiry 2026-11-08T18:00:00Z</h3>
 <p class="proof">Settlement print: <b>$75660.46</b> ± 93.0339
 at publish_time 2026-11-08T18:00:36Z (+36s after expiry) · source <code>pyth-onchain 4cSM2e6rvbGQUFiJbqytoVMi5GgghSMr8LwVrT9VPSPo</code></p>
