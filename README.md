@@ -91,6 +91,14 @@ and `src/lib/trader.cjs` (pure, unit-tested) decides:
 - only if the exact-quote expected value at the model probability is positive; the swap carries a 1% slippage bound.
 After resolution it claims winnings (closing token accounts refunds their rent). SOL cost is ~0.003 SOL of token-account rent per new market traded.
 
+## Front end (M3, in progress)
+`web/` is a Vite + React app built into `docs/app/`, so GitHub Pages serves it at https://lmh-solutions.github.io/strikebook/app/ next to the keeper's
+`resolution-log.json` (which now carries an additive `open[]` list: unresolved markets with seed and latest AMM YES price).
+- **Markets list:** open SOL/BTC ladders grouped by expiry, with AMM YES, model YES (Φ(d2) from the latest Pyth spot and realised vol the keeper/trader saw), edge in points, and an asset filter.
+- **Trade panel:** buy YES/NO, amount, optional spot override, marginal-price quote (2% fee, tokens, max payout, model EV) and a link to the same market in the pm-AMM devnet app.
+  In-page burner-wallet signing is the next step.
+- `npm run web:test` (vitest: model + SSR smoke tests) · `npm run web:build` · `cd web && npm run dev` (serves `data/resolution-log.json`).
+
 ## Layout
 - `src/lib/pricing.cjs`: digital pricing, realized vol, strike ladder (uses `@pm-amm/sdk/math` Φ/Φ⁻¹)
 - `src/lib/feeds.cjs`: Pyth PriceUpdateV2 decoder (on-chain, read-only), Hermes fallback, Coinbase candles
