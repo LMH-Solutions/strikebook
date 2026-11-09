@@ -1,6 +1,6 @@
 {
   "schema": "strikebook.resolution-log/v1",
-  "generatedAt": 1794231904,
+  "generatedAt": 1794232859,
   "cluster": "devnet",
   "program": "GV1FMGHRYBjQLaghE5fnGuYCuCcpdt3GD5xEX3TwN16y",
   "app": "https://pm-amm-devnet.vercel.app",
@@ -76,17 +76,17 @@
     ],
     "openMarkets": 8,
     "traction": {
-      "trades": 251,
-      "volumeUsdc": 1385.931,
-      "feesUsdc": 27.71862,
-      "lpFeesUsdc": 13.85931,
+      "trades": 253,
+      "volumeUsdc": 1393.351,
+      "feesUsdc": 27.86702,
+      "lpFeesUsdc": 13.93351,
       "markets": 56,
-      "yes": 97,
+      "yes": 99,
       "no": 154,
-      "meanGapClosed": 0.0983,
-      "expectedEdgeUsdc": 192.608227,
+      "meanGapClosed": 0.0982,
+      "expectedEdgeUsdc": 193.758995,
       "firstAt": 1793628172,
-      "lastAt": 1794231904
+      "lastAt": 1794232858
     }
   },
   "ladders": [
@@ -3964,6 +3964,40 @@
     }
   ],
   "trades": [
+    {
+      "at": 1794232858,
+      "market": "En2ArcwrFbhJQXK72Nru4kA7DCTvE5e7qGykkiLdXQpM",
+      "name": "SOL>86.6@1794247200",
+      "asset": "SOL",
+      "side": "yes",
+      "amountUsdc": 6.246,
+      "tokensOut": 13.299253,
+      "feeUsdc": 0.12492,
+      "pModel": 0.536696,
+      "ammBefore": 0.409264,
+      "ammAfter": 0.511692,
+      "spot": 86.71380404,
+      "sigmaAnnual": 0.623493,
+      "tx": "2HY27fPgzS35YsmZm19vV5qs98z5MfgBESDXiQpzoUgWFBfF35tqYTf14y3637TqDB5RkcfozvLSeYFXnBbWTW4g",
+      "outcome": null
+    },
+    {
+      "at": 1794232855,
+      "market": "WsyGnBm8FUubyiCmUHuNzr969rmWDoB8oEskY9JS64F",
+      "name": "SOL>87.4@1794247200",
+      "asset": "SOL",
+      "side": "yes",
+      "amountUsdc": 1.174,
+      "tokensOut": 5.221402,
+      "feeUsdc": 0.02348,
+      "pModel": 0.274468,
+      "ammBefore": 0.192616,
+      "ammAfter": 0.249481,
+      "spot": 86.71380404,
+      "sigmaAnnual": 0.623493,
+      "tx": "2cQpgKwMuEqyTRaMgZvWYUdAMVV6ix5V3uxXGKbSarbbDDSGz9Bd9NncLfqHJpFt4tcxpJgsU3ZHhdNiPjunpfsn",
+      "outcome": null
+    },
     {
       "at": 1794231904,
       "market": "En2ArcwrFbhJQXK72Nru4kA7DCTvE5e7qGykkiLdXQpM",
