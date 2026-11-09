@@ -55,6 +55,7 @@ function buildResolutionLog({ created = [], resolved = [], claims = [], trades =
       brier: brier == null ? null : +brier.toFixed(4), brierCoinFlip: 0.25, calibration: buckets,
       openMarkets: created.filter((c) => !seen.has(c.market)).length, traction: tradeStats(trades) },
     ladders, resolutions: rows,
+    open: openMarkets({ created, seen, trades, app }),
     trades: trades.filter((t) => t.signature && !t.dry).sort((a, b) => b.at - a.at).map((t) => ({ at: t.at, market: t.market, name: t.name, asset: t.asset,
       side: t.side, amountUsdc: t.amountIn / 1e6, tokensOut: t.quotedOut / 1e6, feeUsdc: t.fee / 1e6, pModel: t.pModel, ammBefore: t.ammBefore,
       ammAfter: t.ammAfter ?? t.ammAfterEst, spot: t.spot, sigmaAnnual: t.sigmaAnnual, tx: t.signature,
@@ -62,4 +63,20 @@ function buildResolutionLog({ created = [], resolved = [], claims = [], trades =
   };
 }
 
-module.exports = { buildResolutionLog, SCHEMA };
+// Open (unresolved) markets for the M3 front end: seed + latest AMM YES price (last real trade's post-trade price,
+// else the seed price). Additive to schema v1; newest expiry first, then strike descending.
+function openMarkets({ created = [], seen = new Set(), trades = [], app }) {
+  const real = trades.filter((t) => t.signature && !t.dry);
+  return created.filter((c) => c.market && !seen.has(c.market)).map((c) => {
+    const ts = real.filter((t) => t.market === c.market).sort((a, b) => a.at - b.at);
+    const last = ts[ts.length - 1];
+    const amm = last ? (last.ammAfter ?? last.ammAfterEst) : (c.initialPriceBps != null ? c.initialPriceBps / 1e4 : null);
+    return { market: c.market, marketId: c.marketId ?? null, name: c.name, asset: c.asset, strike: c.strike, endTs: c.endTs,
+      seed: { fairYes: c.fairYes ?? null, spot: c.spot ?? null, sigmaAnnual: c.sigmaAnnual ?? null, createdAt: c.createdAt ?? null, createTx: c.signature ?? null, depositUsdc: c.depositUsdc ?? null },
+      amm: { yes: amm == null ? null : +Number(amm).toFixed(6), at: last ? last.at : c.createdAt ?? null, trades: ts.length,
+        spot: last ? last.spot : c.spot ?? null, sigmaAnnual: last ? last.sigmaAnnual : c.sigmaAnnual ?? null },
+      url: app && c.marketId ? `${app}/market/${c.marketId}` : null };
+  }).sort((a, b) => b.endTs - a.endTs || b.strike - a.strike);
+}
+
+module.exports = { buildResolutionLog, openMarkets, SCHEMA };

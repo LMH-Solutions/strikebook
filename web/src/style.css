@@ -1,0 +1,19 @@
+:root { font-family: system-ui, -apple-system, Segoe UI, sans-serif; color: #e8eaf0; background: #0d1017; }
+body { margin: 0; } main { max-width: 1180px; margin: 0 auto; padding: 20px; }
+a { color: #7cb7ff; } h1 { margin: 0 0 4px; } h2 { font-size: 1.1rem; } h3 { font-size: .95rem; margin: 14px 0 6px; }
+.tag { font-size: .7rem; background: #2b3550; padding: 2px 8px; border-radius: 10px; vertical-align: middle; }
+.muted { color: #8b93a7; } .small { font-size: .8rem; } .err { color: #ff7b7b; }
+.kpi { display: flex; gap: 12px; flex-wrap: wrap; margin: 14px 0; } .kpi div { background: #161b26; padding: 10px 14px; border-radius: 8px; font-size: .8rem; color: #8b93a7; }
+.kpi b { display: block; font-size: 1.3rem; color: #e8eaf0; }
+.tabs button, .seg button, td button { background: #1c2333; color: #e8eaf0; border: 1px solid #2b3550; border-radius: 6px; padding: 4px 12px; margin-right: 6px; cursor: pointer; }
+.tabs button.on { background: #3a4a72; } .seg button.on.yes { background: #1f6f43; } .seg button.on.no { background: #8a2c2c; }
+.grid { display: grid; grid-template-columns: 1fr 340px; gap: 20px; align-items: start; } @media (max-width: 860px) { .grid { grid-template-columns: 1fr; } }
+table { width: 100%; border-collapse: collapse; font-size: .85rem; } th, td { text-align: left; padding: 5px 6px; border-bottom: 1px solid #1f2636; }
+tbody tr { cursor: pointer; } tbody tr:hover, tr.sel { background: #19202e; }
+.yes { color: #4fd18b; } .no { color: #ff7b7b; }
+.trade { background: #161b26; border-radius: 10px; padding: 14px; position: sticky; top: 12px; }
+.trade label { display: block; margin: 10px 0; font-size: .85rem; } .trade input { width: 100%; box-sizing: border-box; margin-top: 4px; padding: 6px; background: #0d1017; color: #e8eaf0; border: 1px solid #2b3550; border-radius: 6px; }
+dl { display: grid; grid-template-columns: 1fr auto; gap: 4px 10px; font-size: .85rem; } dd { margin: 0; text-align: right; }
+.hint { background: #1d2a1f; padding: 6px 8px; border-radius: 6px; font-size: .85rem; }
+.cta { display: block; text-align: center; background: #3a4a72; color: #fff; padding: 8px; border-radius: 6px; text-decoration: none; margin-top: 10px; }
+footer { margin-top: 24px; }

@@ -1,6 +1,6 @@
 {
   "schema": "strikebook.resolution-log/v1",
-  "generatedAt": 1794232859,
+  "generatedAt": 1794233319,
   "cluster": "devnet",
   "program": "GV1FMGHRYBjQLaghE5fnGuYCuCcpdt3GD5xEX3TwN16y",
   "app": "https://pm-amm-devnet.vercel.app",
@@ -3961,6 +3961,200 @@
       ],
       "url": "https://pm-amm-devnet.vercel.app/market/213252208319062",
       "brier": 0.056183
+    }
+  ],
+  "open": [
+    {
+      "market": "8Z4mDEkkgefqvdgqojpRw4tLhvm93XCshNCdN3vyN7ep",
+      "marketId": 260031510433542,
+      "name": "BTC>75300@1794247200",
+      "asset": "BTC",
+      "strike": 75300,
+      "endTs": 1794247200,
+      "seed": {
+        "fairYes": 0.23874416419825162,
+        "spot": 74737.97,
+        "sigmaAnnual": 0.4274530054824949,
+        "createdAt": 1794227713,
+        "createTx": "262wy5PbqhFGibQcoZms3nKbv2ReFA7NeJB8wHm6SuBEbnJRYiqrskNTqBFf2MFdVCVP5RNd2E17MaeRdczq7sjs",
+        "depositUsdc": 25
+      },
+      "amm": {
+        "yes": 0.167572,
+        "at": 1794231900,
+        "trades": 1,
+        "spot": 74548.20216991,
+        "sigmaAnnual": 0.428085
+      },
+      "url": "https://pm-amm-devnet.vercel.app/market/260031510433542"
+    },
+    {
+      "market": "7SWJFTbHBjWbvuDTq38RuMNeAmDLWThM2785inPZNUKV",
+      "marketId": 101427921430934,
+      "name": "BTC>74700@1794247200",
+      "asset": "BTC",
+      "strike": 74700,
+      "endTs": 1794247200,
+      "seed": {
+        "fairYes": 0.5169536363371039,
+        "spot": 74737.97,
+        "sigmaAnnual": 0.4274530054824949,
+        "createdAt": 1794227716,
+        "createTx": "3rYpA3BYW2W9Fo6noyt7xn5beLCC1CN3BAfR31dVdbyn1cc9qUJ1k32Tw9kT9QMVjD9qe7g1EN6GM9WYmZNKaeVR",
+        "depositUsdc": 25
+      },
+      "amm": {
+        "yes": 0.43778,
+        "at": 1794231897,
+        "trades": 1,
+        "spot": 74548.20216991,
+        "sigmaAnnual": 0.428085
+      },
+      "url": "https://pm-amm-devnet.vercel.app/market/101427921430934"
+    },
+    {
+      "market": "WsyGnBm8FUubyiCmUHuNzr969rmWDoB8oEskY9JS64F",
+      "marketId": 184423342358564,
+      "name": "SOL>87.4@1794247200",
+      "asset": "SOL",
+      "strike": 87.4,
+      "endTs": 1794247200,
+      "seed": {
+        "fairYes": 0.2649300567825902,
+        "spot": 86.5618356,
+        "sigmaAnnual": 0.6246717837959121,
+        "createdAt": 1794227708,
+        "createTx": "24AsQYXXTd3yb7KsGvV9SQStcSCpzgxdvu2k8q2JXTqKwv3Y6qCPg78HbkRohSyTPQEahw8abKvS4rrzExrKnMAf",
+        "depositUsdc": 25
+      },
+      "amm": {
+        "yes": 0.249481,
+        "at": 1794232855,
+        "trades": 2,
+        "spot": 86.71380404,
+        "sigmaAnnual": 0.623493
+      },
+      "url": "https://pm-amm-devnet.vercel.app/market/184423342358564"
+    },
+    {
+      "market": "En2ArcwrFbhJQXK72Nru4kA7DCTvE5e7qGykkiLdXQpM",
+      "marketId": 231305626229468,
+      "name": "SOL>86.6@1794247200",
+      "asset": "SOL",
+      "strike": 86.6,
+      "endTs": 1794247200,
+      "seed": {
+        "fairYes": 0.485582468422285,
+        "spot": 86.5618356,
+        "sigmaAnnual": 0.6246717837959121,
+        "createdAt": 1794227710,
+        "createTx": "4JUeieQdLCGtPUA5WcbWBXaM6B3zSMSDH3fcjuo3iThkhBero5nkBoPtYxbj8HhVReAw5o5StG3RfLEjMpnuEGSQ",
+        "depositUsdc": 25
+      },
+      "amm": {
+        "yes": 0.511692,
+        "at": 1794232858,
+        "trades": 2,
+        "spot": 86.71380404,
+        "sigmaAnnual": 0.623493
+      },
+      "url": "https://pm-amm-devnet.vercel.app/market/231305626229468"
+    },
+    {
+      "market": "9m8Q71urSaFHvRPdSt9YHFzuSqbLcDgTfG5RD1EHx4gQ",
+      "marketId": 1111230566038,
+      "name": "BTC>76100@1794096000",
+      "asset": "BTC",
+      "strike": 76100,
+      "endTs": 1794096000,
+      "seed": {
+        "fairYes": 0.2454243728585646,
+        "spot": 75658.67701622,
+        "sigmaAnnual": 0.38344240101381305,
+        "createdAt": 1794080525,
+        "createTx": "563JKMvcKaKtme8uwtr5nChioSrUj6BdHz9DJLfu4PJRnpKRdUJG3RHSVJTzV1s9H1wUyyjFGjSAp22tM8GS37Yj",
+        "depositUsdc": 25
+      },
+      "amm": {
+        "yes": 0.049307,
+        "at": 1794094641,
+        "trades": 4,
+        "spot": 75723.45721865,
+        "sigmaAnnual": 0.383161
+      },
+      "url": "https://pm-amm-devnet.vercel.app/market/1111230566038"
+    },
+    {
+      "market": "AeoZDBecJ3DZGvD1d2ZCNWEqouMn9SGsgqWMKAqtc7ff",
+      "marketId": 79310852557159,
+      "name": "BTC>75700@1794096000",
+      "asset": "BTC",
+      "strike": 75700,
+      "endTs": 1794096000,
+      "seed": {
+        "fairYes": 0.4726822158404845,
+        "spot": 75658.67701622,
+        "sigmaAnnual": 0.38344240101381305,
+        "createdAt": 1794080527,
+        "createTx": "2wM5i5UtNqDwhGw6iHtBZYjAR9pQBywJWxt4zFADTEV2FbtncTckXJHiAbDVDhuyFMnmdxjamujfGPasPjraD24i",
+        "depositUsdc": 25
+      },
+      "amm": {
+        "yes": 0.728619,
+        "at": 1794095316,
+        "trades": 4,
+        "spot": 75792.93779221,
+        "sigmaAnnual": 0.383266
+      },
+      "url": "https://pm-amm-devnet.vercel.app/market/79310852557159"
+    },
+    {
+      "market": "9kaXpwysfytJTa1U1W15JwURQ7vz4HKCH6zTFU4mKYbT",
+      "marketId": 52234019920392,
+      "name": "SOL>90.2@1794096000",
+      "asset": "SOL",
+      "strike": 90.2,
+      "endTs": 1794096000,
+      "seed": {
+        "fairYes": 0.24797616172978498,
+        "spot": 89.46862421,
+        "sigmaAnnual": 0.5445249567735135,
+        "createdAt": 1794080522,
+        "createTx": "3UvDrqJbqfkKJMHWTzK2AVmyEh3xixN17j1mp1WMbXncD3ESTJGNXCbfHfL8uCYfpeBsgtPPugE1Dr6NQyVUWjko",
+        "depositUsdc": 25
+      },
+      "amm": {
+        "yes": 0.029768,
+        "at": 1794094639,
+        "trades": 3,
+        "spot": 89.36605635000001,
+        "sigmaAnnual": 0.545359
+      },
+      "url": "https://pm-amm-devnet.vercel.app/market/52234019920392"
+    },
+    {
+      "market": "F7m8HSe7nEQMR5nS6DEtAQRwMdJRYTWRg86FbAkUgzTD",
+      "marketId": 234883058842581,
+      "name": "SOL>89.4@1794096000",
+      "asset": "SOL",
+      "strike": 89.4,
+      "endTs": 1794096000,
+      "seed": {
+        "fairYes": 0.5229545923355746,
+        "spot": 89.46862421,
+        "sigmaAnnual": 0.5445249567735135,
+        "createdAt": 1794080524,
+        "createTx": "4N6weP4gAH2YwwAJDo3QT1776UEs59zwfLAiBACnKfot6mXUa6ZMCb1bKekVPvBQKN6vrKVjaiJenFLnQxKENhyc",
+        "depositUsdc": 25
+      },
+      "amm": {
+        "yes": 0.874024,
+        "at": 1794095318,
+        "trades": 5,
+        "spot": 89.69116681,
+        "sigmaAnnual": 0.546967
+      },
+      "url": "https://pm-amm-devnet.vercel.app/market/234883058842581"
     }
   ],
   "trades": [

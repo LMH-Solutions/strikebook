@@ -14,7 +14,9 @@
     "trade": "node src/trader.cjs run",
     "swap": "node src/cli/trade.cjs",
     "build": "node scripts/build-site.cjs",
-    "tick": "node src/keeper.cjs tick"
+    "tick": "node src/keeper.cjs tick",
+    "web:build": "npm --prefix web run build",
+    "web:test": "npm --prefix web test"
   },
   "engines": {
     "node": ">=20"

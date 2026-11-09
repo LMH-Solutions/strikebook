@@ -39,6 +39,7 @@ td,th{padding:4px 8px;border-bottom:1px solid #e3e3e3;text-align:left;font-varia
 .kpi{display:flex;gap:12px;flex-wrap:wrap}.kpi div{border:1px solid #ddd;border-radius:8px;padding:10px 14px;min-width:120px}.kpi b{display:block;font-size:24px}
 .proof{color:#444;font-size:13px}code{font-size:12px}small{color:#666}</style></head><body>
 <h1>StrikeBook <small>${esc(cl)}</small></h1>
+<p><a href="app/"><b>Open markets &amp; trade panel (beta) →</b></a></p>
 <p>Short-dated binary strike markets ("Will SOL be above $K at T?") on the Predict pm-AMM, seeded at a fair digital-option price from the
 live Pyth mark and realised vol, and <b>resolved by a keeper from the Pyth oracle</b>. Every resolution below carries its oracle proof and devnet transactions.</p>
 <p><small>Rule: ${esc(log.rule)}. Program <code>${esc(log.program)}</code>. Log generated ${iso(log.generatedAt)} · schema <code>${esc(log.schema)}</code> ·
