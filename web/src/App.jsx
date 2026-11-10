@@ -1,9 +1,73 @@
-import { useEffect, useMemo, useState } from "react";
-import { groupLadders, modelYes, quotePreview, suggestedSide, fmtLeft, pct, money } from "./model.js";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { groupLadders, modelYes, quotePreview, suggestedSide, fmtLeft, pct, money, calibrationPoints, buyBlocker, positionRows } from "./model.js";
+import { marketState, exactBuyQuote } from "./amm.js";
+import { KEY as BURNER_KEY, shortAddr } from "./wallet.js";
 
 export const LOG_URL = import.meta.env?.VITE_LOG_URL || "../resolution-log.json";
 const solscan = (sig, cl) => `https://solscan.io/tx/${sig}?cluster=${cl}`;
 const nowSecs = () => Math.floor(Date.now() / 1000);
+const solscanAcct = (a, cl) => `https://solscan.io/account/${a}?cluster=${cl}`;
+const loadChain = () => import("./chain.js"); // web3.js + Anchor only load in the browser, after first paint
+const errMsg = (e) => String(e?.message || e).split("\n")[0].slice(0, 160);
+
+// Devnet session: read-only until a burner exists; then signing with the burner kept in localStorage.
+export function useDevnet() {
+  const [s, setS] = useState(null);
+  const [bal, setBal] = useState(null);
+  const [msg, setMsg] = useState(null);
+  const [busy, setBusy] = useState(false);
+  const open = useCallback(async (create = false) => {
+    const chain = await loadChain();
+    const sess = await chain.openSession(globalThis.localStorage, { create });
+    setS({ ...sess, chain });
+    setBal(sess.kp ? await chain.balances(sess).catch(() => null) : null);
+    return sess;
+  }, []);
+  useEffect(() => { if (typeof window !== "undefined") open(false).catch((e) => setMsg("RPC: " + errMsg(e))); }, [open]);
+  const refresh = useCallback(async () => { if (s?.kp) setBal(await s.chain.balances(s).catch(() => null)); }, [s]);
+  const act = useCallback(async (label, fn) => {
+    setBusy(true); setMsg(label + "…");
+    try { const r = await fn(); setMsg(r); } catch (e) { setMsg(label + " failed: " + errMsg(e)); } finally { setBusy(false); }
+  }, []);
+  return { s, bal, msg, setMsg, busy, open, refresh, act };
+}
+
+export function WalletPanel({ dev, cluster }) {
+  const { s, bal, msg, busy, open, refresh, act } = dev;
+  const [shown, setShown] = useState(false);
+  const hasStored = typeof localStorage !== "undefined" && !!localStorage.getItem(BURNER_KEY);
+  return (
+    <section className="wallet">
+      <h2>Burner wallet <span className="tag warn">DEVNET ONLY</span></h2>
+      <p className="muted small">A throwaway keypair generated in this page and stored in this browser&apos;s localStorage. Play money on Solana devnet: never send real funds to it.</p>
+      {!s?.kp ? (
+        <button type="button" className="cta" disabled={busy || (!s && hasStored)} onClick={() => act("Creating burner", async () => { await open(true); return "Burner created. Use the faucet for 1000 mUSDC + 0.2 SOL."; })}>
+          {hasStored && !s ? "Loading burner…" : "Create devnet burner wallet"}</button>
+      ) : (
+        <>
+          <dl>
+            <dt>Address</dt><dd><a href={solscanAcct(s.address, cluster)} target="_blank" rel="noreferrer" title={s.address}>{shortAddr(s.address)}</a></dd>
+            <dt>devnet SOL</dt><dd>{bal ? bal.sol.toFixed(4) : "–"}</dd>
+            <dt>mUSDC</dt><dd>{bal ? bal.usdc.toFixed(2) : "–"}</dd>
+          </dl>
+          <div className="seg">
+            <button type="button" disabled={busy} onClick={() => act("Faucet", async () => { const r = await s.chain.faucet(s); await new Promise((z) => setTimeout(z, 3000)); await refresh(); return `Faucet: +${r.amount ?? "?"} mUSDC, +${r.sol ?? "?"} SOL`; })}>Faucet (mUSDC + SOL)</button>
+            <button type="button" disabled={busy} onClick={() => act("SOL airdrop", async () => { await s.chain.airdropSol(s, 0.5); await refresh(); return "Airdropped 0.5 devnet SOL"; })}>SOL airdrop</button>
+            <button type="button" disabled={busy} title="refresh balances" onClick={() => act("Refresh", async () => { await refresh(); return null; })}>↻</button>
+          </div>
+          <div className="seg">
+            <button type="button" onClick={() => setShown(!shown)}>{shown ? "Hide key" : "Export key"}</button>
+            <button type="button" disabled={busy} onClick={() => { if (globalThis.confirm?.("Delete this devnet burner from the browser? Export it first if you want to keep its balance.")) { s.chain.reset(); dev.setMsg("Burner deleted."); open(false); } }}>Reset</button>
+          </div>
+          {shown && <textarea readOnly className="key" value={s.chain.exportKey(s)} aria-label="burner secret key (Solana CLI JSON)" />}
+        </>
+      )}
+      {msg && <p className="small status">{msg}</p>}
+      {s && <p className="muted small">RPC {new URL(s.rpc).host}</p>}
+    </section>
+  );
+}
+
 
 export function Kpis({ log }) {
   const s = log.stats, T = s.traction || {};
@@ -47,15 +111,37 @@ export function MarketsList({ open, asset, now, selected, onSelect }) {
   ));
 }
 
-export function TradePanel({ market: m, now, cluster }) {
+export function TradePanel({ market: m, now, cluster, dev = null, onTraded }) {
   const [side, setSide] = useState("yes");
   const [amount, setAmount] = useState("10");
   const [spot, setSpot] = useState("");
-  useEffect(() => { setSpot(""); }, [m?.market]);
+  const [acct, setAcct] = useState(null);
+  const [tx, setTx] = useState(null);
+  const sess = dev?.s;
+  useEffect(() => { setSpot(""); setAcct(null); setTx(null); }, [m?.market]);
+  // Live on-chain market account for the exact quote; refreshed every 20 s and after each trade.
+  useEffect(() => {
+    if (!m || !sess) return;
+    let live = true;
+    const load = () => sess.chain.fetchMarket(sess, m.market).then((a) => live && setAcct(a)).catch(() => {});
+    load(); const t = setInterval(load, 20000);
+    return () => { live = false; clearInterval(t); };
+  }, [m?.market, sess, tx]);
   if (!m) return <aside className="trade"><h2>Trade</h2><p className="muted">Pick a market on the left.</p></aside>;
   const p = modelYes(m, now, Number(spot));
-  const q = quotePreview({ side, amountUsdc: Number(amount), ammYes: m.amm.yes, pYes: p });
-  const hint = suggestedSide(p, m.amm.yes);
+  const st = acct ? marketState(acct, nowSecs()) : null;
+  const xq = st ? exactBuyQuote(st, { side, amountUsdc: Number(amount), pYes: p }) : null;
+  const est = quotePreview({ side, amountUsdc: Number(amount), ammYes: st ? st.price : m.amm.yes, pYes: p });
+  const hint = suggestedSide(p, st ? st.price : m.amm.yes);
+  const blocker = buyBlocker({ hasWallet: !!sess?.kp, bal: dev?.bal, amountUsdc: Number(amount), quote: xq, busy: dev?.busy });
+  const doBuy = () => dev.act(`Buying ${side.toUpperCase()}`, async () => {
+    const fresh = await sess.chain.fetchMarket(sess, m.market); // re-quote against the latest pool right before signing
+    const q = exactBuyQuote(marketState(fresh, nowSecs()), { side, amountUsdc: Number(amount), pYes: p });
+    if (!q) throw new Error("market not tradable");
+    const sig = await sess.chain.buy(sess, m.market, side, q.amountIn, q.minOutRaw);
+    setTx(sig); await dev.refresh(); onTraded?.();
+    return `Bought ≈${q.tokens.toFixed(2)} ${side.toUpperCase()} for ${Number(amount)} mUSDC`;
+  });
   return (
     <aside className="trade">
       <h2>{m.name}</h2>
@@ -65,20 +151,88 @@ export function TradePanel({ market: m, now, cluster }) {
       </div>
       <label>Amount (mUSDC)<input aria-label="amount" type="number" min="0" step="1" value={amount} onChange={(e) => setAmount(e.target.value)} /></label>
       <label>Spot for the model <input aria-label="spot" type="number" placeholder={String(m.amm.spot ?? m.seed.spot ?? "")} value={spot} onChange={(e) => setSpot(e.target.value)} /></label>
-      <dl>
-        <dt>AMM price ({side.toUpperCase()})</dt><dd>{q ? pct(q.price) : "–"}</dd>
-        <dt>Model P({side.toUpperCase()})</dt><dd>{p == null ? "–" : pct(side === "yes" ? p : 1 - p)}</dd>
-        <dt>Edge</dt><dd className={q && q.edgePts > 0 ? "yes" : "no"}>{q?.edgePts == null ? "–" : q.edgePts.toFixed(1) + " pts"}</dd>
-        <dt>Fee (2%)</dt><dd>{q ? q.fee.toFixed(3) : "–"}</dd>
-        <dt>Tokens (≈, no slippage)</dt><dd>{q ? q.tokens.toFixed(3) : "–"}</dd>
-        <dt>Max payout</dt><dd>{q ? q.maxPayout.toFixed(3) + " mUSDC" : "–"}</dd>
-        <dt>Model EV</dt><dd className={q && q.ev > 0 ? "yes" : "no"}>{q?.ev == null ? "–" : `${q.ev.toFixed(3)} (${pct(q.evPct)})`}</dd>
-      </dl>
+      {xq ? (
+        <dl>
+          <dt>AMM price ({side.toUpperCase()}, live)</dt><dd>{pct(xq.price)} → {pct(xq.priceAfter)}</dd>
+          <dt>Model P({side.toUpperCase()})</dt><dd>{p == null ? "–" : pct(side === "yes" ? p : 1 - p)}</dd>
+          <dt>Avg price (incl. fee)</dt><dd>{pct(xq.avgPrice, 2)}</dd>
+          <dt>Edge vs avg price</dt><dd className={xq.edgePts > 0 ? "yes" : "no"}>{xq.edgePts == null ? "–" : xq.edgePts.toFixed(1) + " pts"}</dd>
+          <dt>Fee (2%)</dt><dd>{xq.fee.toFixed(3)}</dd>
+          <dt>Tokens (exact)</dt><dd>{xq.tokens.toFixed(3)}</dd>
+          <dt>Min received (1% slip)</dt><dd>{(xq.minOutRaw / 1e6).toFixed(3)}</dd>
+          <dt>Max payout</dt><dd>{xq.maxPayout.toFixed(3)} mUSDC</dd>
+          <dt>Model EV</dt><dd className={xq.ev > 0 ? "yes" : "no"}>{xq.ev == null ? "–" : `${xq.ev.toFixed(3)} (${pct(xq.evPct)})`}</dd>
+        </dl>
+      ) : (
+        <dl>
+          <dt>AMM price ({side.toUpperCase()})</dt><dd>{est ? pct(est.price) : "–"}</dd>
+          <dt>Model P({side.toUpperCase()})</dt><dd>{p == null ? "–" : pct(side === "yes" ? p : 1 - p)}</dd>
+          <dt>Edge</dt><dd className={est && est.edgePts > 0 ? "yes" : "no"}>{est?.edgePts == null ? "–" : est.edgePts.toFixed(1) + " pts"}</dd>
+          <dt>Fee (2%)</dt><dd>{est ? est.fee.toFixed(3) : "–"}</dd>
+          <dt>Tokens (≈, no slippage)</dt><dd>{est ? est.tokens.toFixed(3) : "–"}</dd>
+          <dt>Max payout</dt><dd>{est ? est.maxPayout.toFixed(3) + " mUSDC" : "–"}</dd>
+          <dt>Model EV</dt><dd className={est && est.ev > 0 ? "yes" : "no"}>{est?.ev == null ? "–" : `${est.ev.toFixed(3)} (${pct(est.evPct)})`}</dd>
+        </dl>
+      )}
+      <p className="muted small">{xq ? "Exact pm-AMM curve quote from the live devnet pool (same math the program runs)." : "Marginal-price estimate from the keeper log; the exact quote loads from devnet."}</p>
       {hint && <p className="hint">Model says <b>{hint.toUpperCase()}</b> is cheap by more than fee + 3 pts.</p>}
-      {m.url ? <a className="cta" href={m.url} target="_blank" rel="noreferrer">Trade this market on pm-AMM devnet ↗</a> : null}
-      <p className="muted small">Devnet only, play money. In-page burner-wallet signing is the next M3 step; until then the button opens the same market in the pm-AMM devnet app.
+      <button type="button" className={"cta buy " + side} disabled={!!blocker} title={blocker || ""} onClick={doBuy}>
+        Sign &amp; buy {side.toUpperCase()} with burner (devnet)</button>
+      {blocker && <p className="muted small">{blocker}</p>}
+      {tx && <p className="small">Tx <a href={solscan(tx, cluster)} target="_blank" rel="noreferrer">{tx.slice(0, 10)}…</a></p>}
+      {m.url ? <a className="alt" href={m.url} target="_blank" rel="noreferrer">Or trade this market on the pm-AMM devnet app ↗</a> : null}
+      <p className="muted small">Devnet only, play money.
         {m.seed.createTx ? <> Created in <a href={solscan(m.seed.createTx, cluster)} target="_blank" rel="noreferrer">{m.seed.createTx.slice(0, 8)}…</a>.</> : null}</p>
     </aside>
+  );
+}
+
+export function Positions({ dev, log, bump }) {
+  const [rows, setRows] = useState(null);
+  const sess = dev?.s;
+  useEffect(() => {
+    if (!sess?.kp) return;
+    const markets = [...(log.open || []), ...log.resolutions.slice(0, 60)];
+    sess.chain.positions(sess, markets).then((held) => setRows(positionRows(held, log.resolutions))).catch(() => setRows([]));
+  }, [sess, log, bump, dev?.busy]);
+  if (!sess?.kp) return null;
+  return (
+    <section>
+      <h2>Your positions <span className="muted small">(burner, devnet)</span></h2>
+      {!rows ? <p className="muted">Loading…</p> : !rows.length ? <p className="muted">No YES/NO tokens yet. Buy from the trade panel.</p> : (
+        <table>
+          <thead><tr><th>Market</th><th>YES</th><th>NO</th><th>Status</th><th></th></tr></thead>
+          <tbody>{rows.map((r) => (
+            <tr key={r.market}><td>{r.name}</td><td>{r.yes ? r.yes.toFixed(2) : ""}</td><td>{r.no ? r.no.toFixed(2) : ""}</td>
+              <td className={r.status === "won" ? "yes" : r.status === "lost" ? "no" : ""}>{r.status}{r.winner ? ` (${r.winner.toUpperCase()})` : ""}</td>
+              <td>{r.claimable > 0 ? <button type="button" disabled={dev.busy} onClick={() => dev.act("Claiming", async () => { await sess.chain.claim(sess, r.market); await dev.refresh(); return `Claimed ${r.claimable.toFixed(2)} mUSDC`; })}>Claim {r.claimable.toFixed(2)}</button> : null}</td></tr>
+          ))}</tbody>
+        </table>
+      )}
+    </section>
+  );
+}
+
+export function Calibration({ log, size = 220 }) {
+  const pts = calibrationPoints(log.stats?.calibration, size);
+  const pad = 24, end = size - pad;
+  return (
+    <section className="calib">
+      <h2>Calibration</h2>
+      <svg width={size} height={size} role="img" aria-label="calibration chart: seed fair YES vs realised YES rate">
+        <rect x={pad} y={pad} width={end - pad} height={end - pad} fill="none" stroke="#2b3550" />
+        <line x1={pad} y1={end} x2={end} y2={pad} stroke="#8b93a7" strokeDasharray="4 4" />
+        {pts.map((p) => (
+          <g key={p.fair}>
+            <line x1={p.cx} x2={p.cx} y1={p.y1} y2={p.y2} stroke="#7cb7ff" />
+            <circle cx={p.cx} cy={p.cy} r={p.r} fill="#7cb7ff" fillOpacity="0.6"><title>{`fair ${pct(p.fair)} → realised ${pct(p.rate)} (n=${p.n})`}</title></circle>
+          </g>
+        ))}
+        <text x={pad} y={size - 6} fontSize="10" fill="#8b93a7">seed fair YES →</text>
+        <text x={4} y={pad - 8} fontSize="10" fill="#8b93a7">realised YES rate</text>
+      </svg>
+      <p className="muted small">Dots: seed fair YES bucket vs realised YES rate (size ∝ √n, bars ±1.96 SE). Dashed = perfect calibration. {log.stats?.resolved} resolved.</p>
+    </section>
   );
 }
 
@@ -112,6 +266,8 @@ export default function App({ initialLog = null, initialNow = null }) {
   useEffect(() => { if (initialNow != null) return; const t = setInterval(() => setNow(nowSecs()), 30000); return () => clearInterval(t); }, [initialNow]);
   const open = useMemo(() => (log?.open || []).filter((m) => m.endTs > now), [log, now]);
   const market = open.find((m) => m.market === selected) || null;
+  const dev = useDevnet();
+  const [bump, setBump] = useState(0);
   return (
     <main>
       <header>
@@ -126,9 +282,13 @@ export default function App({ initialLog = null, initialNow = null }) {
           <div className="tabs">{["ALL", "SOL", "BTC"].map((a) => <button key={a} type="button" className={asset === a ? "on" : ""} onClick={() => setAsset(a)}>{a}</button>)}</div>
           <div className="grid">
             <div><h2>Open markets</h2><MarketsList open={open} asset={asset} now={now} selected={selected} onSelect={setSelected} /></div>
-            <TradePanel market={market} now={now} cluster={log.cluster} />
+            <div className="side">
+              <WalletPanel dev={dev} cluster={log.cluster} />
+              <TradePanel market={market} now={now} cluster={log.cluster} dev={dev} onTraded={() => setBump((b) => b + 1)} />
+            </div>
           </div>
-          <Resolved log={log} />
+          <Positions dev={dev} log={log} bump={bump} />
+          <div className="grid2"><Resolved log={log} /><Calibration log={log} /></div>
           <footer className="muted small">Log generated {new Date(log.generatedAt * 1000).toISOString()} · program <code>{log.program}</code> · rule: {log.rule}</footer>
         </>
       )}

@@ -17,3 +17,12 @@ dl { display: grid; grid-template-columns: 1fr auto; gap: 4px 10px; font-size: .
 .hint { background: #1d2a1f; padding: 6px 8px; border-radius: 6px; font-size: .85rem; }
 .cta { display: block; text-align: center; background: #3a4a72; color: #fff; padding: 8px; border-radius: 6px; text-decoration: none; margin-top: 10px; }
 footer { margin-top: 24px; }
+.side { display: flex; flex-direction: column; gap: 14px; } .trade { position: static; }
+.wallet { background: #161b26; border-radius: 10px; padding: 14px; } .wallet .seg { margin: 8px 0; }
+.tag.warn { background: #6b4a12; color: #ffd27a; }
+.key { width: 100%; height: 70px; font-size: .7rem; background: #0d1017; color: #ffd27a; border: 1px solid #6b4a12; border-radius: 6px; }
+.status { background: #1c2333; padding: 6px 8px; border-radius: 6px; word-break: break-word; }
+button.cta { width: 100%; border: 0; cursor: pointer; font-size: .9rem; } button.cta.buy.yes { background: #1f6f43; } button.cta.buy.no { background: #8a2c2c; }
+button:disabled { opacity: .5; cursor: not-allowed; }
+.alt { display: block; text-align: center; margin-top: 8px; font-size: .85rem; }
+.grid2 { display: grid; grid-template-columns: 1fr 260px; gap: 20px; align-items: start; } @media (max-width: 860px) { .grid2 { grid-template-columns: 1fr; } }

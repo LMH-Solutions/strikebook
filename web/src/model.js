@@ -65,3 +65,38 @@ export function fmtLeft(secs) {
 }
 export const pct = (v, d = 1) => (v == null ? "–" : (v * 100).toFixed(d) + "%");
 export const money = (v, asset) => (v == null ? "–" : "$" + Number(v).toLocaleString("en-US", { maximumFractionDigits: asset === "BTC" ? 0 : 2 }));
+
+// Calibration chart geometry: one point per non-empty bin (x = mean seed fair YES, y = realised YES rate), with a
+// ±1.96·SE binomial error bar, mapped into a size×size SVG box with `pad` px margins (y axis pointing up).
+export function calibrationPoints(bins = [], size = 220, pad = 24) {
+  const span = size - 2 * pad;
+  const X = (v) => pad + v * span, Y = (v) => size - pad - v * span;
+  return bins.filter((b) => b.n > 0 && b.meanFair != null && b.yesRate != null).map((b) => {
+    const se = Math.sqrt((b.yesRate * (1 - b.yesRate)) / b.n);
+    const lo = Math.max(0, b.yesRate - 1.96 * se), hi = Math.min(1, b.yesRate + 1.96 * se);
+    return { n: b.n, fair: b.meanFair, rate: b.yesRate, cx: X(b.meanFair), cy: Y(b.yesRate), y1: Y(hi), y2: Y(lo), r: Math.min(10, 2 + Math.sqrt(b.n)) };
+  });
+}
+
+// Why the Buy button is disabled (null = good to go). bal = {sol, usdc} of the burner.
+export const MIN_SOL_FOR_SWAP = 0.01; // a first buy in a market opens 1-2 token accounts (~0.002 SOL rent each) + fees
+export function buyBlocker({ hasWallet, bal, amountUsdc, quote, busy }) {
+  if (busy) return "sending…";
+  if (!hasWallet) return "create the devnet burner wallet first";
+  if (!(amountUsdc > 0)) return "enter an amount";
+  if (!bal) return "loading balances…";
+  if (bal.sol < MIN_SOL_FOR_SWAP) return `needs ≥ ${MIN_SOL_FOR_SWAP} devnet SOL for fees/rent: use the faucet`;
+  if (bal.usdc < amountUsdc) return "not enough mUSDC: use the faucet";
+  if (!quote) return "waiting for the on-chain quote…";
+  return null;
+}
+
+// Positions view rows: claimable when the market resolved to a side we hold.
+export function positionRows(held = [], resolutions = []) {
+  const res = new Map(resolutions.map((r) => [r.market, r.side]));
+  return held.map((h) => {
+    const winner = res.get(h.market) || null;
+    const payout = winner === "yes" ? h.yes : winner === "no" ? h.no : 0;
+    return { ...h, winner, status: winner ? (payout > 0 ? "won" : "lost") : "open", claimable: payout };
+  });
+}
