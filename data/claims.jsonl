@@ -224,3 +224,4 @@
 {"market":"DBT9o8sfmdWKYcfYqHnPP1MyaSMg8t7Rc9T9h1JXWnQ8","name":"BTC>74700@1794333600","kind":"claimWinnings","signature":"h3tUznuCg1mhpzcHYhZjLxvQHTSfcpN2NMGxKcs8ZMpg2SD9B9dBx3AbrmsJk8zSMowRoz4U4tBDy7PMCzqFh4k","at":1794334223}
 {"market":"GZETgPRThDGQ6jpetZPG2hhzyCWd12VDEef2YYpgWsVJ","name":"SOL>84.6@1794333600","kind":"claimLpResiduals","signature":"68XZTtKGfhhb9skExoQSyPrP1z2b9gPjexW5ymzVM3JhR3ygaXS7s8zczzSjLBRW8fFtGRTdKTxoLRkwG28mdKv","at":1794334225}
 {"market":"GZETgPRThDGQ6jpetZPG2hhzyCWd12VDEef2YYpgWsVJ","name":"SOL>84.6@1794333600","kind":"claimWinnings","skipped":"Simulation failed. ","at":1794335436}
+{"market":"GZETgPRThDGQ6jpetZPG2hhzyCWd12VDEef2YYpgWsVJ","name":"SOL>84.6@1794333600","kind":"claimWinnings","skipped":"Simulation failed. ","at":1794336344}
