@@ -5,7 +5,8 @@ import { Connection, Keypair, LAMPORTS_PER_SOL, PublicKey, VersionedTransaction 
 import { AnchorProvider } from "@anchor-lang/core";
 import { PmAmmClient, deriveYesMint, deriveNoMint } from "@pm-amm/sdk";
 import { getAssociatedTokenAddressSync, TOKEN_PROGRAM_ID } from "@solana/spl-token";
-import { assertDevnetRpc, loadBurner, loadOrCreateBurner, resetBurner, exportBurner } from "./wallet.js";
+import { assertDevnetRpc, loadBurner, loadOrCreateBurner, resetBurner, exportBurner, detectInjected, injectedWallet } from "./wallet.js";
+export { detectInjected };
 
 export const PROGRAM_ID = new PublicKey("GV1FMGHRYBjQLaghE5fnGuYCuCcpdt3GD5xEX3TwN16y");
 export const MUSDC = new PublicKey("3WQ8hCqTNwjrh8WzE2XyoZoUrd1miPcwWfMkmFPUMEWZ"); // devnet mock USDC, 6 dp
@@ -53,16 +54,28 @@ export async function openSession(storage = globalThis.localStorage, { create = 
   const rpc = assertDevnetRpc(await pickRpc());
   const conn = pollingConfirm(new Connection(rpc, { commitment: "confirmed" }));
   const kp = create ? loadOrCreateBurner(storage, Keypair) : loadBurner(storage, Keypair);
-  if (!kp) return { rpc, conn, kp: null, client: PmAmmClient.readOnly(conn, PROGRAM_ID, MUSDC), address: null };
+  if (!kp) return { rpc, conn, kp: null, owner: null, wallet: null, client: PmAmmClient.readOnly(conn, PROGRAM_ID, MUSDC), address: null };
   const provider = new AnchorProvider(conn, keypairWallet(kp), { commitment: "confirmed" });
   const client = PmAmmClient.fromProvider(provider, PROGRAM_ID, MUSDC);
-  return { rpc, conn, kp, client, address: kp.publicKey.toBase58() };
+  return { rpc, conn, kp, owner: kp.publicKey, wallet: "burner", client, address: kp.publicKey.toBase58() };
+}
+
+// Session signed by an injected wallet (Phantom / Backpack). Transactions are built and sent through OUR devnet RPC
+// (assertDevnetRpc), the wallet only signs; the user must have the wallet on devnet so its balance view matches.
+export async function openInjectedSession(entry) {
+  const rpc = assertDevnetRpc(await pickRpc());
+  const conn = pollingConfirm(new Connection(rpc, { commitment: "confirmed" }));
+  const res = await entry.provider.connect();
+  const owner = new PublicKey(String(res?.publicKey ?? entry.provider.publicKey));
+  const provider = new AnchorProvider(conn, injectedWallet(entry.provider, owner), { commitment: "confirmed" });
+  const client = PmAmmClient.fromProvider(provider, PROGRAM_ID, MUSDC);
+  return { rpc, conn, kp: null, owner, wallet: entry.name, injected: entry.provider, client, address: owner.toBase58() };
 }
 
 export async function balances(s) {
-  const sol = (await s.conn.getBalance(s.kp.publicKey)) / LAMPORTS_PER_SOL;
+  const sol = (await s.conn.getBalance(s.owner)) / LAMPORTS_PER_SOL;
   let usdc = 0;
-  try { usdc = Number((await s.conn.getTokenAccountBalance(getAssociatedTokenAddressSync(MUSDC, s.kp.publicKey))).value.uiAmount); } catch {}
+  try { usdc = Number((await s.conn.getTokenAccountBalance(getAssociatedTokenAddressSync(MUSDC, s.owner))).value.uiAmount); } catch {}
   return { sol, usdc };
 }
 
@@ -73,7 +86,7 @@ export async function faucet(s) {
   return body;
 }
 export async function airdropSol(s, sol = 0.5) {
-  const sig = await s.conn.requestAirdrop(s.kp.publicKey, Math.round(sol * LAMPORTS_PER_SOL));
+  const sig = await s.conn.requestAirdrop(s.owner, Math.round(sol * LAMPORTS_PER_SOL));
   await s.conn.confirmTransaction(sig);
   return sig;
 }
@@ -82,13 +95,13 @@ export const fetchMarket = (s, market) => s.client.fetchMarket(new PublicKey(mar
 
 // Signed buy: usdcToYes / usdcToNo with an exact quote's min-output bound (slippage guard enforced on-chain).
 export async function buy(s, market, side, amountInRaw, minOutRaw) {
-  if (!s.kp) throw new Error("no burner wallet");
+  if (!s.owner) throw new Error("no wallet connected");
   assertDevnetRpc(s.conn.rpcEndpoint);
   return s.client.send.swap(new PublicKey(market), side === "yes" ? "usdcToYes" : "usdcToNo", amountInRaw, minOutRaw);
 }
 // Signed sell (exit): yesToUsdc / noToUsdc of raw outcome tokens, min mUSDC out from the exact quote (1% slippage).
 export async function sell(s, market, side, tokensRaw, minOutRaw) {
-  if (!s.kp) throw new Error("no burner wallet");
+  if (!s.owner) throw new Error("no wallet connected");
   assertDevnetRpc(s.conn.rpcEndpoint);
   return s.client.send.swap(new PublicKey(market), side === "yes" ? "yesToUsdc" : "noToUsdc", tokensRaw, minOutRaw);
 }
@@ -109,7 +122,7 @@ export async function claim(s, market) {
 
 // Outcome-token holdings of the burner across the given markets ({market, name, ...} from the resolution log).
 export async function positions(s, markets) {
-  const res = await s.conn.getParsedTokenAccountsByOwner(s.kp.publicKey, { programId: TOKEN_PROGRAM_ID });
+  const res = await s.conn.getParsedTokenAccountsByOwner(s.owner, { programId: TOKEN_PROGRAM_ID });
   const held = new Map(), raw = new Map();
   for (const { account } of res.value) {
     const info = account.data.parsed?.info;

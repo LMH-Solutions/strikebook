@@ -5,6 +5,9 @@
 //          then sell --sell-frac of the YES position from the Positions table. --both also buys NO 10 on the same rung,
 //          so one side is guaranteed to win and the claim can be checked after resolution.
 // --claim: click every Claim button in Positions (run after the rung resolved, with the same PROFILE).
+// --wallet=mock-phantom: instead of the burner, inject a fake window.phantom.solana whose signTransaction is backed by a
+//          throwaway ed25519 key held in this Node process (never in the page). Exercises the injected-wallet path
+//          (Phantom/Backpack adapter) end to end on devnet without a browser extension.
 // Every tx signature from the page's status line is then polled on devnet until finalized; the run fails unless err is null.
 // The burner lives in the Chrome profile's localStorage (PROFILE env, default a fresh /tmp dir). DEVNET ONLY: the page
 // itself refuses non-devnet RPCs (assertDevnetRpc) and this script only queries api.devnet.solana.com.
@@ -12,6 +15,8 @@ import puppeteer from "puppeteer-core";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
+import crypto from "node:crypto";
+import { PublicKey } from "@solana/web3.js";
 
 const args = process.argv.slice(2);
 const flag = (n) => args.includes(`--${n}`);
@@ -47,6 +52,19 @@ try {
   page.on("pageerror", (e) => errs.push("pageerror " + e.message));
   page.on("dialog", (d) => d.accept());
   await page.setViewport({ width: 1300, height: 1800 });
+  const MOCK = opt("wallet", "burner") === "mock-phantom";
+  if (MOCK) { // throwaway devnet key in Node; the page only ever sees signatures
+    const { publicKey, privateKey } = crypto.generateKeyPairSync("ed25519");
+    const addr = new PublicKey(Buffer.from(publicKey.export({ format: "jwk" }).x, "base64url")).toBase58();
+    out.mockWallet = addr;
+    await page.exposeFunction("__mockSign", (msg) => Array.from(crypto.sign(null, Buffer.from(msg), privateKey)));
+    await page.evaluateOnNewDocument((addr) => {
+      const pk = { toString: () => addr, toBase58: () => addr };
+      const signTransaction = async (tx) => { const sig = await window.__mockSign(Array.from(tx.serializeMessage())); tx.addSignature(tx.feePayer, Uint8Array.from(sig)); window.__mockSigned = (window.__mockSigned || 0) + 1; return tx; };
+      window.phantom = { solana: { isPhantom: true, publicKey: pk, connect: async () => ({ publicKey: pk }), disconnect: async () => {}, signTransaction,
+        signAllTransactions: async (txs) => { for (const t of txs) await signTransaction(t); return txs; } } };
+    }, addr);
+  }
   await page.goto(URL, { waitUntil: "networkidle0", timeout: 60000 });
   await page.waitForSelector(".ladder tbody tr", { timeout: 30000 });
   const txt = (sel) => page.$eval(sel, (e) => e.innerText).catch(() => null);
@@ -62,10 +80,17 @@ try {
   out.liveNote = await page.$$eval(".ladder p.small", (p) => p.map((x) => x.innerText)).catch(() => []);
 
   // burner
-  const hasKp = await page.evaluate(() => !!localStorage.getItem("strikebook.devnet-burner.v1"));
-  if (!hasKp) { await page.click(".wallet button.cta"); out.steps.push("created burner"); }
+  if (MOCK) {
+    await page.waitForSelector(".wallet button.connect", { timeout: 30000 });
+    await page.click(".wallet button.connect"); out.steps.push("connected mock Phantom");
+  } else {
+    const hasKp = await page.evaluate(() => !!localStorage.getItem("strikebook.devnet-burner.v1"));
+    if (!hasKp) { await page.click(".wallet button.cta"); out.steps.push("created burner"); }
+  }
   await page.waitForFunction(() => document.querySelector(".wallet")?.innerText.includes("Address"), { timeout: 60000 });
+  out.wallet = await page.$eval(".wallet h2", (h) => h.innerText);
   out.burner = await page.$eval(".wallet dd a", (a) => a.title);
+  if (MOCK && out.burner !== out.mockWallet) throw new Error("page did not pick up the injected wallet");
   const bal = async () => { await sleep(2500); const d = await page.$$eval(".wallet dd", (x) => x.map((y) => y.innerText)); return { sol: Number(d[1]), usdc: Number(d[2]) }; };
   out.balStart = await bal();
 
@@ -135,6 +160,7 @@ try {
     out.positionsAfterClaim = await txt(".positions");
   }
   out.balEnd = await bal();
+  if (MOCK) out.mockSignatures = await page.evaluate(() => window.__mockSigned || 0);
   out.calibDots = (await page.$$(".calib circle")).length;
   await page.screenshot({ path: process.env.SHOT || path.join(PROFILE, "e2e.png"), fullPage: true });
   for (const t of out.txs) Object.assign(t, await finalized(t.sig));

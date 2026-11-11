@@ -32,3 +32,28 @@ export function assertDevnetRpc(url) {
   return url;
 }
 export const shortAddr = (a) => (a ? `${String(a).slice(0, 4)}…${String(a).slice(-4)}` : "–");
+
+// Injected browser wallets (Phantom, Backpack, or any window.solana provider) as an alternative to the burner.
+// Returns [{id, name, provider}] for each distinct provider that can sign transactions.
+export function detectInjected(win = globalThis.window) {
+  if (!win) return [];
+  const cands = [
+    ["phantom", "Phantom", win.phantom?.solana?.isPhantom ? win.phantom.solana : null],
+    ["backpack", "Backpack", win.backpack?.isBackpack || win.backpack?.signTransaction ? win.backpack : null],
+    ["solana", "Browser wallet", win.solana],
+  ];
+  const seen = new Set(), out = [];
+  for (const [id, name, p] of cands) {
+    if (!p || typeof p.signTransaction !== "function" || seen.has(p)) continue;
+    seen.add(p); out.push({ id, name: id === "solana" && p.isPhantom ? "Phantom" : name, provider: p });
+  }
+  return out;
+}
+// Anchor-compatible wallet shim over an injected provider (it signs; we send through our own devnet RPC).
+export function injectedWallet(provider, publicKey) {
+  return {
+    publicKey,
+    signTransaction: (tx) => provider.signTransaction(tx),
+    signAllTransactions: (txs) => (provider.signAllTransactions ? provider.signAllTransactions(txs) : Promise.all(txs.map((t) => provider.signTransaction(t)))),
+  };
+}

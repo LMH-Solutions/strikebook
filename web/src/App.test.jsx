@@ -42,11 +42,20 @@ describe("App (SSR smoke)", () => {
     expect((html.match(/<circle/g) || []).length).toBe(log.stats.calibration.filter((b) => b.n > 0).length);
   });
   it("wallet panel shows address/balances once a burner session exists", () => {
-    const dev = { s: { kp: {}, address: "GDwVtusAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAXyZ1", rpc: "https://api.devnet.solana.com", chain: { exportKey: () => "[]" } }, bal: { sol: 0.2, usdc: 1000 }, msg: null, busy: false, open: () => {}, refresh: () => {}, act: () => {} };
+    const dev = { s: { kp: {}, owner: {}, wallet: "burner", address: "GDwVtusAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAXyZ1", rpc: "https://api.devnet.solana.com", chain: { exportKey: () => "[]" } }, bal: { sol: 0.2, usdc: 1000 }, msg: null, busy: false, open: () => {}, refresh: () => {}, act: () => {} };
     const html = renderToString(h(WalletPanel, { dev, cluster: "devnet" })).replace(/<!-- -->/g, "");
     expect(html).toContain("GDwV…XyZ1");
     expect(html).toContain("0.2000");
     expect(html).toContain("1000.00");
     expect(html).toContain("Faucet (mUSDC + SOL)");
+    expect(html).toContain("Export key");
+  });
+  it("wallet panel for an injected wallet (Phantom) hides key export and offers Disconnect", () => {
+    const dev = { s: { kp: null, owner: {}, wallet: "Phantom", address: "GDwVtusAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAXyZ1", rpc: "https://api.devnet.solana.com", chain: {} }, bal: { sol: 0.2, usdc: 1000 }, msg: null, busy: false, open: () => {}, refresh: () => {}, act: () => {} };
+    const html = renderToString(h(WalletPanel, { dev, cluster: "devnet" })).replace(/<!-- -->/g, "");
+    expect(html).toContain("Phantom wallet");
+    expect(html).toContain("Disconnect");
+    expect(html).not.toContain("Export key");
+    expect(html).toContain("GDwV…XyZ1");
   });
 });

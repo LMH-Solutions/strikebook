@@ -20,16 +20,23 @@ export function useDevnet() {
     const chain = await loadChain();
     const sess = await chain.openSession(globalThis.localStorage, { create });
     setS({ ...sess, chain });
-    setBal(sess.kp ? await chain.balances(sess).catch(() => null) : null);
+    setBal(sess.owner ? await chain.balances(sess).catch(() => null) : null);
+    return sess;
+  }, []);
+  const connect = useCallback(async (entry) => {
+    const chain = await loadChain();
+    const sess = await chain.openInjectedSession(entry);
+    setS({ ...sess, chain });
+    setBal(await chain.balances(sess).catch(() => null));
     return sess;
   }, []);
   useEffect(() => { if (typeof window !== "undefined") open(false).catch((e) => setMsg("RPC: " + errMsg(e))); }, [open]);
-  const refresh = useCallback(async () => { if (s?.kp) setBal(await s.chain.balances(s).catch(() => null)); }, [s]);
+  const refresh = useCallback(async () => { if (s?.owner) setBal(await s.chain.balances(s).catch(() => null)); }, [s]);
   const act = useCallback(async (label, fn) => {
     setBusy(true); setMsg(label + "…");
     try { const r = await fn(); setMsg(r); } catch (e) { setMsg(label + " failed: " + errMsg(e)); } finally { setBusy(false); }
   }, []);
-  return { s, bal, msg, setMsg, busy, open, refresh, act };
+  return { s, bal, msg, setMsg, busy, open, connect, refresh, act };
 }
 
 // Live YES prices for the open markets, read straight from the Market accounts (one getMultipleAccounts call every
@@ -48,17 +55,27 @@ export function useLivePrices(sess, open, bump) {
 }
 
 export function WalletPanel({ dev, cluster }) {
-  const { s, bal, msg, busy, open, refresh, act } = dev;
+  const { s, bal, msg, busy, open, connect, refresh, act } = dev;
   const [shown, setShown] = useState(false);
+  const [injected, setInjected] = useState([]);
+  useEffect(() => { // wallets inject after load; look twice
+    const look = () => s?.chain?.detectInjected && setInjected(s.chain.detectInjected(window));
+    look(); const t = setTimeout(look, 1500); return () => clearTimeout(t);
+  }, [s?.chain]);
   const hasStored = typeof localStorage !== "undefined" && !!localStorage.getItem(BURNER_KEY);
+  const isBurner = s?.wallet === "burner";
   return (
     <section className="wallet">
-      <h2>Burner wallet <span className="tag warn">DEVNET ONLY</span></h2>
-      <p className="muted small">A throwaway keypair generated in this page and stored in this browser&apos;s localStorage. Play money on Solana devnet: never send real funds to it.</p>
-      {!s?.kp ? (
+      <h2>{s?.owner && !isBurner ? `${s.wallet} wallet` : "Burner wallet"} <span className="tag warn">DEVNET ONLY</span></h2>
+      <p className="muted small">{s?.owner && !isBurner ? <>Signing with {s.wallet}; transactions go to Solana devnet through this page&apos;s devnet RPC. Switch the wallet to devnet/testnet mode so its balances match. Play money only.</>
+        : <>A throwaway keypair generated in this page and stored in this browser&apos;s localStorage. Play money on Solana devnet: never send real funds to it.</>}</p>
+      {!s?.owner ? (<>
         <button type="button" className="cta" disabled={busy || (!s && hasStored)} onClick={() => act("Creating burner", async () => { await open(true); return "Burner created. Use the faucet for 1000 mUSDC + 0.2 SOL."; })}>
           {hasStored && !s ? "Loading burner…" : "Create devnet burner wallet"}</button>
-      ) : (
+        {injected.length ? <div className="seg">{injected.map((w) => (
+          <button key={w.id} type="button" className="connect" disabled={busy} onClick={() => act(`Connecting ${w.name}`, async () => { await connect(w); return `${w.name} connected (devnet RPC). Use the faucet for mUSDC + SOL.`; })}>Connect {w.name}</button>))}</div>
+          : <p className="muted small">Or use Phantom / Backpack: none detected in this browser.</p>}
+      </>) : (
         <>
           <dl>
             <dt>Address</dt><dd><a href={solscanAcct(s.address, cluster)} target="_blank" rel="noreferrer" title={s.address}>{shortAddr(s.address)}</a></dd>
@@ -70,11 +87,11 @@ export function WalletPanel({ dev, cluster }) {
             <button type="button" disabled={busy} onClick={() => act("SOL airdrop", async () => { await s.chain.airdropSol(s, 0.5); await refresh(); return "Airdropped 0.5 devnet SOL"; })}>SOL airdrop</button>
             <button type="button" disabled={busy} title="refresh balances" onClick={() => act("Refresh", async () => { await refresh(); return null; })}>↻</button>
           </div>
-          <div className="seg">
+          {!isBurner ? <div className="seg"><button type="button" disabled={busy} onClick={() => { s.injected?.disconnect?.().catch?.(() => {}); dev.setMsg(`${s.wallet} disconnected.`); open(false); }}>Disconnect</button></div> : <div className="seg">
             <button type="button" onClick={() => setShown(!shown)}>{shown ? "Hide key" : "Export key"}</button>
             <button type="button" disabled={busy} onClick={() => { if (globalThis.confirm?.("Delete this devnet burner from the browser? Export it first if you want to keep its balance.")) { s.chain.reset(); dev.setMsg("Burner deleted."); open(false); } }}>Reset</button>
-          </div>
-          {shown && <textarea readOnly className="key" value={s.chain.exportKey(s)} aria-label="burner secret key (Solana CLI JSON)" />}
+          </div>}
+          {shown && isBurner && <textarea readOnly className="key" value={s.chain.exportKey(s)} aria-label="burner secret key (Solana CLI JSON)" />}
         </>
       )}
       {msg && <p className="small status">{msg}</p>}
@@ -148,7 +165,7 @@ export function TradePanel({ market: m, now, cluster, dev = null, onTraded }) {
   const xq = st ? exactBuyQuote(st, { side, amountUsdc: Number(amount), pYes: p }) : null;
   const est = quotePreview({ side, amountUsdc: Number(amount), ammYes: st ? st.price : m.amm.yes, pYes: p });
   const hint = suggestedSide(p, st ? st.price : m.amm.yes);
-  const blocker = buyBlocker({ hasWallet: !!sess?.kp, bal: dev?.bal, amountUsdc: Number(amount), quote: xq, busy: dev?.busy });
+  const blocker = buyBlocker({ hasWallet: !!sess?.owner, bal: dev?.bal, amountUsdc: Number(amount), quote: xq, busy: dev?.busy });
   const doBuy = () => dev.act(`Buying ${side.toUpperCase()}`, async () => {
     const fresh = await sess.chain.fetchMarket(sess, m.market); // re-quote against the latest pool right before signing
     const q = exactBuyQuote(marketState(fresh, nowSecs()), { side, amountUsdc: Number(amount), pYes: p });
@@ -222,7 +239,7 @@ export function SellControl({ row, dev, pYes = null }) {
   const amt = amount === "" ? held : Number(amount);
   const raw = (a) => (Math.abs(a - held) < 1e-9 ? heldRaw : Math.floor(a * 1e6)); // "all" sells the exact raw balance
   const q = acct ? exactSellQuote(marketState(acct, nowSecs()), { side, tokensRaw: raw(amt), pYes }) : null;
-  const blocker = sellBlocker({ hasWallet: !!sess?.kp, bal: dev?.bal, tokens: amt, held, quote: q, busy: dev?.busy });
+  const blocker = sellBlocker({ hasWallet: !!sess?.owner, bal: dev?.bal, tokens: amt, held, quote: q, busy: dev?.busy });
   const doSell = () => dev.act(`Selling ${side.toUpperCase()}`, async () => {
     const fresh = await sess.chain.fetchMarket(sess, row.market);
     const fq = exactSellQuote(marketState(fresh, nowSecs()), { side, tokensRaw: raw(amt), pYes });
@@ -245,15 +262,15 @@ export function Positions({ dev, log, bump, open = [], now = nowSecs() }) {
   const [rows, setRows] = useState(null);
   const sess = dev?.s;
   useEffect(() => {
-    if (!sess?.kp) return;
+    if (!sess?.owner) return;
     const markets = [...(log.open || []), ...log.resolutions.slice(0, 60)];
     sess.chain.positions(sess, markets).then((held) => setRows(positionRows(held, log.resolutions))).catch(() => setRows([]));
   }, [sess, log, bump, dev?.busy]);
-  if (!sess?.kp) return null;
+  if (!sess?.owner) return null;
   const openById = new Map(open.map((m) => [m.market, m]));
   return (
     <section className="positions">
-      <h2>Your positions <span className="muted small">(burner, devnet)</span></h2>
+      <h2>Your positions <span className="muted small">({sess.wallet === "burner" ? "burner" : sess.wallet}, devnet)</span></h2>
       {!rows ? <p className="muted">Loading…</p> : !rows.length ? <p className="muted">No YES/NO tokens yet. Buy from the trade panel.</p> : (
         <table>
           <thead><tr><th>Market</th><th>YES</th><th>NO</th><th>Status</th><th>Exit / claim</th></tr></thead>
