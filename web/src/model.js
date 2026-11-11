@@ -100,3 +100,21 @@ export function positionRows(held = [], resolutions = []) {
     return { ...h, winner, status: winner ? (payout > 0 ? "won" : "lost") : "open", claimable: payout };
   });
 }
+
+// Why a Sell button is disabled (null = good to go). tokens = amount to sell, held = tokens held of that side.
+export function sellBlocker({ hasWallet, bal, tokens, held, quote, busy }) {
+  if (busy) return "sending…";
+  if (!hasWallet) return "create the devnet burner wallet first";
+  if (!(tokens > 0)) return "enter an amount";
+  if (tokens > held + 1e-9) return "more than you hold";
+  if (!bal) return "loading balances…";
+  if (bal.sol < 0.002) return "needs a little devnet SOL for fees: use the faucet";
+  if (!quote) return "waiting for the on-chain quote…";
+  return null;
+}
+
+// Overlay live on-chain YES prices ({market: {yes}}) on the keeper-log open markets, keeping the log value as logYes.
+export function withLivePrices(open, live) {
+  if (!live) return open;
+  return open.map((m) => (live[m.market] ? { ...m, amm: { ...m.amm, yes: live[m.market].yes, live: true, logYes: m.amm?.yes ?? null } } : m));
+}

@@ -82,3 +82,41 @@ export function exactBuyQuote(s, { side, amountUsdc, pYes = null, slippageBps = 
     ev, evPct: ev == null ? null : ev / amountUsdc, edgePts: p == null ? null : (p - avgPrice) * 100,
   };
 }
+
+// YES price after selling `tokensIn` raw `side` tokens back to the pool (yesToUsdc / noToUsdc). The pool moves to
+// z' = (y - x ∓ d)/L (clamped like the on-chain curve), so the YES price is Phi(z').
+export function priceAfterSell(s, side, tokensIn) {
+  const z = (s.y - s.x + (side === "yes" ? -tokensIn : tokensIn)) / s.lEff;
+  return capitalPhi(Math.max(-Z_CLAMP, Math.min(Z_CLAMP, z)));
+}
+
+// Full quote for "sell `tokens` of `side` for mUSDC" (exit from the Positions table). The 2% fee comes off the USDC
+// output. minOutRaw is the on-chain slippage bound (default 1%). pYes = model P(YES) (or null) for the hold-vs-sell EV.
+export function exactSellQuote(s, { side, tokens, tokensRaw = null, pYes = null, slippageBps = 100 }) {
+  if (!s || s.resolved || s.expired) return null;
+  const amountIn = tokensRaw != null ? Number(tokensRaw) : Math.floor(tokens * 10 ** DECIMALS);
+  if (!(amountIn > 0)) return null;
+  const qt = quoteSwapState(s, side === "yes" ? "yesToUsdc" : "noToUsdc", amountIn);
+  if (!(qt.out > 0)) return null;
+  const usdc = qt.out / 10 ** DECIMALS, nTok = amountIn / 10 ** DECIMALS;
+  const price = side === "yes" ? s.price : 1 - s.price;
+  const yesAfter = priceAfterSell(s, side, amountIn);
+  const priceAfter = side === "yes" ? yesAfter : 1 - yesAfter;
+  const p = pYes == null ? null : side === "yes" ? pYes : 1 - pYes;
+  const holdEv = p == null ? null : p * nTok; // expected payout if held to expiry
+  return {
+    amountIn, outRaw: qt.out, minOutRaw: minOutput(qt, slippageBps), usdc, tokens: nTok, fee: qt.fee / 10 ** DECIMALS,
+    price, priceAfter, yesAfter, avgPrice: usdc / nTok, impactPts: (priceAfter - price) * 100,
+    holdEv, sellEdge: holdEv == null ? null : usdc - holdEv, // > 0: selling beats holding under the model
+  };
+}
+
+// Live YES price for each open market from freshly fetched Market accounts (null entries skipped).
+export function livePrices(accounts, now = Math.floor(Date.now() / 1000)) {
+  const out = {};
+  for (const [market, acct] of Object.entries(accounts || {})) {
+    if (!acct) continue;
+    try { const s = marketState(acct, now); out[market] = { yes: s.price, expired: s.expired, resolved: s.resolved }; } catch {}
+  }
+  return out;
+}

@@ -26,3 +26,6 @@ button.cta { width: 100%; border: 0; cursor: pointer; font-size: .9rem; } button
 button:disabled { opacity: .5; cursor: not-allowed; }
 .alt { display: block; text-align: center; margin-top: 8px; font-size: .85rem; }
 .grid2 { display: grid; grid-template-columns: 1fr 260px; gap: 20px; align-items: start; } @media (max-width: 860px) { .grid2 { grid-template-columns: 1fr; } }
+.live { color: #5fd38d; font-size: .6rem; margin-left: 4px; vertical-align: middle; }
+.sellbox { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; } .sellbox input { width: 80px; }
+.sellbox .quote { min-width: 180px; } button.sell { border-color: #ff9f6b; }

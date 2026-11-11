@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { groupLadders, modelYes, quotePreview, suggestedSide, fmtLeft, pct, money, calibrationPoints, buyBlocker, positionRows } from "./model.js";
-import { marketState, exactBuyQuote } from "./amm.js";
+import { groupLadders, modelYes, quotePreview, suggestedSide, fmtLeft, pct, money, calibrationPoints, buyBlocker, positionRows, sellBlocker, withLivePrices } from "./model.js";
+import { marketState, exactBuyQuote, exactSellQuote, livePrices } from "./amm.js";
 import { KEY as BURNER_KEY, shortAddr } from "./wallet.js";
 
 export const LOG_URL = import.meta.env?.VITE_LOG_URL || "../resolution-log.json";
@@ -30,6 +30,21 @@ export function useDevnet() {
     try { const r = await fn(); setMsg(r); } catch (e) { setMsg(label + " failed: " + errMsg(e)); } finally { setBusy(false); }
   }, []);
   return { s, bal, msg, setMsg, busy, open, refresh, act };
+}
+
+// Live YES prices for the open markets, read straight from the Market accounts (one getMultipleAccounts call every
+// 20 s and after each trade), so the list doesn't lag the keeper log (which only refreshes every 15 min).
+export function useLivePrices(sess, open, bump) {
+  const [live, setLive] = useState(null);
+  const keys = open.map((m) => m.market).join(",");
+  useEffect(() => {
+    if (!sess || !keys) return;
+    let on = true;
+    const load = () => sess.chain.fetchMarkets(sess, keys.split(",")).then((a) => on && setLive({ at: nowSecs(), prices: livePrices(a, nowSecs()) })).catch(() => {});
+    load(); const t = setInterval(load, 20000);
+    return () => { on = false; clearInterval(t); };
+  }, [sess, keys, bump]);
+  return live;
 }
 
 export function WalletPanel({ dev, cluster }) {
@@ -82,7 +97,7 @@ export function Kpis({ log }) {
   );
 }
 
-export function MarketsList({ open, asset, now, selected, onSelect }) {
+export function MarketsList({ open, asset, now, selected, onSelect, liveAt = null }) {
   const ladders = groupLadders(open, asset);
   if (!ladders.length) return <p className="muted">No open markets right now. The keeper rolls a new ladder on the next 6h grid slot.</p>;
   return ladders.map((L) => (
@@ -95,9 +110,9 @@ export function MarketsList({ open, asset, now, selected, onSelect }) {
             const p = modelYes(m, now);
             const side = suggestedSide(p, m.amm.yes);
             return (
-              <tr key={m.market} className={selected === m.market ? "sel" : ""} onClick={() => onSelect(m.market)}>
+              <tr key={m.market} data-market={m.market} data-end={m.endTs} className={selected === m.market ? "sel" : ""} onClick={() => onSelect(m.market)}>
                 <td>{money(m.strike, m.asset)}</td>
-                <td>{pct(m.amm.yes)}</td>
+                <td className="amm" title={m.amm.live ? `live on-chain price (keeper log: ${pct(m.amm.logYes)})` : "from the keeper log"}>{pct(m.amm.yes)}{m.amm.live ? <span className="live" aria-label="live">●</span> : null}</td>
                 <td>{pct(p)}</td>
                 <td className={side || ""}>{p == null || m.amm.yes == null ? "–" : ((p - m.amm.yes) * 100).toFixed(1) + " pts"}{side ? ` · ${side.toUpperCase()} cheap` : ""}</td>
                 <td>{m.amm.trades}</td>
@@ -108,7 +123,7 @@ export function MarketsList({ open, asset, now, selected, onSelect }) {
         </tbody>
       </table>
     </section>
-  ));
+  )).concat(liveAt ? [<p key="live" className="muted small">● AMM YES read live from the Market accounts at {new Date(liveAt * 1000).toISOString().slice(11, 19)}Z (refreshes every 20 s).</p>] : []);
 }
 
 export function TradePanel({ market: m, now, cluster, dev = null, onTraded }) {
@@ -140,7 +155,7 @@ export function TradePanel({ market: m, now, cluster, dev = null, onTraded }) {
     if (!q) throw new Error("market not tradable");
     const sig = await sess.chain.buy(sess, m.market, side, q.amountIn, q.minOutRaw);
     setTx(sig); await dev.refresh(); onTraded?.();
-    return `Bought ≈${q.tokens.toFixed(2)} ${side.toUpperCase()} for ${Number(amount)} mUSDC`;
+    return `Bought ≈${q.tokens.toFixed(2)} ${side.toUpperCase()} for ${Number(amount)} mUSDC · tx ${sig}`;
   });
   return (
     <aside className="trade">
@@ -187,7 +202,46 @@ export function TradePanel({ market: m, now, cluster, dev = null, onTraded }) {
   );
 }
 
-export function Positions({ dev, log, bump }) {
+// Exit control for one open position: pick side + amount, exact sell quote from the live pool, signed yesToUsdc/noToUsdc
+// with a 1% min-out bound (same gates as buy: devnet RPC only, re-quote right before signing).
+export function SellControl({ row, dev, pYes = null }) {
+  const sides = ["yes", "no"].filter((k) => row[k] > 0);
+  const [side, setSide] = useState(sides[0] || "yes");
+  const [amount, setAmount] = useState("");
+  const [acct, setAcct] = useState(null);
+  const sess = dev?.s;
+  const held = row[side] || 0, heldRaw = row[side + "Raw"] || 0;
+  useEffect(() => { if (!row[side]) setSide(sides[0] || "yes"); }, [row.yes, row.no]);
+  useEffect(() => {
+    if (!sess) return;
+    let on = true;
+    const load = () => sess.chain.fetchMarket(sess, row.market).then((a) => on && setAcct(a)).catch(() => {});
+    load(); const t = setInterval(load, 20000);
+    return () => { on = false; clearInterval(t); };
+  }, [sess, row.market, row.yes, row.no]);
+  const amt = amount === "" ? held : Number(amount);
+  const raw = (a) => (Math.abs(a - held) < 1e-9 ? heldRaw : Math.floor(a * 1e6)); // "all" sells the exact raw balance
+  const q = acct ? exactSellQuote(marketState(acct, nowSecs()), { side, tokensRaw: raw(amt), pYes }) : null;
+  const blocker = sellBlocker({ hasWallet: !!sess?.kp, bal: dev?.bal, tokens: amt, held, quote: q, busy: dev?.busy });
+  const doSell = () => dev.act(`Selling ${side.toUpperCase()}`, async () => {
+    const fresh = await sess.chain.fetchMarket(sess, row.market);
+    const fq = exactSellQuote(marketState(fresh, nowSecs()), { side, tokensRaw: raw(amt), pYes });
+    if (!fq) throw new Error("market not tradable");
+    const sig = await sess.chain.sell(sess, row.market, side, fq.amountIn, fq.minOutRaw);
+    dev.setLastTx?.(sig); setAmount(""); await dev.refresh();
+    return `Sold ${fq.tokens.toFixed(2)} ${side.toUpperCase()} for ≈${fq.usdc.toFixed(3)} mUSDC (min ${(fq.minOutRaw / 1e6).toFixed(3)}) · tx ${sig}`;
+  });
+  return (
+    <div className="sellbox">
+      {sides.length > 1 ? <select aria-label="sell side" value={side} onChange={(e) => setSide(e.target.value)}>{sides.map((k) => <option key={k} value={k}>{k.toUpperCase()}</option>)}</select> : <span>{side.toUpperCase()}</span>}
+      <input aria-label="sell amount" type="number" min="0" step="0.01" placeholder={held.toFixed(2)} value={amount} onChange={(e) => setAmount(e.target.value)} />
+      <span className="muted small quote">{q ? `→ ${q.usdc.toFixed(3)} mUSDC (min ${(q.minOutRaw / 1e6).toFixed(3)}, ${pct(q.price)}→${pct(q.priceAfter)}${q.sellEdge == null ? "" : `, vs hold ${q.sellEdge >= 0 ? "+" : ""}${q.sellEdge.toFixed(3)}`})` : "quote…"}</span>
+      <button type="button" className="sell" disabled={!!blocker} title={blocker || "sign a devnet sell with a 1% min-out bound"} onClick={doSell}>Sell</button>
+    </div>
+  );
+}
+
+export function Positions({ dev, log, bump, open = [], now = nowSecs() }) {
   const [rows, setRows] = useState(null);
   const sess = dev?.s;
   useEffect(() => {
@@ -196,17 +250,22 @@ export function Positions({ dev, log, bump }) {
     sess.chain.positions(sess, markets).then((held) => setRows(positionRows(held, log.resolutions))).catch(() => setRows([]));
   }, [sess, log, bump, dev?.busy]);
   if (!sess?.kp) return null;
+  const openById = new Map(open.map((m) => [m.market, m]));
   return (
-    <section>
+    <section className="positions">
       <h2>Your positions <span className="muted small">(burner, devnet)</span></h2>
       {!rows ? <p className="muted">Loading…</p> : !rows.length ? <p className="muted">No YES/NO tokens yet. Buy from the trade panel.</p> : (
         <table>
-          <thead><tr><th>Market</th><th>YES</th><th>NO</th><th>Status</th><th></th></tr></thead>
-          <tbody>{rows.map((r) => (
-            <tr key={r.market}><td>{r.name}</td><td>{r.yes ? r.yes.toFixed(2) : ""}</td><td>{r.no ? r.no.toFixed(2) : ""}</td>
-              <td className={r.status === "won" ? "yes" : r.status === "lost" ? "no" : ""}>{r.status}{r.winner ? ` (${r.winner.toUpperCase()})` : ""}</td>
-              <td>{r.claimable > 0 ? <button type="button" disabled={dev.busy} onClick={() => dev.act("Claiming", async () => { await sess.chain.claim(sess, r.market); await dev.refresh(); return `Claimed ${r.claimable.toFixed(2)} mUSDC`; })}>Claim {r.claimable.toFixed(2)}</button> : null}</td></tr>
-          ))}</tbody>
+          <thead><tr><th>Market</th><th>YES</th><th>NO</th><th>Status</th><th>Exit / claim</th></tr></thead>
+          <tbody>{rows.map((r) => {
+            const om = r.status === "open" ? openById.get(r.market) : null;
+            return (
+            <tr key={r.market} data-market={r.market}><td>{r.name}</td><td>{r.yes ? r.yes.toFixed(2) : ""}</td><td>{r.no ? r.no.toFixed(2) : ""}</td>
+              <td className={r.status === "won" ? "yes" : r.status === "lost" ? "no" : ""}>{r.status}{r.winner ? ` (${r.winner.toUpperCase()})` : ""}{r.status === "open" && !om ? " (expired, awaiting resolution)" : ""}</td>
+              <td>{r.claimable > 0 ? <button type="button" className="claim" disabled={dev.busy} onClick={() => dev.act("Claiming", async () => { const sig = await sess.chain.claim(sess, r.market); await dev.refresh(); return `Claimed ${r.claimable.toFixed(2)} mUSDC · tx ${sig}`; })}>Claim {r.claimable.toFixed(2)}</button>
+                : om ? <SellControl row={r} dev={dev} pYes={modelYes(om, now)} /> : null}</td></tr>
+            );
+          })}</tbody>
         </table>
       )}
     </section>
@@ -268,6 +327,9 @@ export default function App({ initialLog = null, initialNow = null }) {
   const market = open.find((m) => m.market === selected) || null;
   const dev = useDevnet();
   const [bump, setBump] = useState(0);
+  const live = useLivePrices(dev.s, open, bump);
+  const openLive = useMemo(() => withLivePrices(open, live?.prices), [open, live]);
+  const marketLive = openLive.find((m) => m.market === selected) || null;
   return (
     <main>
       <header>
@@ -281,13 +343,13 @@ export default function App({ initialLog = null, initialNow = null }) {
           <Kpis log={log} />
           <div className="tabs">{["ALL", "SOL", "BTC"].map((a) => <button key={a} type="button" className={asset === a ? "on" : ""} onClick={() => setAsset(a)}>{a}</button>)}</div>
           <div className="grid">
-            <div><h2>Open markets</h2><MarketsList open={open} asset={asset} now={now} selected={selected} onSelect={setSelected} /></div>
+            <div><h2>Open markets</h2><MarketsList open={openLive} asset={asset} now={now} selected={selected} onSelect={setSelected} liveAt={live?.at} /></div>
             <div className="side">
               <WalletPanel dev={dev} cluster={log.cluster} />
-              <TradePanel market={market} now={now} cluster={log.cluster} dev={dev} onTraded={() => setBump((b) => b + 1)} />
+              <TradePanel market={marketLive || market} now={now} cluster={log.cluster} dev={dev} onTraded={() => setBump((b) => b + 1)} />
             </div>
           </div>
-          <Positions dev={dev} log={log} bump={bump} />
+          <Positions dev={dev} log={log} bump={bump} open={open} now={now} />
           <div className="grid2"><Resolved log={log} /><Calibration log={log} /></div>
           <footer className="muted small">Log generated {new Date(log.generatedAt * 1000).toISOString()} · program <code>{log.program}</code> · rule: {log.rule}</footer>
         </>

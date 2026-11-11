@@ -86,6 +86,22 @@ export async function buy(s, market, side, amountInRaw, minOutRaw) {
   assertDevnetRpc(s.conn.rpcEndpoint);
   return s.client.send.swap(new PublicKey(market), side === "yes" ? "usdcToYes" : "usdcToNo", amountInRaw, minOutRaw);
 }
+// Signed sell (exit): yesToUsdc / noToUsdc of raw outcome tokens, min mUSDC out from the exact quote (1% slippage).
+export async function sell(s, market, side, tokensRaw, minOutRaw) {
+  if (!s.kp) throw new Error("no burner wallet");
+  assertDevnetRpc(s.conn.rpcEndpoint);
+  return s.client.send.swap(new PublicKey(market), side === "yes" ? "yesToUsdc" : "noToUsdc", tokensRaw, minOutRaw);
+}
+// Fetch many Market accounts in one getMultipleAccounts call (chunks of 100). Returns {market: decoded | null}.
+export async function fetchMarkets(s, markets) {
+  const out = {};
+  for (let i = 0; i < markets.length; i += 100) {
+    const chunk = markets.slice(i, i + 100);
+    const accts = await s.client.accounts.market.fetchMultiple(chunk.map((m) => new PublicKey(m)));
+    chunk.forEach((m, j) => { out[m] = accts[j] || null; });
+  }
+  return out;
+}
 export async function claim(s, market) {
   assertDevnetRpc(s.conn.rpcEndpoint);
   return s.client.send.claimWinnings(new PublicKey(market));
@@ -94,18 +110,18 @@ export async function claim(s, market) {
 // Outcome-token holdings of the burner across the given markets ({market, name, ...} from the resolution log).
 export async function positions(s, markets) {
   const res = await s.conn.getParsedTokenAccountsByOwner(s.kp.publicKey, { programId: TOKEN_PROGRAM_ID });
-  const held = new Map();
+  const held = new Map(), raw = new Map();
   for (const { account } of res.value) {
     const info = account.data.parsed?.info;
     const amt = Number(info?.tokenAmount?.uiAmount || 0);
-    if (amt > 0) held.set(info.mint, amt);
+    if (amt > 0) { held.set(info.mint, amt); raw.set(info.mint, Number(info.tokenAmount.amount)); }
   }
   const out = [];
   for (const m of markets) {
     const pk = new PublicKey(m.market);
-    const yes = held.get(deriveYesMint(PROGRAM_ID, pk).toBase58()) || 0;
-    const no = held.get(deriveNoMint(PROGRAM_ID, pk).toBase58()) || 0;
-    if (yes > 0 || no > 0) out.push({ ...m, yes, no });
+    const ym = deriveYesMint(PROGRAM_ID, pk).toBase58(), nm = deriveNoMint(PROGRAM_ID, pk).toBase58();
+    const yes = held.get(ym) || 0, no = held.get(nm) || 0;
+    if (yes > 0 || no > 0) out.push({ ...m, yes, no, yesRaw: raw.get(ym) || 0, noRaw: raw.get(nm) || 0 });
   }
   return out;
 }
