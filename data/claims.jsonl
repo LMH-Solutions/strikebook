@@ -242,3 +242,10 @@
 {"market":"GY4NYD3Fc9ayLnVnQ9uRv3GABqtgsdMUY7mw6uMdUdYq","name":"SOL>84.2@1794376800","kind":"claimWinnings","signature":"2WBnxMkgqQe3yTKJNZ6moM2kRQdB4ZX179wpdb4mQZFUZSdtpcpQZ3xktzbdiJ3QQibL3LKJNzX2hcygJeFpyD62","at":1794376866}
 {"market":"HvBwTYbtiWgMJT5JSt4j7LoDZ2sxDHJK3SMd48n3tn9X","name":"BTC>73600@1794376800","kind":"claimLpResiduals","signature":"35xK9TQ1fGLsSWxeTnMRh3Eu44S89kjrwb6b2U9H1fUXkw5TjVLSGrmDYkrcx93F24HvKsiHGXoKjEyWVpR7WzLK","at":1794376868}
 {"market":"HvBwTYbtiWgMJT5JSt4j7LoDZ2sxDHJK3SMd48n3tn9X","name":"BTC>73600@1794376800","kind":"claimWinnings","signature":"2EfENXgxqi7zU5sZG1LUVA2JPFKrXSxKMpXGj58MVCAVUEWdcRcR8LSGNiRVkv3wXjEiPYCEZU7mTogYV8ZiLWam","at":1794376869}
+{"market":"3o6QfDxkotDEsM7MzBftyCxjtsJVQF47jQZWarQbRBLu","name":"SOL>83.2@1794398400","kind":"claimLpResiduals","signature":"t9QHWtzSrSQyuEA3WkUTzcm3rnb6R7u7q3U2qeydkb4ZduVQBEyT8muigW91aPZJf6PRSybLXV7q5TwnyEE8Rcp","at":1794398486}
+{"market":"3o6QfDxkotDEsM7MzBftyCxjtsJVQF47jQZWarQbRBLu","name":"SOL>83.2@1794398400","kind":"claimWinnings","signature":"3Q9t1gJLJyu6Tw9f7iebEKwZEZHdktCXGFgtQ38wM3Cnz9r8AYjKmQQDXhwghczRWAo4e8UAUCG2kthQLkParGAh","at":1794398489}
+{"market":"5MScz9oMcPfUzbsEEefZ3dwLk6ffcBKHyPqbkvuD5o1r","name":"BTC>73800@1794398400","kind":"claimLpResiduals","signature":"3z2kHVzt58xaPFHfLnsw46WxeZRJYzU1P5va84tdo9A8nLGw1Z6gyr5XW1DJNpn2k13v4bQSmkS7UcwVZJrwGbWQ","at":1794398490}
+{"market":"7fBkZvwQJk7wNP7SsFsekBKjNohJm7ye6kcaXJS6Qrti","name":"SOL>84.2@1794398400","kind":"claimLpResiduals","skipped":"Simulation failed. ","at":1794399988}
+{"market":"7fBkZvwQJk7wNP7SsFsekBKjNohJm7ye6kcaXJS6Qrti","name":"SOL>84.2@1794398400","kind":"claimWinnings","skipped":"Simulation failed. ","at":1794399989}
+{"market":"DfaJ4LCrDfD6CFKa9dbTMkXydFmseaC7tXhhGTabRkEt","name":"BTC>74400@1794398400","kind":"claimLpResiduals","skipped":"Simulation failed. ","at":1794399989}
+{"market":"DfaJ4LCrDfD6CFKa9dbTMkXydFmseaC7tXhhGTabRkEt","name":"BTC>74400@1794398400","kind":"claimWinnings","skipped":"Simulation failed. ","at":1794399989}
