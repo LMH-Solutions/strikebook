@@ -1,6 +1,6 @@
 {
   "schema": "strikebook.resolution-log/v1",
-  "generatedAt": 1794400374,
+  "generatedAt": 1794401416,
   "cluster": "devnet",
   "program": "GV1FMGHRYBjQLaghE5fnGuYCuCcpdt3GD5xEX3TwN16y",
   "app": "https://pm-amm-devnet.vercel.app",
@@ -76,17 +76,17 @@
     ],
     "openMarkets": 6,
     "traction": {
-      "trades": 432,
-      "volumeUsdc": 2414.276,
-      "feesUsdc": 48.28552,
-      "lpFeesUsdc": 24.14276,
-      "markets": 80,
-      "yes": 168,
+      "trades": 433,
+      "volumeUsdc": 2416.699,
+      "feesUsdc": 48.33398,
+      "lpFeesUsdc": 24.16699,
+      "markets": 81,
+      "yes": 169,
       "no": 264,
-      "meanGapClosed": 0.099,
-      "expectedEdgeUsdc": 336.79019,
+      "meanGapClosed": 0.0989,
+      "expectedEdgeUsdc": 336.94311,
       "firstAt": 1793628172,
-      "lastAt": 1794397547
+      "lastAt": 1794401415
     }
   },
   "ladders": [
@@ -5182,11 +5182,11 @@
         "depositUsdc": 25
       },
       "amm": {
-        "yes": 0.4779,
-        "at": 1794399993,
-        "trades": 0,
-        "spot": 73859.1645679,
-        "sigmaAnnual": 0.440899018264288
+        "yes": 0.511832,
+        "at": 1794401415,
+        "trades": 1,
+        "spot": 73977.41066662,
+        "sigmaAnnual": 0.440929
       },
       "url": "https://pm-amm-devnet.vercel.app/market/200689866812466"
     },
@@ -5288,6 +5288,23 @@
     }
   ],
   "trades": [
+    {
+      "at": 1794401415,
+      "market": "3RFTgoMjfNbzVB71sSH7uD26nKF5M29Fq8NHLcqkTcpm",
+      "name": "BTC>73900@1794420000",
+      "asset": "BTC",
+      "side": "yes",
+      "amountUsdc": 2.423,
+      "tokensOut": 4.798384,
+      "feeUsdc": 0.04846,
+      "pModel": 0.536831,
+      "ammBefore": 0.4779,
+      "ammAfter": 0.511832,
+      "spot": 73977.41066662,
+      "sigmaAnnual": 0.440929,
+      "tx": "4MhFPqw5uZgQhHD3Buhu4LmNgWAYygRdtdkcvEswSKWwYyjDeieVQVNTVzrjSQHK56pWKsoUst1JmFZUujTUWmSs",
+      "outcome": null
+    },
     {
       "at": 1794397547,
       "market": "DfaJ4LCrDfD6CFKa9dbTMkXydFmseaC7tXhhGTabRkEt",
