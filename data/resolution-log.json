@@ -1,6 +1,6 @@
 {
   "schema": "strikebook.resolution-log/v1",
-  "generatedAt": 1794404056,
+  "generatedAt": 1794404754,
   "cluster": "devnet",
   "program": "GV1FMGHRYBjQLaghE5fnGuYCuCcpdt3GD5xEX3TwN16y",
   "app": "https://pm-amm-devnet.vercel.app",
@@ -76,17 +76,17 @@
     ],
     "openMarkets": 6,
     "traction": {
-      "trades": 436,
-      "volumeUsdc": 2425.344,
-      "feesUsdc": 48.50688,
-      "lpFeesUsdc": 24.25344,
+      "trades": 437,
+      "volumeUsdc": 2427.713,
+      "feesUsdc": 48.55426,
+      "lpFeesUsdc": 24.27713,
       "markets": 82,
       "yes": 169,
-      "no": 267,
-      "meanGapClosed": 0.0985,
-      "expectedEdgeUsdc": 337.406148,
+      "no": 268,
+      "meanGapClosed": 0.0983,
+      "expectedEdgeUsdc": 337.521546,
       "firstAt": 1793628172,
-      "lastAt": 1794404055
+      "lastAt": 1794404753
     }
   },
   "ladders": [
@@ -5182,11 +5182,11 @@
         "depositUsdc": 25
       },
       "amm": {
-        "yes": 0.43926,
-        "at": 1794404054,
-        "trades": 3,
-        "spot": 73748.50602754,
-        "sigmaAnnual": 0.430956
+        "yes": 0.408378,
+        "at": 1794404753,
+        "trades": 4,
+        "spot": 73695.82377807,
+        "sigmaAnnual": 0.431075
       },
       "url": "https://pm-amm-devnet.vercel.app/market/200689866812466"
     },
@@ -5288,6 +5288,23 @@
     }
   ],
   "trades": [
+    {
+      "at": 1794404753,
+      "market": "3RFTgoMjfNbzVB71sSH7uD26nKF5M29Fq8NHLcqkTcpm",
+      "name": "BTC>73900@1794420000",
+      "asset": "BTC",
+      "side": "no",
+      "amountUsdc": 2.369,
+      "tokensOut": 4.029048,
+      "feeUsdc": 0.04738,
+      "pModel": 0.383378,
+      "ammBefore": 0.43926,
+      "ammAfter": 0.408378,
+      "spot": 73695.82377807,
+      "sigmaAnnual": 0.431075,
+      "tx": "3ePiNoh1p9VrLZ7Sr5Te6WoaQ5XTpJHfDHWeFwmY4kY6fU2HsrYZRKC8XXhXQ55nqnEyHyY1ijaoZc5rPvz8CiKc",
+      "outcome": null
+    },
     {
       "at": 1794404055,
       "market": "HesTb7mxEpqxRMVTkDyiqs9K63iQv9vprD7wRNKW7o8j",
