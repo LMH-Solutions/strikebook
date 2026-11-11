@@ -1,6 +1,6 @@
 {
   "schema": "strikebook.resolution-log/v1",
-  "generatedAt": 1794432391,
+  "generatedAt": 1794433071,
   "cluster": "devnet",
   "program": "GV1FMGHRYBjQLaghE5fnGuYCuCcpdt3GD5xEX3TwN16y",
   "app": "https://pm-amm-devnet.vercel.app",
@@ -76,17 +76,17 @@
     ],
     "openMarkets": 8,
     "traction": {
-      "trades": 462,
-      "volumeUsdc": 2577.879,
-      "feesUsdc": 51.55758,
-      "lpFeesUsdc": 25.77879,
+      "trades": 464,
+      "volumeUsdc": 2587.723,
+      "feesUsdc": 51.75446,
+      "lpFeesUsdc": 25.87723,
       "markets": 86,
       "yes": 183,
-      "no": 279,
-      "meanGapClosed": 0.1015,
-      "expectedEdgeUsdc": 365.900282,
+      "no": 281,
+      "meanGapClosed": 0.1014,
+      "expectedEdgeUsdc": 366.408365,
       "firstAt": 1793628172,
-      "lastAt": 1794430845
+      "lastAt": 1794433070
     }
   },
   "ladders": [
@@ -5339,11 +5339,11 @@
         "depositUsdc": 25
       },
       "amm": {
-        "yes": 0.130305,
-        "at": 1794426086,
-        "trades": 1,
-        "spot": 84.56619738,
-        "sigmaAnnual": 0.608722
+        "yes": 0.083317,
+        "at": 1794433068,
+        "trades": 2,
+        "spot": 84.67946738,
+        "sigmaAnnual": 0.60144
       },
       "url": "https://pm-amm-devnet.vercel.app/market/99512137794784"
     },
@@ -5363,11 +5363,11 @@
         "depositUsdc": 25
       },
       "amm": {
-        "yes": 0.364843,
-        "at": 1794430845,
-        "trades": 3,
-        "spot": 84.93762605,
-        "sigmaAnnual": 0.609345
+        "yes": 0.291172,
+        "at": 1794433070,
+        "trades": 4,
+        "spot": 84.67946738,
+        "sigmaAnnual": 0.60144
       },
       "url": "https://pm-amm-devnet.vercel.app/market/187066192429557"
     },
@@ -5469,6 +5469,40 @@
     }
   ],
   "trades": [
+    {
+      "at": 1794433070,
+      "market": "Foabnar8K6qRWe3rDNE2ChhjyjDDN2u18x6eekBuvFQL",
+      "name": "SOL>85.2@1794441600",
+      "asset": "SOL",
+      "side": "no",
+      "amountUsdc": 5.21,
+      "tokensOut": 7.591683,
+      "feeUsdc": 0.1042,
+      "pModel": 0.266175,
+      "ammBefore": 0.364843,
+      "ammAfter": 0.291172,
+      "spot": 84.67946738,
+      "sigmaAnnual": 0.60144,
+      "tx": "4hymN146Hj1e2CpYrU94f9s6AfHRFnotyrNoVah7grP8jmKcLWmWNrNuKGkBdHrCM8dRqp5US4Q7x3GbULWkMf3C",
+      "outcome": null
+    },
+    {
+      "at": 1794433068,
+      "market": "9Ly4tHCaenGc6nkhAwWHxjKisEkpNZm9dh7XtacQiDra",
+      "name": "SOL>86@1794441600",
+      "asset": "SOL",
+      "side": "no",
+      "amountUsdc": 4.634,
+      "tokensOut": 5.077212,
+      "feeUsdc": 0.09268,
+      "pModel": 0.058318,
+      "ammBefore": 0.130305,
+      "ammAfter": 0.083317,
+      "spot": 84.67946738,
+      "sigmaAnnual": 0.60144,
+      "tx": "4yynv7APG6WJhXnMZXMv98dww3Em91NztMHnVEKdYhC5rBWFpjaqqvZJZLR8QkaaxqqApT5291mCyr7QwVPqfLp8",
+      "outcome": null
+    },
     {
       "at": 1794430845,
       "market": "Foabnar8K6qRWe3rDNE2ChhjyjDDN2u18x6eekBuvFQL",
