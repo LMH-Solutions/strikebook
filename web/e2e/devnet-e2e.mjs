@@ -8,6 +8,8 @@
 // --wallet=mock-phantom: instead of the burner, inject a fake window.phantom.solana whose signTransaction is backed by a
 //          throwaway ed25519 key held in this Node process (never in the page). Exercises the injected-wallet path
 //          (Phantom/Backpack adapter) end to end on devnet without a browser extension.
+// BURNER_KEY_FILE=<Solana CLI JSON>: preload that devnet burner into the page's localStorage (any origin, e.g. the live
+//          Pages site), so a position bought in an earlier run can be checked or claimed later.
 // Every tx signature from the page's status line is then polled on devnet until finalized; the run fails unless err is null.
 // The burner lives in the Chrome profile's localStorage (PROFILE env, default a fresh /tmp dir). DEVNET ONLY: the page
 // itself refuses non-devnet RPCs (assertDevnetRpc) and this script only queries api.devnet.solana.com.
@@ -53,6 +55,10 @@ try {
   page.on("dialog", (d) => d.accept());
   await page.setViewport({ width: 1300, height: 1800 });
   const MOCK = opt("wallet", "burner") === "mock-phantom";
+  if (process.env.BURNER_KEY_FILE && !MOCK) {
+    const secret = fs.readFileSync(process.env.BURNER_KEY_FILE, "utf8").trim();
+    await page.evaluateOnNewDocument((k) => { if (!localStorage.getItem("strikebook.devnet-burner.v1")) localStorage.setItem("strikebook.devnet-burner.v1", k); }, secret);
+  }
   if (MOCK) { // throwaway devnet key in Node; the page only ever sees signatures
     const { publicKey, privateKey } = crypto.generateKeyPairSync("ed25519");
     const addr = new PublicKey(Buffer.from(publicKey.export({ format: "jwk" }).x, "base64url")).toBase58();
@@ -141,6 +147,10 @@ try {
     out.txs.push({ kind: `sell yes ${qty}`, sig: sigOf(st) });
     await sleep(8000);
     out.positionAfter = await txt(rowSel);
+  }
+  if (flag("positions")) { // read-only: wait for the Positions table and report it
+    await page.waitForSelector(".positions table, .positions p", { timeout: 60000 }); await sleep(5000);
+    out.positionsTable = await txt(".positions");
   }
   if (flag("claim")) {
     await page.waitForSelector(".positions", { timeout: 60000 });
