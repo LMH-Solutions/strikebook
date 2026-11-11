@@ -226,3 +226,11 @@
 {"market":"GZETgPRThDGQ6jpetZPG2hhzyCWd12VDEef2YYpgWsVJ","name":"SOL>84.6@1794333600","kind":"claimWinnings","skipped":"Simulation failed. ","at":1794335436}
 {"market":"GZETgPRThDGQ6jpetZPG2hhzyCWd12VDEef2YYpgWsVJ","name":"SOL>84.6@1794333600","kind":"claimWinnings","skipped":"Simulation failed. ","at":1794336344}
 {"market":"GZETgPRThDGQ6jpetZPG2hhzyCWd12VDEef2YYpgWsVJ","name":"SOL>84.6@1794333600","kind":"claimWinnings","skipped":"Simulation failed. ","at":1794337246}
+{"market":"43hxEJFbjTBA3oS6roGLB5LtZdgTLVsWMddDYwh5kkpY","name":"BTC>73700@1794355200","kind":"claimLpResiduals","signature":"4Kk6VjZkVDzp1GonPhg4Di7nSGqH7KTnRWE1EgJCDNdd9MewxXLt19cp9YC1sRPkLTtVDPVGJkD2bFVhf3FGf6dB","at":1794356280}
+{"market":"43hxEJFbjTBA3oS6roGLB5LtZdgTLVsWMddDYwh5kkpY","name":"BTC>73700@1794355200","kind":"claimWinnings","signature":"41rJErPGzitrk5pp8jtLCbmSUFxZmStyfFquHyUAz9zXUKrDAWX4FbgtHpyBN7LRWwEELXk1qdweib1XXqwEP7KU","at":1794356283}
+{"market":"6Tq97GZQ1BdsN8PwtpwmvBLZh6E2tLbhLq5jPg76LCvf","name":"SOL>82.2@1794355200","kind":"claimLpResiduals","signature":"4RJSjPk4cAkJhkBMjs4S118bTAZSswrSLZnBPNvwxuLMKFutkaWpoAy3byGd8YjNsLv6Lmbdv7ZdKo289fYHL8dC","at":1794356285}
+{"market":"6Tq97GZQ1BdsN8PwtpwmvBLZh6E2tLbhLq5jPg76LCvf","name":"SOL>82.2@1794355200","kind":"claimWinnings","signature":"5CBvdzV92jyhM4MMvNF2bevhn75KHZ8oXNSMG9oo3xhVt5dUmSvh4sijq4eX42XEzT1aDeK5PXXgXM7BKqRAskMT","at":1794356288}
+{"market":"BByxXFq1eSNzGmztEA3SRiZb4bYSRHs3qebZ5x3r2dyd","name":"BTC>73200@1794355200","kind":"claimLpResiduals","signature":"5Npwaa8Js66aVBZ2WnfGqYi3EvvWWUTkJB2uEsJd8KAHGj33Qy5Lt4A38R54dFeHLY9sXDaQ3jLatA35gdqPd8sv","at":1794356290}
+{"market":"BByxXFq1eSNzGmztEA3SRiZb4bYSRHs3qebZ5x3r2dyd","name":"BTC>73200@1794355200","kind":"claimWinnings","signature":"4AmwBtD68C2z2791UNChYLntMjQbPUx2cJoPwTCQp6BFuRHMpuaFL63LXFMQ7XzUDSbPYzog2qjpHLeij1gY2FjL","at":1794356293}
+{"market":"Gh3sfMrUqLYBRoNWzB5DCzGWrTV88Ddj8W5Dc6snoRwP","name":"SOL>83.2@1794355200","kind":"claimLpResiduals","signature":"aUzSmcqQrAK5Y2pLF3Rc3qpSDJDkwjmuSvJSrBWPvm3o6G9cmLLUjNLU5j6Fr76Q9oDAGpnAM59SyK5TiJRAvX1","at":1794356296}
+{"market":"Gh3sfMrUqLYBRoNWzB5DCzGWrTV88Ddj8W5Dc6snoRwP","name":"SOL>83.2@1794355200","kind":"claimWinnings","signature":"5UBzMzyWTnPepPuhJ9cMyE6Q4oBxfusKxmoSc6ajonZwUmqJhVBSoNtKJ1oTPdk1UN9ia5V2UNxQeUN8RXYZbQCa","at":1794356298}
