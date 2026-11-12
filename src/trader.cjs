@@ -4,20 +4,25 @@
 //   2. faucet the trader wallet if it is short (pm-AMM faucet: 1 claim / hour / wallet)
 //   3. for every open ladder rung created by the keeper wallet: model P(YES) = Phi(d2) from the live Pyth spot and
 //      realised vol, compare to the pm-AMM price, and buy the cheap side toward the model when |gap| > fee + minEdge
+//   3a. EXIT: before buying, if the trader holds YES/NO tokens on that rung and the model has flipped against them (the AMM bid,
+//      net of the 2% fee, beats the model's hold value by margin + 1 pt), sell part of the inventory back to the pool
+//      (yesToUsdc / noToUsdc, sized on the exact sell quote by lib/trader.cjs planExit, 1% slippage bound)
 //   4. append each trade (market, side, size, model prob, AMM price before/after, fee, tx) to data/trades.jsonl
 //
 // The trader uses its OWN throwaway devnet wallet (../.devnet-keys/trader.json), distinct from the LP/keeper wallet,
 // so it pays the real swap fee (50% to the market creator = our LP, 50% to the protocol DAO).
-//   node src/trader.cjs run   [--dry] [--max-trade 20] [--max-market 60] [--min-edge 0.03] [--budget 200]
+//   node src/trader.cjs run   [--dry] [--max-trade 20] [--max-market 60] [--min-edge 0.03] [--budget 200] [--no-exit]
 //   node src/trader.cjs status
 const fs = require("fs");
 const path = require("path");
 const { PublicKey } = require("@solana/web3.js");
+const { TOKEN_PROGRAM_ID } = require("@solana/spl-token");
+const { deriveYesMint, deriveNoMint } = require("@pm-amm/sdk");
 const pm = require("./lib/pmamm.cjs");
 const { pythLatest, hourlyCloses } = require("./lib/feeds.cjs");
 const { realizedVol } = require("./lib/pricing.cjs");
 const { parseStrikeName } = require("./lib/resolver.cjs");
-const { decideTrade, modelProb, tradeStats } = require("./lib/trader.cjs");
+const { decideTrade, planExit, modelProb, tradeStats } = require("./lib/trader.cjs");
 
 const DATA = path.join(__dirname, "../data");
 const TRADES = path.join(DATA, "trades.jsonl");
@@ -34,6 +39,14 @@ function args() {
   const a = { _: [] }; const v = process.argv.slice(2);
   for (let i = 0; i < v.length; i++) { if (v[i].startsWith("--")) { const k = v[i].slice(2); a[k] = v[i + 1] && !v[i + 1].startsWith("--") ? v[++i] : true; } else a._.push(v[i]); }
   return a;
+}
+
+// Raw outcome-token balances of `owner` by mint (one RPC call for all markets).
+async function holdings(conn, owner) {
+  const res = await conn.getParsedTokenAccountsByOwner(owner, { programId: TOKEN_PROGRAM_ID });
+  const held = new Map();
+  for (const { account } of res.value) { const i = account.data.parsed?.info; const raw = Number(i?.tokenAmount?.amount || 0); if (raw > 0) held.set(i.mint, raw); }
+  return held;
 }
 
 async function run(a) {
@@ -83,7 +96,9 @@ async function run(a) {
   report.balancesBefore = bal;
 
   // 3. trade open rungs toward the model
-  const spent = {}; for (const t of trades) spent[t.market] = (spent[t.market] || 0) + t.amountIn;
+  // net mUSDC at risk per market: buys add amountIn, sells give back their proceeds (so the inventory cap re-opens after an exit)
+  const spent = {}; for (const t of trades) spent[t.market] = Math.max(0, (spent[t.market] || 0) + (t.action === "sell" ? -(t.quotedOut || 0) : t.amountIn));
+  const inventory = a["no-exit"] ? new Map() : await holdings(conn, me);
   let budget = Math.min(Number(a.budget || 200), bal.usdc) * 1e6;
   let sol = bal.sol;
   const model = {};
@@ -97,8 +112,31 @@ async function run(a) {
         model[asset] = { spot: spot.price, spotPublishTime: spot.publishTime, spotSource: spot.source.split(" ")[0], sigmaAnnual: sigma };
       }
       const M = model[asset];
-      const s = pm.marketState(m.account, now());
+      let s = pm.marketState(m.account, now());
       const pModel = modelProb({ spot: M.spot, strike, sigmaAnnual: M.sigmaAnnual, endTs, now: now() });
+      // 3a. exit inventory the model has turned against
+      const mints = { yes: deriveYesMint(pm.PROGRAM_ID, m.market).toBase58(), no: deriveNoMint(pm.PROGRAM_ID, m.market).toBase58() };
+      for (const side of ["yes", "no"]) {
+        const tokens = inventory.get(mints[side]) || 0;
+        if (!tokens) continue;
+        const x = planExit({ s, pModel, side, tokens, cfg });
+        if (x.action !== "sell") { if (x.reason !== "no-exit-edge") report.skipped.push({ name: m.name, reason: `exit-${x.reason}`, side, tokens }); continue; }
+        if (sol < 0.002) { report.skipped.push({ name: m.name, reason: "low-sol", sol }); continue; }
+        const rec = { action: "sell", market: k, marketId: pm.toNum(m.account.marketId), name: m.name, asset, strike, endTs, side, dir: x.dir,
+          amountIn: x.amount, quotedOut: x.quotedOut, fee: x.fee, avgPrice: +x.avgPrice.toFixed(6), pModel: +pModel.toFixed(6), heldTokens: tokens,
+          ammBefore: +s.price.toFixed(6), ammAfterEst: +x.ammAfterEst.toFixed(6), evMicro: x.evMicro, spot: M.spot, spotPublishTime: M.spotPublishTime,
+          spotSource: M.spotSource, sigmaAnnual: +M.sigmaAnnual.toFixed(6), secsLeft: s.secondsLeft, trader: me.toBase58(), dry };
+        if (dry) { report.trades.push(rec); continue; }
+        rec.signature = await client.send.swap(m.market, x.dir, x.amount, pm.minOutput({ out: x.quotedOut })); // exact quote, 1% slippage bound
+        rec.at = now();
+        const after = await client.fetchMarket(m.market).catch(() => null);
+        if (after) { s = pm.marketState(after, now()); rec.ammAfter = +s.price.toFixed(6); }
+        append(TRADES, rec);
+        report.trades.push(rec);
+        inventory.set(mints[side], tokens - x.amount);
+        spent[k] = Math.max(0, (spent[k] || 0) - x.quotedOut); sol -= 0.00001;
+        console.error(`traded ${m.name} SELL ${side.toUpperCase()} ${(x.amount / 1e6).toFixed(2)} tok -> ${(x.quotedOut / 1e6).toFixed(2)} mUSDC  model ${(pModel * 100).toFixed(1)}% vs amm ${(rec.ammBefore * 100).toFixed(1)}% -> ${rec.ammAfter != null ? (rec.ammAfter * 100).toFixed(1) + "%" : "?"}`);
+      }
       const d = decideTrade({ s, pModel, held: spent[k] || 0, budget, cfg });
       if (d.action !== "trade") { report.skipped.push({ name: m.name, reason: d.reason, pModel: +pModel.toFixed(4), amm: +s.price.toFixed(4) }); continue; }
       if (sol < MIN_SOL || sol < SWAP_SOL * 2) { report.skipped.push({ name: m.name, reason: "low-sol", sol }); continue; }
@@ -126,12 +164,12 @@ async function main() {
   const a = args(); const cmd = a._[0] || "run";
   if (cmd === "run") {
     const r = await run(a);
-    console.log(JSON.stringify({ summary: { trades: r.trades.length, claims: r.claims.filter((c) => c.signature).length, skipped: r.skipped.map((s) => `${s.name}:${s.reason}`),
+    console.log(JSON.stringify({ summary: { trades: r.trades.length, sells: r.trades.filter((t) => t.action === "sell").length, claims: r.claims.filter((c) => c.signature).length, skipped: r.skipped.map((s) => `${s.name}:${s.reason}`),
       sol: +r.balancesAfter.sol.toFixed(4), usdc: r.balancesAfter.usdc, faucet: r.faucet && (r.faucet.ok ?? r.faucet.status ?? r.faucet.wouldTry ?? r.faucet.error) }, totals: r.totals, ...(a.verbose || a.dry ? { report: r } : {}) }, null, 2));
   } else if (cmd === "status") {
     const trader = pm.loadKeypair(TRADER_KEY); const conn = pm.connection(await pm.pickRpc());
     console.log(JSON.stringify({ trader: trader.publicKey.toBase58(), balances: await pm.balances(conn, trader.publicKey), totals: tradeStats(readJsonl(TRADES)) }, null, 2));
   } else throw new Error(`unknown command ${cmd}`);
 }
-module.exports = { run, TRADES, TCLAIMS };
+module.exports = { run, holdings, TRADES, TCLAIMS };
 if (require.main === module) main().catch((e) => { console.error(e.message || e); if (e.logs) console.error(e.logs.join("\n")); process.exit(1); });

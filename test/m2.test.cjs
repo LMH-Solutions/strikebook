@@ -129,3 +129,16 @@ test("claimsDone: signed claims are done; repeated permanent skips give up after
   ]);
   assert.deepStrictEqual([...d].sort(), ["A:claimWinnings", "C:claimWinnings"]);
 });
+
+// M4: deeper pools (100 mUSDC seed per rung), stepping down only when the wallet can't fund a full set of ladders
+test("affordableDeposit / planTick: 100 mUSDC seeds when affordable, step down (floor 25) when short", () => {
+  const { affordableDeposit } = require("../src/lib/roller.cjs");
+  assert.equal(affordableDeposit({ usdc: 24000, target: 100, rungs: 6 }), 100);
+  assert.equal(affordableDeposit({ usdc: 300, target: 100, minDeposit: 25, rungs: 6 }), 50);
+  assert.equal(affordableDeposit({ usdc: 60, target: 100, minDeposit: 25, rungs: 6 }), 25);
+  const now = 1_800_000_000 - 5 * 3600;
+  const rich = planTick({ now, markets: [], balances: { sol: 1, usdc: 5000 }, cfg: { assets: ["SOL", "BTC"], maxRungs: 2, deposit: 100 } });
+  assert.equal(rich.deposit, 100); assert.ok(rich.create.length === 2 && rich.create.every((c) => c.deposit === 100));
+  const poor = planTick({ now, markets: [], balances: { sol: 1, usdc: 200 }, cfg: { assets: ["SOL", "BTC"], maxRungs: 2, deposit: 100 } });
+  assert.equal(poor.deposit, 50); assert.equal(poor.create.reduce((s, c) => s + c.probs.length, 0), 4, "depth never costs rungs");
+});

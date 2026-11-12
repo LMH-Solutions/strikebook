@@ -20,12 +20,13 @@ at publish_time ${iso(r0.oracle.publishTime)} (${r0.oracle.lagSecs >= 0 ? "+" : 
 <table><tr><th>Market</th><th>Strike</th><th>Seed fair YES</th><th>Result</th><th>Brier</th><th>Create tx</th><th>Resolve tx</th><th>Claims</th></tr>${rows}</table></section>`;
   }).join("\n");
   const T = s.traction || { trades: 0, volumeUsdc: 0, feesUsdc: 0, lpFeesUsdc: 0, markets: 0 };
-  const tradeRows = (log.trades || []).slice(0, 25).map((t) => `<tr><td>${iso(t.at)}</td><td>${esc(t.name)}</td><td class="${esc(t.side)}">BUY ${esc(String(t.side).toUpperCase())}</td>
+  const tradeRows = (log.trades || []).slice(0, 25).map((t) => `<tr><td>${iso(t.at)}</td><td>${esc(t.name)}</td><td class="${esc(t.side)}">${t.action === "sell" ? "SELL" : "BUY"} ${esc(String(t.side).toUpperCase())}</td>
 <td>${Number(t.amountUsdc).toFixed(2)}</td><td>${pct(t.pModel)}</td><td>${pct(t.ammBefore)} → ${pct(t.ammAfter)}</td><td>${Number(t.feeUsdc).toFixed(4)}</td>
 <td>${t.outcome ? `<span class="${esc(t.outcome)}">${esc(t.outcome.toUpperCase())}</span>` : "open"}</td><td>${tx(t.tx, cl)}</td></tr>`).join("");
   const traction = `<h2>Traction: edge re-centering trader</h2>
 <p><small>A separate devnet trader wallet prices every open rung with the same model (P(YES) = Φ(d2) from the live Pyth spot and 7-day realised vol)
-and buys the cheap side when the pm-AMM price is more than fee + 3 pts away, moving the price back toward the model. It pays the real 2% swap fee
+and buys the cheap side when the pm-AMM price is more than fee + 3 pts away, moving the price back toward the model. When the model flips against
+inventory it already holds (the AMM bid, net of fee, beats the model's hold value), it sells part of that inventory back to the pool (exact-quote sized). It pays the real 2% swap fee
 (half to the market creator/LP, half to the protocol).</small></p>
 <div class="kpi"><div><b>${T.trades}</b>trades</div><div><b>${Number(T.volumeUsdc).toFixed(2)}</b>volume (mUSDC)</div><div><b>${Number(T.feesUsdc).toFixed(3)}</b>swap fees (mUSDC)</div>
 <div><b>${Number(T.lpFeesUsdc).toFixed(3)}</b>fees to LP</div><div><b>${T.markets}</b>markets traded</div>

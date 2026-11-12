@@ -57,7 +57,8 @@ function buildResolutionLog({ created = [], resolved = [], claims = [], trades =
     ladders, resolutions: rows,
     open: openMarkets({ created, seen, trades, app }),
     trades: trades.filter((t) => t.signature && !t.dry).sort((a, b) => b.at - a.at).map((t) => ({ at: t.at, market: t.market, name: t.name, asset: t.asset,
-      side: t.side, amountUsdc: t.amountIn / 1e6, tokensOut: t.quotedOut / 1e6, feeUsdc: t.fee / 1e6, pModel: t.pModel, ammBefore: t.ammBefore,
+      action: t.action === "sell" ? "sell" : "buy", side: t.side,
+      amountUsdc: (t.action === "sell" ? t.quotedOut : t.amountIn) / 1e6, tokensOut: (t.action === "sell" ? t.amountIn : t.quotedOut) / 1e6, feeUsdc: t.fee / 1e6, pModel: t.pModel, ammBefore: t.ammBefore,
       ammAfter: t.ammAfter ?? t.ammAfterEst, spot: t.spot, sigmaAnnual: t.sigmaAnnual, tx: t.signature,
       outcome: seen.has(t.market) ? rows.find((r) => r.market === t.market).side : null })),
   };

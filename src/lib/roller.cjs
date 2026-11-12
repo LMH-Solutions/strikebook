@@ -30,11 +30,19 @@ function allocateRungs({ assets, sol, usdc, deposit, maxRungs, rent = RENT_PER_M
   return out;
 }
 
+// Per-rung seed (mUSDC): the target if the wallet covers `rungs` of them, else the even split of the balance, floored at minDeposit.
+function affordableDeposit({ usdc, target, minDeposit = Math.min(25, target), rungs }) {
+  if (!(rungs > 0) || usdc >= target * rungs) return target;
+  return Math.max(Math.min(minDeposit, target), Math.min(target, Math.floor(Math.max(0, usdc) / rungs)));
+}
+
 // markets: [{ name, endTs (on-chain), resolved }]  (our wallet's markets only)
 // balances: { sol, usdc }
-// cfg: { assets, gridSecs, minLeadSecs, maxRungs, minRungs, deposit, probs }
+// cfg: { assets, gridSecs, minLeadSecs, maxRungs, minRungs, deposit, minDeposit, probs }
+// deposit = target mUSDC seed per rung (M4: 100, deeper pools). If the wallet can't fund a full set of ladders at that depth,
+// the seed steps down to what it can afford (never below minDeposit), so depth never costs us rungs.
 function planTick({ now, markets, balances, cfg }) {
-  const { assets, gridSecs = 6 * 3600, minLeadSecs = 3600, maxRungs = 3, minRungs = 1, deposit = 25, probs = PRIORITY } = cfg;
+  const { assets, gridSecs = 6 * 3600, minLeadSecs = 3600, maxRungs = 3, minRungs = 1, deposit: target = 100, minDeposit = 25, probs = PRIORITY } = cfg;
   const strike = markets.map((m) => ({ ...m, s: parseStrikeName(m.name) })).filter((m) => m.s);
   const due = strike.filter((m) => !m.resolved && now >= Math.max(m.s.endTs, m.endTs || 0)).map((m) => m.name);
   const live = strike.filter((m) => !m.resolved && Math.max(m.s.endTs, m.endTs || 0) > now);
@@ -47,6 +55,7 @@ function planTick({ now, markets, balances, cfg }) {
     if (mine.length) { skipped.push({ asset, reason: "live-ladder", until: Math.max(...mine.map((m) => m.s.endTs)) }); continue; }
     need.push(asset);
   }
+  const deposit = affordableDeposit({ usdc: balances.usdc, target, minDeposit, rungs: need.length * maxRungs });
   const alloc = allocateRungs({ assets: need, sol: balances.sol, usdc: balances.usdc, deposit, maxRungs });
   const create = [];
   for (const asset of need) {
@@ -56,9 +65,9 @@ function planTick({ now, markets, balances, cfg }) {
   }
   const rungsWanted = need.length * maxRungs;
   const rungsPlanned = create.reduce((s, c) => s + c.probs.length, 0);
-  return { now, endTs, due, create, skipped,
+  return { now, endTs, due, create, skipped, deposit,
     wantsFaucet: rungsPlanned < rungsWanted, // short on SOL/mUSDC for a full ladder: try the hourly faucet
     solNeeded: +(SOL_RESERVE + RENT_PER_MARKET * rungsWanted).toFixed(3) };
 }
 
-module.exports = { planTick, allocateRungs, rungProbs, RENT_PER_MARKET, SOL_RESERVE, PRIORITY };
+module.exports = { planTick, allocateRungs, affordableDeposit, rungProbs, RENT_PER_MARKET, SOL_RESERVE, PRIORITY };

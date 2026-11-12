@@ -7,7 +7,7 @@
 //   node src/keeper.cjs ladder  --asset SOL --mins 10 --deposit 20 [--probs 0.25,0.5,0.75] [--dry]
 //   node src/keeper.cjs resolve [--dry]
 //   node src/keeper.cjs claim            (claimWinnings + claimLpResiduals on our resolved markets)
-//   node src/keeper.cjs tick    [--assets SOL,BTC] [--grid-hours 6] [--lead-mins 60] [--max-rungs 3] [--deposit 25] [--dry]
+//   node src/keeper.cjs tick    [--assets SOL,BTC] [--grid-hours 6] [--lead-mins 60] [--max-rungs 3] [--deposit 100] [--min-deposit 25] [--dry]
 //                                one idempotent pass: resolve due -> claim -> faucet if short -> roll ladders -> rebuild log.
 //                                Safe to call from cron / a scheduled routine (no always-on host needed).
 //   node src/keeper.cjs run     (same flags as tick) [--poll 60]   loop of ticks
@@ -139,7 +139,7 @@ const readState = () => { try { return JSON.parse(fs.readFileSync(STATE, "utf8")
 
 function tickConfig(a, probs) {
   return { assets: String(a.assets || "SOL,BTC").toUpperCase().split(","), gridSecs: Math.round(Number(a["grid-hours"] || 6) * 3600),
-    minLeadSecs: Math.round(Number(a["lead-mins"] || 60) * 60), maxRungs: Number(a["max-rungs"] || 3), deposit: Number(a.deposit || 25),
+    minLeadSecs: Math.round(Number(a["lead-mins"] || 60) * 60), maxRungs: Number(a["max-rungs"] || 3), deposit: Number(a.deposit || process.env.DEPOSIT || 100), minDeposit: Number(a["min-deposit"] || 25),
     probs: a.probs ? probs : undefined, dry: !!a.dry };
 }
 
