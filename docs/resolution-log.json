@@ -1,6 +1,6 @@
 {
   "schema": "strikebook.resolution-log/v1",
-  "generatedAt": 1794493857,
+  "generatedAt": 1794494746,
   "cluster": "devnet",
   "program": "GV1FMGHRYBjQLaghE5fnGuYCuCcpdt3GD5xEX3TwN16y",
   "app": "https://pm-amm-devnet.vercel.app",
@@ -76,18 +76,18 @@
     ],
     "openMarkets": 11,
     "traction": {
-      "trades": 504,
-      "volumeUsdc": 2995.644846,
-      "feesUsdc": 59.918521,
-      "lpFeesUsdc": 29.95926,
+      "trades": 507,
+      "volumeUsdc": 3029.849699,
+      "feesUsdc": 60.612872,
+      "lpFeesUsdc": 30.306436,
       "markets": 98,
       "yes": 187,
-      "no": 317,
-      "sells": 1,
-      "meanGapClosed": 0.1005,
-      "expectedEdgeUsdc": 410.134248,
+      "no": 320,
+      "sells": 3,
+      "meanGapClosed": 0.1001,
+      "expectedEdgeUsdc": 410.908454,
       "firstAt": 1793628172,
-      "lastAt": 1794493857
+      "lastAt": 1794494745
     }
   },
   "ladders": [
@@ -5660,11 +5660,11 @@
         "depositUsdc": 100
       },
       "amm": {
-        "yes": 0.421425,
-        "at": 1794493851,
-        "trades": 2,
-        "spot": 80.83653152000001,
-        "sigmaAnnual": 0.537193
+        "yes": 0.448371,
+        "at": 1794494744,
+        "trades": 3,
+        "spot": 81.03998349,
+        "sigmaAnnual": 0.532624
       },
       "url": "https://pm-amm-devnet.vercel.app/market/261409879141000"
     },
@@ -5708,11 +5708,11 @@
         "depositUsdc": 25
       },
       "amm": {
-        "yes": 0.09242,
-        "at": 1794493857,
-        "trades": 4,
-        "spot": 71887.61117713,
-        "sigmaAnnual": 0.351103
+        "yes": 0.062387,
+        "at": 1794494745,
+        "trades": 5,
+        "spot": 71649.93084374,
+        "sigmaAnnual": 0.34923
       },
       "url": "https://pm-amm-devnet.vercel.app/market/175037526798701"
     },
@@ -5780,11 +5780,11 @@
         "depositUsdc": 100
       },
       "amm": {
-        "yes": 0.195142,
-        "at": 1794493849,
-        "trades": 3,
-        "spot": 80.83653152000001,
-        "sigmaAnnual": 0.537193
+        "yes": 0.231522,
+        "at": 1794494742,
+        "trades": 4,
+        "spot": 81.03998349,
+        "sigmaAnnual": 0.532624
       },
       "url": "https://pm-amm-devnet.vercel.app/market/247531724972127"
     },
@@ -5886,6 +5886,60 @@
     }
   ],
   "trades": [
+    {
+      "at": 1794494745,
+      "market": "ESsr4XwpKa75xTssCSaBQhCr5t7rciGpcwRpGjr6Pbax",
+      "name": "BTC>72800@1794506400",
+      "asset": "BTC",
+      "action": "buy",
+      "side": "no",
+      "amountUsdc": 9.08,
+      "tokensOut": 9.637157,
+      "feeUsdc": 0.1816,
+      "pModel": 0.008773,
+      "ammBefore": 0.09242,
+      "ammAfter": 0.062387,
+      "spot": 71649.93084374,
+      "sigmaAnnual": 0.34923,
+      "tx": "hX2UmBHwbSHSg73CY3knmsR7c8edLUo7uo71c2wyFgCYKV4YgKMqjEdj79Dn1pSgPQc1Jj5odbXWR3dA3V3HDFC",
+      "outcome": null
+    },
+    {
+      "at": 1794494744,
+      "market": "7NYMBgUPHw6WSp8VXyQUUs8ymBMQL75W58qXLdT7z2yH",
+      "name": "SOL>81.2@1794528000",
+      "asset": "SOL",
+      "action": "sell",
+      "side": "no",
+      "amountUsdc": 8.58096,
+      "tokensOut": 15.494,
+      "feeUsdc": 0.175121,
+      "pModel": 0.451175,
+      "ammBefore": 0.421425,
+      "ammAfter": 0.448371,
+      "spot": 81.03998349,
+      "sigmaAnnual": 0.532624,
+      "tx": "4TrZg6Z13Jiz7iR9mXaWYPwh19gApVHPfNR5kdpy9shcKbV4eDTTfNnaMU9HyULWMTUQVYBrcPripEKPwWb4HyNv",
+      "outcome": null
+    },
+    {
+      "at": 1794494742,
+      "market": "4PDzcDP7UQgvoFoH9rMBGVufjgdpiEtXFGEFbenVzW98",
+      "name": "SOL>81.3@1794497025",
+      "asset": "SOL",
+      "action": "sell",
+      "side": "no",
+      "amountUsdc": 16.543893,
+      "tokensOut": 21.451304,
+      "feeUsdc": 0.33763,
+      "pModel": 0.239218,
+      "ammBefore": 0.195142,
+      "ammAfter": 0.231522,
+      "spot": 81.03998349,
+      "sigmaAnnual": 0.532624,
+      "tx": "3mzwat9ihGDFTfRWkvYhxTu7vK6AyjvEqgunb6c5ezJWKX3dBH2KcTwZiuehpFtCe1BHn5tg172p8ZtzHoMes71L",
+      "outcome": null
+    },
     {
       "at": 1794493857,
       "market": "ESsr4XwpKa75xTssCSaBQhCr5t7rciGpcwRpGjr6Pbax",
