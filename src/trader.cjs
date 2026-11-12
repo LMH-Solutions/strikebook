@@ -11,7 +11,7 @@
 //
 // The trader uses its OWN throwaway devnet wallet (../.devnet-keys/trader.json), distinct from the LP/keeper wallet,
 // so it pays the real swap fee (50% to the market creator = our LP, 50% to the protocol DAO).
-//   node src/trader.cjs run   [--dry] [--max-trade 20] [--max-market 60] [--min-edge 0.03] [--budget 200] [--no-exit]
+//   node src/trader.cjs run   [--dry] [--max-trade 20] [--max-market 60] [--min-edge 0.03] [--budget 200] [--no-exit] [--market <pda>]
 //   node src/trader.cjs status
 const fs = require("fs");
 const path = require("path");
@@ -64,7 +64,7 @@ async function run(a) {
 
   const all = (await client.fetchAllMarkets(443)).filter(({ account: m }) => m.authority.equals(builder.publicKey))
     .map(({ publicKey, account }) => ({ market: publicKey, account, name: pm.decodeName(account.name), strike: parseStrikeName(pm.decodeName(account.name)) }))
-    .filter((m) => m.strike);
+    .filter((m) => m.strike && (!a.market || m.market.toBase58() === a.market)); // --market <pda>: one-market pass (tests / staged exits)
 
   // 1. claim winnings on resolved markets we traded
   const claimed = new Set(readJsonl(TCLAIMS).filter((c) => c.signature || c.permanent).map((c) => c.market));
