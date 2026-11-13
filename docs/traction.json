@@ -1,31 +1,31 @@
 {
  "schema": "strikebook.traction.v1",
- "generatedAt": 1794579462,
- "scannedAt": 1794579462,
+ "generatedAt": 1794580481,
+ "scannedAt": 1794580481,
  "sinceTs": null,
  "cluster": "devnet",
  "markets": {
-  "created": 139,
-  "resolved": 129,
-  "open": 0
+  "created": 143,
+  "resolved": 135,
+  "open": 4
  },
  "all": {
-  "trades": 536,
-  "buys": 528,
-  "sells": 8,
-  "volumeUsdc": 3367.169959,
+  "trades": 546,
+  "buys": 535,
+  "sells": 11,
+  "volumeUsdc": 3482.515607,
   "claims": 376,
-  "wallets": 7,
-  "markets": 106
+  "wallets": 8,
+  "markets": 110
  },
  "ours": {
-  "trades": 534,
-  "buys": 526,
-  "sells": 8,
-  "volumeUsdc": 3363.169959,
+  "trades": 544,
+  "buys": 533,
+  "sells": 11,
+  "volumeUsdc": 3478.515607,
   "claims": 376,
-  "wallets": 6,
-  "markets": 104
+  "wallets": 7,
+  "markets": 108
  },
  "outside": {
   "trades": 2,
@@ -47,22 +47,22 @@
    "markets": 3
   },
   "traderBot": {
-   "trades": 523,
-   "buys": 518,
-   "sells": 5,
-   "volumeUsdc": 3189.570992,
+   "trades": 531,
+   "buys": 524,
+   "sells": 7,
+   "volumeUsdc": 3289.584641,
    "claims": 97,
    "wallets": 1,
-   "markets": 99
+   "markets": 102
   },
   "teamTest": {
-   "trades": 8,
-   "buys": 5,
-   "sells": 3,
-   "volumeUsdc": 64.698967,
+   "trades": 10,
+   "buys": 6,
+   "sells": 4,
+   "volumeUsdc": 80.030966,
    "claims": 1,
-   "wallets": 4,
-   "markets": 2
+   "wallets": 5,
+   "markets": 3
   },
   "outside": {
    "trades": 2,
@@ -74,7 +74,7 @@
    "markets": 2
   }
  },
- "outsideShareOfVolume": 0.001188,
+ "outsideShareOfVolume": 0.001149,
  "outsideWallets": [
   {
    "wallet": "5jddEQQjHNwrjf6NBjAhCaxZ3ZS2mzaeS4i3E4jLqqsm",
@@ -96,7 +96,8 @@
    "HoA9okPMpXWbPWa4z1f7VU1SVCLyGX3YKjPeXn9AHAe6",
    "Da9H2BdfSVB1AVVDW3DzjaFMBfuLwi1vK659rBVF5Az3",
    "ESSqpuZDVL5enTTrNX7HVPC6Q6w9TZnDFaH5EWNG4pox",
-   "Fzj8GkuprjTeS1oJ77dxA6FbEo4EJDnz4PDs34oVa1X2"
+   "Fzj8GkuprjTeS1oJ77dxA6FbEo4EJDnz4PDs34oVa1X2",
+   "4fjDfcL1gCmz2iegqt5bS9ZGtduvzj919ws6QQdvDEu1"
   ]
  },
  "note": "Counts every finalized devnet tx that touched a StrikeBook market account. keeper = market creator/LP/resolver wallet; traderBot = our edge-trader; teamTest = burners we used for E2E tests. Only 'outside' is third-party activity.",
@@ -111,9 +112,9 @@
   "since": 1794578400
  },
  "scan": {
-  "fetched": 661,
+  "fetched": 14,
   "skipped": 0,
-  "txsCached": 1190,
-  "marketsScanned": 139
+  "txsCached": 1204,
+  "marketsScanned": 143
  }
 }
