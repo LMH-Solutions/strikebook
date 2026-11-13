@@ -8,27 +8,31 @@ td,th{padding:4px 8px;border-bottom:1px solid #e3e3e3;text-align:left;font-varia
 <p><a href="app/"><b>Open markets &amp; trade panel (beta) →</b></a> · <a href="app/#try"><b>Try it on devnet in 60 seconds</b></a> (burner wallet + faucet, play money) · <a href="#honest-traction">ours vs outside traction</a></p>
 <p>Short-dated binary strike markets ("Will SOL be above $K at T?") on the Predict pm-AMM, seeded at a fair digital-option price from the
 live Pyth mark and realised vol, and <b>resolved by a keeper from the Pyth oracle</b>. Every resolution below carries its oracle proof and devnet transactions.</p>
-<p><small>Rule: YES iff the first Pyth PriceUpdateV2 print with publish_time &gt;= expiry is strictly above the strike. Program <code>GV1FMGHRYBjQLaghE5fnGuYCuCcpdt3GD5xEX3TwN16y</code>. Log generated 2026-11-13T19:03:06Z · schema <code>strikebook.resolution-log/v1</code> ·
+<p><small>Rule: YES iff the first Pyth PriceUpdateV2 print with publish_time &gt;= expiry is strictly above the strike. Program <code>GV1FMGHRYBjQLaghE5fnGuYCuCcpdt3GD5xEX3TwN16y</code>. Log generated 2026-11-13T19:41:13Z · schema <code>strikebook.resolution-log/v1</code> ·
 <a href="resolution-log.json">raw JSON</a></small></p>
 <div class="kpi"><div><b>140</b>markets resolved</div><div><b>71</b>ladders</div><div><b>37 / 103</b>YES / NO</div>
 <div><b>0.190</b>Brier (seed fair)<br><small>coin flip = 0.250</small></div><div><b>8</b>open markets</div></div>
 <h2 id="honest-traction">Honest traction: our wallets vs outside wallets</h2>
-<p><small>Every finalized devnet transaction on every StrikeBook market account, scanned on-chain (<code>npm run traction</code>, last scan 2026-11-13T19:03:06Z).
+<p><small>Every finalized devnet transaction on every StrikeBook market account, scanned on-chain (<code>npm run traction</code>, last scan 2026-11-13T19:41:13Z).
 Our own keeper, trader bot and E2E test burners are listed in <a href="https://github.com/LMH-Solutions/strikebook/blob/main/data/team-wallets.json">team-wallets.json</a> and are <b>never</b> counted as outside activity.</small></p>
 <div class="kpi"><div><b>147</b>markets created</div><div><b>139</b>resolved</div><div><b>2</b>outside trades</div>
 <div><b>4.00</b>outside volume (mUSDC)</div><div><b>1</b>outside wallets</div><div><b>0.1%</b>outside share of volume</div></div>
 <table><tr><th>Wallet group</th><th>Trades</th><th>Buys</th><th>Sells</th><th>Volume (mUSDC)</th><th>Claims</th><th>Wallets</th></tr>
-<tr><td>Keeper (creator / LP / resolver)</td><td>3</td><td>3</td><td>0</td><td>108.90</td><td>286</td><td>1</td></tr><tr><td>Trader bot (ours)</td><td>542</td><td>533</td><td>9</td><td>3456.84</td><td>101</td><td>1</td></tr><tr><td>Team E2E test burners (ours)</td><td>10</td><td>6</td><td>4</td><td>80.03</td><td>1</td><td>5</td></tr><tr><td><b>Ours, total</b></td><td>555</td><td>542</td><td>13</td><td>3645.77</td><td>388</td><td>7</td></tr><tr><td><b>Outside wallets</b></td><td>2</td><td>2</td><td>0</td><td>4.00</td><td>0</td><td>1</td></tr></table>
+<tr><td>Keeper (creator / LP / resolver)</td><td>3</td><td>3</td><td>0</td><td>108.90</td><td>286</td><td>1</td></tr><tr><td>Trader bot (ours)</td><td>544</td><td>535</td><td>9</td><td>3480.68</td><td>101</td><td>1</td></tr><tr><td>Team E2E test burners (ours)</td><td>10</td><td>6</td><td>4</td><td>80.03</td><td>1</td><td>5</td></tr><tr><td><b>Ours, total</b></td><td>557</td><td>544</td><td>13</td><td>3669.61</td><td>388</td><td>7</td></tr><tr><td><b>Outside wallets</b></td><td>2</td><td>2</td><td>0</td><td>4.00</td><td>0</td><td>1</td></tr></table>
 <p><small>Want to be an outside tester? <a href="app/#try">Try StrikeBook on devnet in 60 seconds</a> (play money, no install).</small></p>
 <h2>Our trader bot: edge re-centering trader (our wallet, not organic volume)</h2>
 <p><small>A separate devnet trader wallet prices every open rung with the same model (P(YES) = Φ(d2) from the live Pyth spot and 7-day realised vol)
 and buys the cheap side when the pm-AMM price is more than fee + 3 pts away, moving the price back toward the model. When the model flips against
 inventory it already holds (the AMM bid, net of fee, beats the model's hold value), it sells part of that inventory back to the pool (exact-quote sized). It pays the real 2% swap fee
 (half to the market creator/LP, half to the protocol).</small></p>
-<div class="kpi"><div><b>532</b>trades</div><div><b>3401.74</b>volume (mUSDC)</div><div><b>68.073</b>swap fees (mUSDC)</div>
-<div><b>34.037</b>fees to LP</div><div><b>102</b>markets traded</div>
+<div class="kpi"><div><b>534</b>trades</div><div><b>3425.58</b>volume (mUSDC)</div><div><b>68.550</b>swap fees (mUSDC)</div>
+<div><b>34.275</b>fees to LP</div><div><b>104</b>markets traded</div>
 <div><b>9.7 pts</b>mean mispricing closed / trade</div></div>
-<table><tr><th>Time (UTC)</th><th>Market</th><th>Side</th><th>mUSDC</th><th>Model YES</th><th>AMM YES before → after</th><th>Fee</th><th>Outcome</th><th>Tx</th></tr><tr><td>2026-11-13T15:15:50Z</td><td>SOL&gt;82@1794592800</td><td class="no">BUY NO</td>
+<table><tr><th>Time (UTC)</th><th>Market</th><th>Side</th><th>mUSDC</th><th>Model YES</th><th>AMM YES before → after</th><th>Fee</th><th>Outcome</th><th>Tx</th></tr><tr><td>2026-11-13T19:40:54Z</td><td>BTC&gt;69300@1794614400</td><td class="yes">BUY YES</td>
+<td>3.84</td><td>31.3%</td><td>24.4% → 28.8%</td><td>0.0768</td>
+<td>open</td><td><a href="https://solscan.io/tx/4p1GKSm6Lv2gp4mBTNjUyxu4UzCX4dJ7Qk2j6JCCv9wLHbm6cDtrdGzp7TEquAEUxPviiqda5jb4cSKWV4rTbYUx?cluster=devnet">4p1GKSm6…</a></td></tr><tr><td>2026-11-13T19:40:51Z</td><td>BTC&gt;68800@1794614400</td><td class="yes">BUY YES</td>
+<td>20.00</td><td>62.8%</td><td>50.5% → 57.2%</td><td>0.4000</td>
+<td>open</td><td><a href="https://solscan.io/tx/uBCYYrhwBon35aXcCDU2w2SGosgdPVWXqVdGqxmoW57tXW1HYRC8QKU2NHyuNTYFjewvoDVnC7H23A32FYu5RQm?cluster=devnet">uBCYYrhw…</a></td></tr><tr><td>2026-11-13T15:15:50Z</td><td>SOL&gt;82@1794592800</td><td class="no">BUY NO</td>
 <td>20.00</td><td>0.5%</td><td>12.6% → 8.6%</td><td>0.4000</td>
 <td><span class="no">NO</span></td><td><a href="https://solscan.io/tx/3UY86w57JshaThVA2v2dpgtPwUNzK1Gk7Y3u8NmLokZ7FroNcUVRsoJiFWfJEMeAGKB1suUFeCDN8xkjvgtABZnU?cluster=devnet">3UY86w57…</a></td></tr><tr><td>2026-11-13T15:15:48Z</td><td>SOL&gt;81.3@1794592800</td><td class="no">BUY NO</td>
 <td>14.40</td><td>4.4%</td><td>37.9% → 33.9%</td><td>0.2879</td>
@@ -74,11 +78,7 @@ inventory it already holds (the AMM bid, net of fee, beats the model's hold valu
 <td>18.88</td><td>12.2%</td><td>19.5% → 14.7%</td><td>0.3777</td>
 <td><span class="no">NO</span></td><td><a href="https://solscan.io/tx/4M2VBmLrtFNSTDZbDP4KJDVbKve6pU2D4vqq3tb8yCgA9K3UMXxLQNo2cs7y2MAKz5Cn7ZeTGqUbtsVDdbm1jrt7?cluster=devnet">4M2VBmLr…</a></td></tr><tr><td>2026-11-12T15:15:52Z</td><td>SOL&gt;81.2@1794528000</td><td class="no">BUY NO</td>
 <td>20.00</td><td>33.1%</td><td>44.8% → 38.9%</td><td>0.4000</td>
-<td><span class="yes">YES</span></td><td><a href="https://solscan.io/tx/3SuQaR8QHREGzkKah9AKS39EiaBrfP2M2u1AyWeL2VND1aLDJ61fEifxgcVk83dLD8jriALGdrXqsC6VLAgayDwi?cluster=devnet">3SuQaR8Q…</a></td></tr><tr><td>2026-11-12T15:15:50Z</td><td>SOL&gt;81.3@1794497025</td><td class="no">BUY NO</td>
-<td>20.00</td><td>0.0%</td><td>23.2% → 14.9%</td><td>0.4000</td>
-<td><span class="no">NO</span></td><td><a href="https://solscan.io/tx/4F9JW1p5gjwD9xKQSZCYpjJPyKf58enwoMTBNFVgtZtXts8vShUW9T1pwqx1adJHBDfrZUWZtpFmFgjZCan5nz97?cluster=devnet">4F9JW1p5…</a></td></tr><tr><td>2026-11-12T15:15:49Z</td><td>SOL&gt;82.2@1794506400</td><td class="no">BUY NO</td>
-<td>4.38</td><td>1.9%</td><td>8.4% → 6.9%</td><td>0.0876</td>
-<td><span class="no">NO</span></td><td><a href="https://solscan.io/tx/SmBrZA83BpYNi1sGi74h4nHew47kwRkNhKcgqQ6VDH1hbFYuXw7xGiQQbo5rwmdJQpsSqhSrJL2ujsvWbd3n7Vt?cluster=devnet">SmBrZA83…</a></td></tr></table>
+<td><span class="yes">YES</span></td><td><a href="https://solscan.io/tx/3SuQaR8QHREGzkKah9AKS39EiaBrfP2M2u1AyWeL2VND1aLDJ61fEifxgcVk83dLD8jriALGdrXqsC6VLAgayDwi?cluster=devnet">3SuQaR8Q…</a></td></tr></table>
 <h2>Ladders</h2><section><h3>BTC · expiry 2026-11-13T18:00:00Z</h3>
 <p class="proof">Settlement print: <b>$68807.47</b> ± –
 at publish_time 2026-11-13T18:01:00Z (+60s after expiry) · source <code>coinbase-1m-fallback</code></p>
