@@ -14,6 +14,7 @@ FILES="docs data/resolution-log.json data/markets.jsonl data/resolutions.jsonl d
 while true; do
   {
     echo "=== $(date -Is) tick"
+  [ -d node_modules/@solana/web3.js ] || { echo "$(date -Is) node_modules missing, npm install"; npm install --no-audit --no-fund >/dev/null 2>&1; }
     timeout 600 npm run -s tick -- --max-rungs "${MAX_RUNGS:-2}" 2>&1 | grep -E '"(resolved|claims|created|sol|usdc)"|skipped|Error|error' | head -40
     [ "${TRADE:-1}" = 1 ] && timeout 300 npm run -s trade 2>&1 | grep -E '^traded|"(trades|claims|sol|usdc|volumeUsdc|feesUsdc)"|Error|error' | head -20
     timeout 120 npm run -s build -- --refresh 2>&1 | tail -2
