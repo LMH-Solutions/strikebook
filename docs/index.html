@@ -8,12 +8,12 @@ td,th{padding:4px 8px;border-bottom:1px solid #e3e3e3;text-align:left;font-varia
 <p><a href="app/"><b>Open markets &amp; trade panel (beta) →</b></a> · <a href="app/#try"><b>Try it on devnet in 60 seconds</b></a> (burner wallet + faucet, play money) · <a href="#honest-traction">ours vs outside traction</a></p>
 <p>Short-dated binary strike markets ("Will SOL be above $K at T?") on the Predict pm-AMM, seeded at a fair digital-option price from the
 live Pyth mark and realised vol, and <b>resolved by a keeper from the Pyth oracle</b>. Every resolution below carries its oracle proof and devnet transactions.</p>
-<p><small>Rule: YES iff the first Pyth PriceUpdateV2 print with publish_time &gt;= expiry is strictly above the strike. Program <code>GV1FMGHRYBjQLaghE5fnGuYCuCcpdt3GD5xEX3TwN16y</code>. Log generated 2026-11-13T16:28:05Z · schema <code>strikebook.resolution-log/v1</code> ·
+<p><small>Rule: YES iff the first Pyth PriceUpdateV2 print with publish_time &gt;= expiry is strictly above the strike. Program <code>GV1FMGHRYBjQLaghE5fnGuYCuCcpdt3GD5xEX3TwN16y</code>. Log generated 2026-11-13T16:38:06Z · schema <code>strikebook.resolution-log/v1</code> ·
 <a href="resolution-log.json">raw JSON</a></small></p>
 <div class="kpi"><div><b>136</b>markets resolved</div><div><b>69</b>ladders</div><div><b>37 / 99</b>YES / NO</div>
 <div><b>0.191</b>Brier (seed fair)<br><small>coin flip = 0.250</small></div><div><b>8</b>open markets</div></div>
 <h2 id="honest-traction">Honest traction: our wallets vs outside wallets</h2>
-<p><small>Every finalized devnet transaction on every StrikeBook market account, scanned on-chain (<code>npm run traction</code>, last scan 2026-11-13T16:28:04Z).
+<p><small>Every finalized devnet transaction on every StrikeBook market account, scanned on-chain (<code>npm run traction</code>, last scan 2026-11-13T16:38:02Z).
 Our own keeper, trader bot and E2E test burners are listed in <a href="https://github.com/LMH-Solutions/strikebook/blob/main/data/team-wallets.json">team-wallets.json</a> and are <b>never</b> counted as outside activity.</small></p>
 <div class="kpi"><div><b>143</b>markets created</div><div><b>135</b>resolved</div><div><b>2</b>outside trades</div>
 <div><b>4.00</b>outside volume (mUSDC)</div><div><b>1</b>outside wallets</div><div><b>0.1%</b>outside share of volume</div></div>
