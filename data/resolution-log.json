@@ -1,6 +1,6 @@
 {
   "schema": "strikebook.resolution-log/v1",
-  "generatedAt": 1794579358,
+  "generatedAt": 1794580260,
   "cluster": "devnet",
   "program": "GV1FMGHRYBjQLaghE5fnGuYCuCcpdt3GD5xEX3TwN16y",
   "app": "https://pm-amm-devnet.vercel.app",
@@ -76,18 +76,18 @@
     ],
     "openMarkets": 8,
     "traction": {
-      "trades": 516,
-      "volumeUsdc": 3177.741956,
-      "feesUsdc": 63.587596,
-      "lpFeesUsdc": 31.793798,
+      "trades": 519,
+      "volumeUsdc": 3222.155205,
+      "feesUsdc": 64.477662,
+      "lpFeesUsdc": 32.238831,
       "markets": 101,
       "yes": 187,
-      "no": 329,
-      "sells": 5,
-      "meanGapClosed": 0.0992,
-      "expectedEdgeUsdc": 422.065971,
+      "no": 332,
+      "sells": 6,
+      "meanGapClosed": 0.0988,
+      "expectedEdgeUsdc": 426.178849,
       "firstAt": 1793628172,
-      "lastAt": 1794579357
+      "lastAt": 1794580259
     }
   },
   "ladders": [
@@ -5941,11 +5941,11 @@
         "depositUsdc": 100
       },
       "amm": {
-        "yes": 0.195708,
-        "at": 1794579357,
-        "trades": 1,
-        "spot": 69259.43437179,
-        "sigmaAnnual": 0.397492
+        "yes": 0.182107,
+        "at": 1794580259,
+        "trades": 2,
+        "spot": 69155.41566569,
+        "sigmaAnnual": 0.398524
       },
       "url": "https://pm-amm-devnet.vercel.app/market/82340149210514"
     },
@@ -5965,11 +5965,11 @@
         "depositUsdc": 100
       },
       "amm": {
-        "yes": 0.430963,
-        "at": 1794579352,
-        "trades": 1,
-        "spot": 69259.43437179,
-        "sigmaAnnual": 0.397492
+        "yes": 0.375618,
+        "at": 1794580254,
+        "trades": 2,
+        "spot": 69155.41566569,
+        "sigmaAnnual": 0.398524
       },
       "url": "https://pm-amm-devnet.vercel.app/market/76791273445700"
     },
@@ -6013,11 +6013,11 @@
         "depositUsdc": 100
       },
       "amm": {
-        "yes": 0.476112,
-        "at": 1794579355,
-        "trades": 1,
-        "spot": 81.18767732,
-        "sigmaAnnual": 0.572504
+        "yes": 0.491112,
+        "at": 1794580257,
+        "trades": 2,
+        "spot": 81.31712004,
+        "sigmaAnnual": 0.57224
       },
       "url": "https://pm-amm-devnet.vercel.app/market/5924907150378"
     },
@@ -6119,6 +6119,60 @@
     }
   ],
   "trades": [
+    {
+      "at": 1794580259,
+      "market": "DytrQCS7J5A4TZ9KEd5Ug1rkrEGtuse6oLNAT46WU195",
+      "name": "BTC>69800@1794592800",
+      "asset": "BTC",
+      "action": "buy",
+      "side": "no",
+      "amountUsdc": 20,
+      "tokensOut": 24.927153,
+      "feeUsdc": 0.4,
+      "pModel": 0.120743,
+      "ammBefore": 0.24724,
+      "ammAfter": 0.182107,
+      "spot": 69155.41566569,
+      "sigmaAnnual": 0.398524,
+      "tx": "4E3TniknKc1AmH5byWjsyVs8cMXSSA6XWL6UHVSCrzn6jf2pirqiPaTFv6V4SkqgdwehRCsSvkft2JmJLFsCsiRT",
+      "outcome": null
+    },
+    {
+      "at": 1794580257,
+      "market": "BtMFAgha1w7JFXHR4d6NDrwJwjtKiGrjzeAhe2FEBTUe",
+      "name": "SOL>81.3@1794592800",
+      "asset": "SOL",
+      "action": "sell",
+      "side": "no",
+      "amountUsdc": 4.413249,
+      "tokensOut": 8.720761,
+      "feeUsdc": 0.090066,
+      "pModel": 0.505083,
+      "ammBefore": 0.476112,
+      "ammAfter": 0.491112,
+      "spot": 81.31712004,
+      "sigmaAnnual": 0.57224,
+      "tx": "26f74TYzUBZtcXCmWAs42Qxrqd8KZG4va9U3kauEbU14QDZEp6nnneyMSuQRPhGZp7E5xCCNZcttTk6raHCQj7XB",
+      "outcome": null
+    },
+    {
+      "at": 1794580254,
+      "market": "7gnBUBHhHn6bwMHr5Q1hwLag9EcTn2tvCiH4JLV362Qb",
+      "name": "BTC>69400@1794592800",
+      "asset": "BTC",
+      "action": "buy",
+      "side": "no",
+      "amountUsdc": 20,
+      "tokensOut": 32.837974,
+      "feeUsdc": 0.4,
+      "pModel": 0.32705,
+      "ammBefore": 0.430963,
+      "ammAfter": 0.375618,
+      "spot": 69155.41566569,
+      "sigmaAnnual": 0.398524,
+      "tx": "2K19X8V1ocTAow6Y6yC6mMKHZpWinyaDh8ydJHXrwjnc6374gmwpQhgd9qQcc8kjsBHquLMFzDvuBcVdWTvshtnq",
+      "outcome": null
+    },
     {
       "at": 1794579357,
       "market": "DytrQCS7J5A4TZ9KEd5Ug1rkrEGtuse6oLNAT46WU195",
