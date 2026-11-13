@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Try StrikeBook on devnet (60 seconds)
+    url: https://lmh-solutions.github.io/strikebook/app/#try
+    about: Burner wallet, faucet, buy YES/NO, sell, claim. Play money on Solana devnet.

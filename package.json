@@ -16,7 +16,8 @@
     "build": "node scripts/build-site.cjs",
     "tick": "node src/keeper.cjs tick",
     "web:build": "npm --prefix web run build",
-    "web:test": "npm --prefix web test"
+    "web:test": "npm --prefix web test",
+    "traction": "node src/cli/traction.cjs"
   },
   "engines": {
     "node": ">=20"

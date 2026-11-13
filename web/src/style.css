@@ -29,3 +29,7 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 .live { color: #5fd38d; font-size: .6rem; margin-left: 4px; vertical-align: middle; }
 .sellbox { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; } .sellbox input { width: 80px; }
 .sellbox .quote { min-width: 180px; } button.sell { border-color: #ff9f6b; }
+
+.try { background: #14202e; border: 1px solid #2b4466; border-radius: 10px; padding: 10px 14px; margin: 14px 0; }
+.try summary { cursor: pointer; } .try ol { margin: 8px 0 4px 18px; padding: 0; } .try li { margin: 4px 0; }
+.honest { margin: 18px 0; } .honest table { width: 100%; border-collapse: collapse; } .honest td, .honest th { padding: 3px 8px; border-bottom: 1px solid #262c3a; text-align: left; }

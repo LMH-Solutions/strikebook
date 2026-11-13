@@ -73,6 +73,6 @@ test("resolution log + dashboard carry trades and traction stats", () => {
   assert.strictEqual(log.trades[0].market, "M9"); assert.strictEqual(log.trades[0].outcome, null);
   assert.strictEqual(log.trades[1].outcome, "no"); assert.strictEqual(log.trades[1].amountUsdc, 3);
   const html = renderSite(log);
-  assert.match(html, /Traction: edge re-centering trader/); assert.match(html, /<b>2<\/b>trades/); assert.match(html, /<b>6\.00<\/b>volume/);
+  assert.match(html, /Our trader bot: edge re-centering trader/); assert.match(html, /<b>2<\/b>trades/); assert.match(html, /<b>6\.00<\/b>volume/);
   assert.match(renderSite(buildResolutionLog({ created, resolved })), /No trades yet/);
 });

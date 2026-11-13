@@ -1,0 +1,46 @@
+name: Devnet tester feedback
+description: You tried StrikeBook on Solana devnet. Tell us what worked and what didn't (2 minutes).
+title: "[tester] "
+labels: ["tester-feedback"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for testing! StrikeBook runs on **Solana devnet** with play money only: never paste a private key or a mainnet address here.
+        App: https://lmh-solutions.github.io/strikebook/app/#try
+  - type: input
+    id: wallet
+    attributes:
+      label: Your devnet wallet address (optional)
+      description: The public address shown in the Burner wallet panel, so we can match your trades in the on-chain traction scan. Public key only.
+      placeholder: e.g. 7xKX...
+  - type: checkboxes
+    id: steps
+    attributes:
+      label: What did you get through?
+      options:
+        - label: Created a burner wallet or connected Phantom/Backpack (devnet)
+        - label: Got mUSDC + SOL from the faucet
+        - label: Bought YES or NO
+        - label: Sold a position back to the pool
+        - label: Claimed winnings after resolution
+  - type: dropdown
+    id: wallet_type
+    attributes:
+      label: Wallet used
+      options: ["Burner (in-page)", "Phantom", "Backpack", "Other"]
+  - type: textarea
+    id: broke
+    attributes:
+      label: Anything broken or confusing?
+      description: Error messages, a step that didn't work, wording that didn't make sense. Screenshots welcome.
+  - type: textarea
+    id: want
+    attributes:
+      label: What would make you use this (on mainnet, with real money)?
+      description: Markets you'd want, strike/expiry choices, features, anything.
+  - type: input
+    id: device
+    attributes:
+      label: Browser / device
+      placeholder: e.g. Chrome 131 on macOS, Safari on iPhone

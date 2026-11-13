@@ -17,3 +17,4 @@ data/tick.log
 data/*.lock
 data/trader-state.json
 trader.json
+data/traction-cache.json

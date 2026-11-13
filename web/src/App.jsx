@@ -4,6 +4,10 @@ import { marketState, exactBuyQuote, exactSellQuote, livePrices } from "./amm.js
 import { KEY as BURNER_KEY, shortAddr } from "./wallet.js";
 
 export const LOG_URL = import.meta.env?.VITE_LOG_URL || "../resolution-log.json";
+export const TRACTION_URL = import.meta.env?.VITE_TRACTION_URL || "../traction.json";
+export const REPO = "https://github.com/LMH-Solutions/strikebook";
+// Prefilled GitHub issue form (.github/ISSUE_TEMPLATE/devnet-tester-feedback.yml); the wallet field is optional.
+export const feedbackUrl = (wallet) => `${REPO}/issues/new?template=devnet-tester-feedback.yml&labels=tester-feedback${wallet ? `&wallet=${encodeURIComponent(wallet)}` : ""}`;
 const solscan = (sig, cl) => `https://solscan.io/tx/${sig}?cluster=${cl}`;
 const nowSecs = () => Math.floor(Date.now() / 1000);
 const solscanAcct = (a, cl) => `https://solscan.io/account/${a}?cluster=${cl}`;
@@ -100,6 +104,45 @@ export function WalletPanel({ dev, cluster }) {
   );
 }
 
+
+// "Try StrikeBook on devnet in 60 seconds": the outside-tester walkthrough (anchor #try; linked from README + dashboard).
+export function TryIt({ address = null }) {
+  return (
+    <details className="try" id="try" open>
+      <summary><b>Try StrikeBook on devnet in 60 seconds</b> <span className="tag warn">play money</span></summary>
+      <ol>
+        <li><b>Wallet:</b> click <i>Create devnet burner wallet</i> (a throwaway key kept only in this browser), or connect Phantom / Backpack switched to <b>devnet</b>.</li>
+        <li><b>Funds:</b> click <i>Faucet (mUSDC + SOL)</i>: 1000 devnet mUSDC + 0.2 devnet SOL, once per hour per wallet. If it is rate-limited, use <i>SOL airdrop</i> or <a href="https://faucet.solana.com" target="_blank" rel="noreferrer">faucet.solana.com</a> for SOL (you need ~0.01 SOL for fees) and try the mUSDC faucet again later.</li>
+        <li><b>Buy:</b> pick any open market (e.g. &quot;Will SOL be above $X at 18:00 UTC?&quot;), choose YES or NO, enter 10 mUSDC, check the exact quote, click <i>Buy</i>.</li>
+        <li><b>Sell:</b> in <i>Your positions</i>, sell some or all of it back to the pool before expiry.</li>
+        <li><b>Claim:</b> after expiry the keeper resolves the market from the on-chain Pyth print (within ~15 min); a <i>Claim</i> button appears on winning positions.</li>
+        <li><b>Tell us:</b> <a href={feedbackUrl(address)} target="_blank" rel="noreferrer">leave tester feedback</a> (a 2-minute GitHub form{address ? ", your devnet address is prefilled" : ""}).</li>
+      </ol>
+      <p className="muted small">Solana devnet only: no real money, nothing to install, no sign-up. Every trade is a real devnet transaction on the open pm-AMM program and shows up in the outside-wallet traction numbers below.</p>
+    </details>
+  );
+}
+
+// Honest traction from ../traction.json (on-chain scan): our keeper / trader bot / test burners vs outside wallets.
+export function HonestTraction({ t }) {
+  if (!t) return null;
+  const G = [["Keeper (creator / LP)", t.byGroup.keeper], ["Trader bot (ours)", t.byGroup.traderBot], ["Team test burners (ours)", t.byGroup.teamTest], ["Ours, total", t.ours], ["Outside wallets", t.outside]];
+  return (
+    <section className="honest">
+      <h2>Traction: ours vs outside <span className="muted small">(on-chain scan {t.scannedAt ? new Date(t.scannedAt * 1000).toISOString().slice(0, 16).replace("T", " ") + " UTC" : "–"})</span></h2>
+      <div className="kpi">
+        <div><b>{t.markets.created}</b>markets created</div>
+        <div><b>{t.markets.resolved}</b>resolved</div>
+        <div><b>{t.outside.trades}</b>outside trades</div>
+        <div><b>{Number(t.outside.volumeUsdc).toFixed(0)}</b>outside volume (mUSDC)</div>
+        <div><b>{t.outside.wallets}</b>outside wallets</div>
+      </div>
+      <table className="small"><thead><tr><th>Group</th><th>Trades</th><th>Volume</th><th>Claims</th><th>Wallets</th></tr></thead>
+        <tbody>{G.map(([k, g]) => <tr key={k}><td>{k}</td><td>{g.trades}</td><td>{Number(g.volumeUsdc).toFixed(0)}</td><td>{g.claims}</td><td>{g.wallets}</td></tr>)}</tbody></table>
+      <p className="muted small">Our own wallets are published in <a href={`${REPO}/blob/main/data/team-wallets.json`} target="_blank" rel="noreferrer">team-wallets.json</a> and never count as outside activity.</p>
+    </section>
+  );
+}
 
 export function Kpis({ log }) {
   const s = log.stats, T = s.traction || {};
@@ -329,12 +372,14 @@ export function Resolved({ log }) {
   );
 }
 
-export default function App({ initialLog = null, initialNow = null }) {
+export default function App({ initialLog = null, initialNow = null, initialTraction = null }) {
   const [log, setLog] = useState(initialLog);
   const [err, setErr] = useState(null);
   const [asset, setAsset] = useState("ALL");
   const [selected, setSelected] = useState(null);
   const [now, setNow] = useState(initialNow ?? nowSecs());
+  const [traction, setTraction] = useState(initialTraction);
+  useEffect(() => { if (initialTraction || typeof fetch === "undefined") return; fetch(TRACTION_URL, { cache: "no-store" }).then((r) => (r.ok ? r.json() : null)).then(setTraction).catch(() => {}); }, [initialTraction]);
   useEffect(() => {
     if (initialLog) return;
     fetch(LOG_URL, { cache: "no-store" }).then((r) => (r.ok ? r.json() : Promise.reject(new Error("HTTP " + r.status)))).then(setLog).catch((e) => setErr(String(e)));
@@ -351,12 +396,13 @@ export default function App({ initialLog = null, initialNow = null }) {
     <main>
       <header>
         <h1>StrikeBook <span className="tag">devnet</span></h1>
-        <p className="muted">Perps-priced strike markets on the pm-AMM, resolved from the on-chain Pyth print. <a href="../">Resolution log &amp; calibration</a> · <a href="https://github.com/LMH-Solutions/strikebook">GitHub</a></p>
+        <p className="muted">Perps-priced strike markets on the pm-AMM, resolved from the on-chain Pyth print. <a href="../">Resolution log &amp; calibration</a> · <a href="https://github.com/LMH-Solutions/strikebook">GitHub</a> · <a href="#try">Try it (60 s)</a> · <a href={feedbackUrl(null)} target="_blank" rel="noreferrer">Feedback</a></p>
       </header>
       {err && <p className="err">Could not load the market log ({err}).</p>}
       {!log && !err && <p className="muted">Loading markets…</p>}
       {log && (
         <>
+          <TryIt address={dev.s?.address || null} />
           <Kpis log={log} />
           <div className="tabs">{["ALL", "SOL", "BTC"].map((a) => <button key={a} type="button" className={asset === a ? "on" : ""} onClick={() => setAsset(a)}>{a}</button>)}</div>
           <div className="grid">
@@ -367,6 +413,7 @@ export default function App({ initialLog = null, initialNow = null }) {
             </div>
           </div>
           <Positions dev={dev} log={log} bump={bump} open={open} now={now} />
+          <HonestTraction t={traction} />
           <div className="grid2"><Resolved log={log} /><Calibration log={log} /></div>
           <footer className="muted small">Log generated {new Date(log.generatedAt * 1000).toISOString()} · program <code>{log.program}</code> · rule: {log.rule}</footer>
         </>

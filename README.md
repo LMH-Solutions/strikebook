@@ -6,6 +6,22 @@ Target: Solana Foundation *Perps and Prediction Markets* hackathon (main track) 
 **Live dashboard (devnet):** https://lmh-solutions.github.io/strikebook/ (rebuilt by the keeper; raw data:
 [`resolution-log.json`](https://lmh-solutions.github.io/strikebook/resolution-log.json))
 
+## Try StrikeBook on devnet in 60 seconds
+**App: https://lmh-solutions.github.io/strikebook/app/#try** (Solana devnet, play money, nothing to install, no sign-up)
+1. **Wallet:** click *Create devnet burner wallet* (a throwaway key kept only in your browser), or connect Phantom / Backpack switched to devnet.
+2. **Funds:** click *Faucet (mUSDC + SOL)* for 1000 devnet mUSDC + 0.2 devnet SOL (once per hour per wallet, via the pm-AMM devnet faucet).
+   If it is rate-limited, use *SOL airdrop* or https://faucet.solana.com for SOL (~0.01 SOL covers fees) and retry the mUSDC faucet later.
+3. **Buy:** pick an open market ("Will SOL be above $X at 18:00 UTC?"), choose YES or NO, enter 10 mUSDC, check the exact quote, click *Buy*.
+4. **Sell:** in *Your positions*, sell some or all back to the pool before expiry.
+5. **Claim:** after expiry the keeper resolves from the on-chain Pyth print (within ~15 min); click *Claim* on winning positions.
+6. **Feedback:** [open the 2-minute tester form](https://github.com/LMH-Solutions/strikebook/issues/new?template=devnet-tester-feedback.yml) (public devnet address optional, never a private key).
+
+## Honest traction (ours vs outside)
+`npm run traction` scans every devnet transaction on every StrikeBook market account (read-only RPC, cached in `data/traction-cache.json`)
+and splits trades, volume, claims and distinct wallets into **our** wallets (keeper/LP, edge-trader bot, E2E test burners, all listed in
+[`data/team-wallets.json`](data/team-wallets.json)) vs **outside** wallets. It writes `docs/traction.json`, which the dashboard and the app show.
+Our bot volume is real pm-AMM flow but is never presented as organic; only the "outside" row is third-party usage.
+
 ## Devnet demo at a glance
 - A keeper (`npm run tick`, every 15 min) lists **ladders of short-dated SOL and BTC strike markets** on the pm-AMM devnet program,
   each seeded at its fair digital-option price, then **resolves them from the on-chain Pyth print** at expiry and claims back.
@@ -23,7 +39,7 @@ Target: Solana Foundation *Perps and Prediction Markets* hackathon (main track) 
 ```bash
 git clone https://github.com/LMH-Solutions/strikebook && cd strikebook
 npm install
-npm test              # 23 unit tests, no network needed
+npm test              # node unit tests, no network needed
 npm run tick -- --dry # read-only: what the keeper would do right now
 npm run build         # regenerate docs/ (static dashboard)
 ```

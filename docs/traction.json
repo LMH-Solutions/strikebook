@@ -1,0 +1,119 @@
+{
+ "schema": "strikebook.traction.v1",
+ "generatedAt": 1794579462,
+ "scannedAt": 1794579462,
+ "sinceTs": null,
+ "cluster": "devnet",
+ "markets": {
+  "created": 139,
+  "resolved": 129,
+  "open": 0
+ },
+ "all": {
+  "trades": 536,
+  "buys": 528,
+  "sells": 8,
+  "volumeUsdc": 3367.169959,
+  "claims": 376,
+  "wallets": 7,
+  "markets": 106
+ },
+ "ours": {
+  "trades": 534,
+  "buys": 526,
+  "sells": 8,
+  "volumeUsdc": 3363.169959,
+  "claims": 376,
+  "wallets": 6,
+  "markets": 104
+ },
+ "outside": {
+  "trades": 2,
+  "buys": 2,
+  "sells": 0,
+  "volumeUsdc": 4,
+  "claims": 0,
+  "wallets": 1,
+  "markets": 2
+ },
+ "byGroup": {
+  "keeper": {
+   "trades": 3,
+   "buys": 3,
+   "sells": 0,
+   "volumeUsdc": 108.9,
+   "claims": 278,
+   "wallets": 1,
+   "markets": 3
+  },
+  "traderBot": {
+   "trades": 523,
+   "buys": 518,
+   "sells": 5,
+   "volumeUsdc": 3189.570992,
+   "claims": 97,
+   "wallets": 1,
+   "markets": 99
+  },
+  "teamTest": {
+   "trades": 8,
+   "buys": 5,
+   "sells": 3,
+   "volumeUsdc": 64.698967,
+   "claims": 1,
+   "wallets": 4,
+   "markets": 2
+  },
+  "outside": {
+   "trades": 2,
+   "buys": 2,
+   "sells": 0,
+   "volumeUsdc": 4,
+   "claims": 0,
+   "wallets": 1,
+   "markets": 2
+  }
+ },
+ "outsideShareOfVolume": 0.001188,
+ "outsideWallets": [
+  {
+   "wallet": "5jddEQQjHNwrjf6NBjAhCaxZ3ZS2mzaeS4i3E4jLqqsm",
+   "trades": 2,
+   "volumeUsdc": 4,
+   "claims": 0,
+   "firstAt": 1793667590,
+   "lastAt": 1793976476
+  }
+ ],
+ "teamWallets": {
+  "keeper": [
+   "2uZ9tpFrKnRDXxWdSvJ6rSnxfsqrDP1AL66qWzKB4WjZ"
+  ],
+  "traderBot": [
+   "GDwVtusHrHkYLwFAyaqy5hh2SpA8qKiRwkVsjLSaCbXo"
+  ],
+  "teamTest": [
+   "HoA9okPMpXWbPWa4z1f7VU1SVCLyGX3YKjPeXn9AHAe6",
+   "Da9H2BdfSVB1AVVDW3DzjaFMBfuLwi1vK659rBVF5Az3",
+   "ESSqpuZDVL5enTTrNX7HVPC6Q6w9TZnDFaH5EWNG4pox",
+   "Fzj8GkuprjTeS1oJ77dxA6FbEo4EJDnz4PDs34oVa1X2"
+  ]
+ },
+ "note": "Counts every finalized devnet tx that touched a StrikeBook market account. keeper = market creator/LP/resolver wallet; traderBot = our edge-trader; teamTest = burners we used for E2E tests. Only 'outside' is third-party activity.",
+ "sinceTesterLaunch": {
+  "trades": 0,
+  "buys": 0,
+  "sells": 0,
+  "volumeUsdc": 0,
+  "claims": 0,
+  "wallets": 0,
+  "markets": 0,
+  "since": 1794578400
+ },
+ "scan": {
+  "fetched": 661,
+  "skipped": 0,
+  "txsCached": 1190,
+  "marketsScanned": 139
+ }
+}

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # StrikeBook keeper scheduler (devnet only). Every 15 min, aligned to the quarter hour + 30 s so
 # 6h-grid expiries get resolved from the on-chain Pyth print within the 90 s window:
-#   npm run tick -- --max-rungs 2  ->  npm run trade (edge re-centering trader)  ->  npm run build
+#   npm run tick -- --max-rungs 2  ->  npm run trade (edge re-centering trader)  ->  npm run traction  ->  npm run build
 #   ->  commit data logs + docs/ if they changed  ->  pull --rebase  ->  push.
 # Usage: nohup scripts/tick-loop.sh >/dev/null 2>&1 &   (logs to data/tick.log; single instance via flock)
 set -u
@@ -17,6 +17,8 @@ while true; do
   [ -d node_modules/@solana/web3.js ] || { echo "$(date -Is) node_modules missing, npm install"; npm install --no-audit --no-fund >/dev/null 2>&1; }
     timeout 600 npm run -s tick -- --max-rungs "${MAX_RUNGS:-2}" 2>&1 | grep -E '"(resolved|claims|created|sol|usdc)"|skipped|Error|error' | head -40
     [ "${TRADE:-1}" = 1 ] && timeout 300 npm run -s trade 2>&1 | grep -E '^traded|"(trades|claims|sol|usdc|volumeUsdc|feesUsdc)"|Error|error' | head -20
+    # honest traction (ours vs outside wallets): incremental on-chain scan -> docs/traction.json (read-only RPC, never signs)
+    timeout 240 npm run -s traction -- --quiet 2>&1 | grep -E '^traction|Error' | head -3
     timeout 120 npm run -s build -- --refresh 2>&1 | tail -2
     # shellcheck disable=SC2086
     existing=$(for f in $FILES; do [ -e "$f" ] && echo "$f"; done)

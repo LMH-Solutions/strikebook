@@ -6,7 +6,7 @@ const iso = (t) => (t ? new Date(t * 1000).toISOString().replace(".000Z", "Z") :
 const tx = (sig, cluster) => (sig ? `<a href="https://solscan.io/tx/${esc(sig)}?cluster=${esc(cluster)}">${esc(sig.slice(0, 8))}…</a>` : "–");
 const money = (v, asset) => (v == null ? "–" : "$" + Number(v).toFixed(asset === "BTC" ? 2 : 4));
 
-function renderSite(log) {
+function renderSite(log, honest = null) {
   const s = log.stats, cl = log.cluster || "devnet";
   const byMarket = new Map(log.resolutions.map((r) => [r.market, r]));
   const ladders = log.ladders.map((L) => {
@@ -23,7 +23,7 @@ at publish_time ${iso(r0.oracle.publishTime)} (${r0.oracle.lagSecs >= 0 ? "+" : 
   const tradeRows = (log.trades || []).slice(0, 25).map((t) => `<tr><td>${iso(t.at)}</td><td>${esc(t.name)}</td><td class="${esc(t.side)}">${t.action === "sell" ? "SELL" : "BUY"} ${esc(String(t.side).toUpperCase())}</td>
 <td>${Number(t.amountUsdc).toFixed(2)}</td><td>${pct(t.pModel)}</td><td>${pct(t.ammBefore)} → ${pct(t.ammAfter)}</td><td>${Number(t.feeUsdc).toFixed(4)}</td>
 <td>${t.outcome ? `<span class="${esc(t.outcome)}">${esc(t.outcome.toUpperCase())}</span>` : "open"}</td><td>${tx(t.tx, cl)}</td></tr>`).join("");
-  const traction = `<h2>Traction: edge re-centering trader</h2>
+  const traction = `<h2>Our trader bot: edge re-centering trader (our wallet, not organic volume)</h2>
 <p><small>A separate devnet trader wallet prices every open rung with the same model (P(YES) = Φ(d2) from the live Pyth spot and 7-day realised vol)
 and buys the cheap side when the pm-AMM price is more than fee + 3 pts away, moving the price back toward the model. When the model flips against
 inventory it already holds (the AMM bid, net of fee, beats the model's hold value), it sells part of that inventory back to the pool (exact-quote sized). It pays the real 2% swap fee
@@ -32,6 +32,15 @@ inventory it already holds (the AMM bid, net of fee, beats the model's hold valu
 <div><b>${Number(T.lpFeesUsdc).toFixed(3)}</b>fees to LP</div><div><b>${T.markets}</b>markets traded</div>
 <div><b>${T.meanGapClosed == null ? "–" : (T.meanGapClosed * 100).toFixed(1) + " pts"}</b>mean mispricing closed / trade</div></div>
 ${tradeRows ? `<table><tr><th>Time (UTC)</th><th>Market</th><th>Side</th><th>mUSDC</th><th>Model YES</th><th>AMM YES before → after</th><th>Fee</th><th>Outcome</th><th>Tx</th></tr>${tradeRows}</table>` : "<p>No trades yet.</p>"}`;
+  const H = honest, hg = (k, G) => `<tr><td>${k}</td><td>${G.trades}</td><td>${G.buys}</td><td>${G.sells}</td><td>${Number(G.volumeUsdc).toFixed(2)}</td><td>${G.claims}</td><td>${G.wallets}</td></tr>`;
+  const honestHtml = H ? `<h2 id="honest-traction">Honest traction: our wallets vs outside wallets</h2>
+<p><small>Every finalized devnet transaction on every StrikeBook market account, scanned on-chain (<code>npm run traction</code>, last scan ${iso(H.scannedAt)}).
+Our own keeper, trader bot and E2E test burners are listed in <a href="https://github.com/LMH-Solutions/strikebook/blob/main/data/team-wallets.json">team-wallets.json</a> and are <b>never</b> counted as outside activity.</small></p>
+<div class="kpi"><div><b>${H.markets.created}</b>markets created</div><div><b>${H.markets.resolved}</b>resolved</div><div><b>${H.outside.trades}</b>outside trades</div>
+<div><b>${Number(H.outside.volumeUsdc).toFixed(2)}</b>outside volume (mUSDC)</div><div><b>${H.outside.wallets}</b>outside wallets</div><div><b>${(H.outsideShareOfVolume * 100).toFixed(1)}%</b>outside share of volume</div></div>
+<table><tr><th>Wallet group</th><th>Trades</th><th>Buys</th><th>Sells</th><th>Volume (mUSDC)</th><th>Claims</th><th>Wallets</th></tr>
+${hg("Keeper (creator / LP / resolver)", H.byGroup.keeper)}${hg("Trader bot (ours)", H.byGroup.traderBot)}${hg("Team E2E test burners (ours)", H.byGroup.teamTest)}${hg("<b>Ours, total</b>", H.ours)}${hg("<b>Outside wallets</b>", H.outside)}</table>
+<p><small>Want to be an outside tester? <a href="app/#try">Try StrikeBook on devnet in 60 seconds</a> (play money, no install).</small></p>` : "";
   const cal = s.calibration.filter((b) => b.n).map((b) => `<tr><td>${pct(b.range[0])}–${pct(b.range[1])}</td><td>${b.n}</td><td>${pct(b.meanFair)}</td><td>${pct(b.yesRate)}</td></tr>`).join("");
   return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>StrikeBook: oracle-resolved strike markets on the pm-AMM (${esc(cl)})</title>
@@ -40,13 +49,14 @@ td,th{padding:4px 8px;border-bottom:1px solid #e3e3e3;text-align:left;font-varia
 .kpi{display:flex;gap:12px;flex-wrap:wrap}.kpi div{border:1px solid #ddd;border-radius:8px;padding:10px 14px;min-width:120px}.kpi b{display:block;font-size:24px}
 .proof{color:#444;font-size:13px}code{font-size:12px}small{color:#666}</style></head><body>
 <h1>StrikeBook <small>${esc(cl)}</small></h1>
-<p><a href="app/"><b>Open markets &amp; trade panel (beta) →</b></a></p>
+<p><a href="app/"><b>Open markets &amp; trade panel (beta) →</b></a> · <a href="app/#try"><b>Try it on devnet in 60 seconds</b></a> (burner wallet + faucet, play money) · <a href="#honest-traction">ours vs outside traction</a></p>
 <p>Short-dated binary strike markets ("Will SOL be above $K at T?") on the Predict pm-AMM, seeded at a fair digital-option price from the
 live Pyth mark and realised vol, and <b>resolved by a keeper from the Pyth oracle</b>. Every resolution below carries its oracle proof and devnet transactions.</p>
 <p><small>Rule: ${esc(log.rule)}. Program <code>${esc(log.program)}</code>. Log generated ${iso(log.generatedAt)} · schema <code>${esc(log.schema)}</code> ·
 <a href="resolution-log.json">raw JSON</a></small></p>
 <div class="kpi"><div><b>${s.resolved}</b>markets resolved</div><div><b>${s.ladders}</b>ladders</div><div><b>${s.yes} / ${s.no}</b>YES / NO</div>
 <div><b>${s.brier == null ? "–" : s.brier.toFixed(3)}</b>Brier (seed fair)<br><small>coin flip = 0.250</small></div><div><b>${s.openMarkets}</b>open markets</div></div>
+${honestHtml}
 ${traction}
 <h2>Ladders</h2>${ladders || "<p>No resolved markets yet.</p>"}
 <h2>Calibration of the pricing engine</h2><p><small>Seed fair YES vs realised YES rate. Small samples are noisy; this fills in as the keeper rolls ladders.</small></p>

@@ -1,0 +1,11 @@
+{
+  "_note": "Public addresses of every devnet wallet WE control. Activity from these is never counted as outside/organic traction.",
+  "keeper": ["2uZ9tpFrKnRDXxWdSvJ6rSnxfsqrDP1AL66qWzKB4WjZ"],
+  "traderBot": ["GDwVtusHrHkYLwFAyaqy5hh2SpA8qKiRwkVsjLSaCbXo"],
+  "teamTest": [
+    "HoA9okPMpXWbPWa4z1f7VU1SVCLyGX3YKjPeXn9AHAe6",
+    "Da9H2BdfSVB1AVVDW3DzjaFMBfuLwi1vK659rBVF5Az3",
+    "ESSqpuZDVL5enTTrNX7HVPC6Q6w9TZnDFaH5EWNG4pox",
+    "Fzj8GkuprjTeS1oJ77dxA6FbEo4EJDnz4PDs34oVa1X2"
+  ]
+}
