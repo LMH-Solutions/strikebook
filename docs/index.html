@@ -8,70 +8,94 @@ td,th{padding:4px 8px;border-bottom:1px solid #e3e3e3;text-align:left;font-varia
 <p><a href="app/"><b>Open markets &amp; trade panel (beta) →</b></a></p>
 <p>Short-dated binary strike markets ("Will SOL be above $K at T?") on the Predict pm-AMM, seeded at a fair digital-option price from the
 live Pyth mark and realised vol, and <b>resolved by a keeper from the Pyth oracle</b>. Every resolution below carries its oracle proof and devnet transactions.</p>
-<p><small>Rule: YES iff the first Pyth PriceUpdateV2 print with publish_time &gt;= expiry is strictly above the strike. Program <code>GV1FMGHRYBjQLaghE5fnGuYCuCcpdt3GD5xEX3TwN16y</code>. Log generated 2026-11-12T15:45:50Z · schema <code>strikebook.resolution-log/v1</code> ·
+<p><small>Rule: YES iff the first Pyth PriceUpdateV2 print with publish_time &gt;= expiry is strictly above the strike. Program <code>GV1FMGHRYBjQLaghE5fnGuYCuCcpdt3GD5xEX3TwN16y</code>. Log generated 2026-11-13T14:15:58Z · schema <code>strikebook.resolution-log/v1</code> ·
 <a href="resolution-log.json">raw JSON</a></small></p>
-<div class="kpi"><div><b>130</b>markets resolved</div><div><b>66</b>ladders</div><div><b>36 / 94</b>YES / NO</div>
-<div><b>0.193</b>Brier (seed fair)<br><small>coin flip = 0.250</small></div><div><b>10</b>open markets</div></div>
+<div class="kpi"><div><b>136</b>markets resolved</div><div><b>69</b>ladders</div><div><b>37 / 99</b>YES / NO</div>
+<div><b>0.191</b>Brier (seed fair)<br><small>coin flip = 0.250</small></div><div><b>8</b>open markets</div></div>
 <h2>Traction: edge re-centering trader</h2>
 <p><small>A separate devnet trader wallet prices every open rung with the same model (P(YES) = Φ(d2) from the live Pyth spot and 7-day realised vol)
 and buys the cheap side when the pm-AMM price is more than fee + 3 pts away, moving the price back toward the model. When the model flips against
 inventory it already holds (the AMM bid, net of fee, beats the model's hold value), it sells part of that inventory back to the pool (exact-quote sized). It pays the real 2% swap fee
 (half to the market creator/LP, half to the protocol).</small></p>
-<div class="kpi"><div><b>513</b>trades</div><div><b>3134.47</b>volume (mUSDC)</div><div><b>62.722</b>swap fees (mUSDC)</div>
-<div><b>31.361</b>fees to LP</div><div><b>98</b>markets traded</div>
-<div><b>10.0 pts</b>mean mispricing closed / trade</div></div>
-<table><tr><th>Time (UTC)</th><th>Market</th><th>Side</th><th>mUSDC</th><th>Model YES</th><th>AMM YES before → after</th><th>Fee</th><th>Outcome</th><th>Tx</th></tr><tr><td>2026-11-12T15:30:57Z</td><td>SOL&gt;82.2@1794528000</td><td class="no">SELL NO</td>
+<div class="kpi"><div><b>516</b>trades</div><div><b>3177.74</b>volume (mUSDC)</div><div><b>63.588</b>swap fees (mUSDC)</div>
+<div><b>31.794</b>fees to LP</div><div><b>101</b>markets traded</div>
+<div><b>9.9 pts</b>mean mispricing closed / trade</div></div>
+<table><tr><th>Time (UTC)</th><th>Market</th><th>Side</th><th>mUSDC</th><th>Model YES</th><th>AMM YES before → after</th><th>Fee</th><th>Outcome</th><th>Tx</th></tr><tr><td>2026-11-13T14:15:57Z</td><td>BTC&gt;69800@1794592800</td><td class="no">BUY NO</td>
+<td>14.20</td><td>17.1%</td><td>24.1% → 19.6%</td><td>0.2841</td>
+<td>open</td><td><a href="https://solscan.io/tx/4Fynb4GtmFfsve6AmZykt4ADJRV3zFhyF3auRLFxCC8H18WZBPkTQFUV6MTMzuj38UVYDefFXRddKP49m5Wbc9hT?cluster=devnet">4Fynb4Gt…</a></td></tr><tr><td>2026-11-13T14:15:55Z</td><td>SOL&gt;81.3@1794592800</td><td class="no">BUY NO</td>
+<td>9.07</td><td>45.1%</td><td>50.5% → 47.6%</td><td>0.1813</td>
+<td>open</td><td><a href="https://solscan.io/tx/37jSVBCc17XgjXgn5FKkZBxCh4A23ZeakWY9EWfT28xNEnnvvoiV1QUW2QBrAQPJ4TvWCy6cwAacerTvWxirQcxc?cluster=devnet">37jSVBCc…</a></td></tr><tr><td>2026-11-13T14:15:52Z</td><td>BTC&gt;69400@1794592800</td><td class="no">BUY NO</td>
+<td>20.00</td><td>40.1%</td><td>49.2% → 43.1%</td><td>0.4000</td>
+<td>open</td><td><a href="https://solscan.io/tx/3eVU3gN59kyWwbJumcdXPEug2fSPoncYcNPAFsuTBUpHsacggivLJzWfTR8bzRG4CnYUZU2xWY6VQNzrm4JGABby?cluster=devnet">3eVU3gN5…</a></td></tr><tr><td>2026-11-12T15:30:57Z</td><td>SOL&gt;82.2@1794528000</td><td class="no">SELL NO</td>
 <td>19.65</td><td>19.4%</td><td>14.7% → 20.0%</td><td>0.4010</td>
-<td>open</td><td><a href="https://solscan.io/tx/3H9ds6izmGNAzhBaAw7BzDFSrS69nZMqwLkNsNp3Dq5Bc5gbpk3wT8g8FFNK359Qhxx1rsfb5jc1q1TPh5Bi8pef?cluster=devnet">3H9ds6iz…</a></td></tr><tr><td>2026-11-12T15:30:55Z</td><td>SOL&gt;81.2@1794528000</td><td class="no">SELL NO</td>
+<td><span class="no">NO</span></td><td><a href="https://solscan.io/tx/3H9ds6izmGNAzhBaAw7BzDFSrS69nZMqwLkNsNp3Dq5Bc5gbpk3wT8g8FFNK359Qhxx1rsfb5jc1q1TPh5Bi8pef?cluster=devnet">3H9ds6iz…</a></td></tr><tr><td>2026-11-12T15:30:55Z</td><td>SOL&gt;81.2@1794528000</td><td class="no">SELL NO</td>
 <td>21.71</td><td>45.1%</td><td>38.9% → 45.8%</td><td>0.4430</td>
-<td>open</td><td><a href="https://solscan.io/tx/cGqiBY4UNgVfRLEDrJwAXZce8GfmfS5WkHzPhYiJ1TN6F9tXqQVmUiLa3Z3AFAxQKUAeyCcDHVf2egLK4gNhRJV?cluster=devnet">cGqiBY4U…</a></td></tr><tr><td>2026-11-12T15:15:54Z</td><td>SOL&gt;82.2@1794528000</td><td class="no">BUY NO</td>
+<td><span class="yes">YES</span></td><td><a href="https://solscan.io/tx/cGqiBY4UNgVfRLEDrJwAXZce8GfmfS5WkHzPhYiJ1TN6F9tXqQVmUiLa3Z3AFAxQKUAeyCcDHVf2egLK4gNhRJV?cluster=devnet">cGqiBY4U…</a></td></tr><tr><td>2026-11-12T15:15:54Z</td><td>SOL&gt;82.2@1794528000</td><td class="no">BUY NO</td>
 <td>18.88</td><td>12.2%</td><td>19.5% → 14.7%</td><td>0.3777</td>
-<td>open</td><td><a href="https://solscan.io/tx/4M2VBmLrtFNSTDZbDP4KJDVbKve6pU2D4vqq3tb8yCgA9K3UMXxLQNo2cs7y2MAKz5Cn7ZeTGqUbtsVDdbm1jrt7?cluster=devnet">4M2VBmLr…</a></td></tr><tr><td>2026-11-12T15:15:52Z</td><td>SOL&gt;81.2@1794528000</td><td class="no">BUY NO</td>
+<td><span class="no">NO</span></td><td><a href="https://solscan.io/tx/4M2VBmLrtFNSTDZbDP4KJDVbKve6pU2D4vqq3tb8yCgA9K3UMXxLQNo2cs7y2MAKz5Cn7ZeTGqUbtsVDdbm1jrt7?cluster=devnet">4M2VBmLr…</a></td></tr><tr><td>2026-11-12T15:15:52Z</td><td>SOL&gt;81.2@1794528000</td><td class="no">BUY NO</td>
 <td>20.00</td><td>33.1%</td><td>44.8% → 38.9%</td><td>0.4000</td>
-<td>open</td><td><a href="https://solscan.io/tx/3SuQaR8QHREGzkKah9AKS39EiaBrfP2M2u1AyWeL2VND1aLDJ61fEifxgcVk83dLD8jriALGdrXqsC6VLAgayDwi?cluster=devnet">3SuQaR8Q…</a></td></tr><tr><td>2026-11-12T15:15:50Z</td><td>SOL&gt;81.3@1794497025</td><td class="no">BUY NO</td>
+<td><span class="yes">YES</span></td><td><a href="https://solscan.io/tx/3SuQaR8QHREGzkKah9AKS39EiaBrfP2M2u1AyWeL2VND1aLDJ61fEifxgcVk83dLD8jriALGdrXqsC6VLAgayDwi?cluster=devnet">3SuQaR8Q…</a></td></tr><tr><td>2026-11-12T15:15:50Z</td><td>SOL&gt;81.3@1794497025</td><td class="no">BUY NO</td>
 <td>20.00</td><td>0.0%</td><td>23.2% → 14.9%</td><td>0.4000</td>
 <td><span class="no">NO</span></td><td><a href="https://solscan.io/tx/4F9JW1p5gjwD9xKQSZCYpjJPyKf58enwoMTBNFVgtZtXts8vShUW9T1pwqx1adJHBDfrZUWZtpFmFgjZCan5nz97?cluster=devnet">4F9JW1p5…</a></td></tr><tr><td>2026-11-12T15:15:49Z</td><td>SOL&gt;82.2@1794506400</td><td class="no">BUY NO</td>
 <td>4.38</td><td>1.9%</td><td>8.4% → 6.9%</td><td>0.0876</td>
-<td>open</td><td><a href="https://solscan.io/tx/SmBrZA83BpYNi1sGi74h4nHew47kwRkNhKcgqQ6VDH1hbFYuXw7xGiQQbo5rwmdJQpsSqhSrJL2ujsvWbd3n7Vt?cluster=devnet">SmBrZA83…</a></td></tr><tr><td>2026-11-12T14:45:45Z</td><td>BTC&gt;72800@1794506400</td><td class="no">BUY NO</td>
+<td><span class="no">NO</span></td><td><a href="https://solscan.io/tx/SmBrZA83BpYNi1sGi74h4nHew47kwRkNhKcgqQ6VDH1hbFYuXw7xGiQQbo5rwmdJQpsSqhSrJL2ujsvWbd3n7Vt?cluster=devnet">SmBrZA83…</a></td></tr><tr><td>2026-11-12T14:45:45Z</td><td>BTC&gt;72800@1794506400</td><td class="no">BUY NO</td>
 <td>9.08</td><td>0.9%</td><td>9.2% → 6.2%</td><td>0.1816</td>
-<td>open</td><td><a href="https://solscan.io/tx/hX2UmBHwbSHSg73CY3knmsR7c8edLUo7uo71c2wyFgCYKV4YgKMqjEdj79Dn1pSgPQc1Jj5odbXWR3dA3V3HDFC?cluster=devnet">hX2UmBHw…</a></td></tr><tr><td>2026-11-12T14:45:44Z</td><td>SOL&gt;81.2@1794528000</td><td class="no">SELL NO</td>
+<td><span class="no">NO</span></td><td><a href="https://solscan.io/tx/hX2UmBHwbSHSg73CY3knmsR7c8edLUo7uo71c2wyFgCYKV4YgKMqjEdj79Dn1pSgPQc1Jj5odbXWR3dA3V3HDFC?cluster=devnet">hX2UmBHw…</a></td></tr><tr><td>2026-11-12T14:45:44Z</td><td>SOL&gt;81.2@1794528000</td><td class="no">SELL NO</td>
 <td>8.58</td><td>45.1%</td><td>42.1% → 44.8%</td><td>0.1751</td>
-<td>open</td><td><a href="https://solscan.io/tx/4TrZg6Z13Jiz7iR9mXaWYPwh19gApVHPfNR5kdpy9shcKbV4eDTTfNnaMU9HyULWMTUQVYBrcPripEKPwWb4HyNv?cluster=devnet">4TrZg6Z1…</a></td></tr><tr><td>2026-11-12T14:45:42Z</td><td>SOL&gt;81.3@1794497025</td><td class="no">SELL NO</td>
+<td><span class="yes">YES</span></td><td><a href="https://solscan.io/tx/4TrZg6Z13Jiz7iR9mXaWYPwh19gApVHPfNR5kdpy9shcKbV4eDTTfNnaMU9HyULWMTUQVYBrcPripEKPwWb4HyNv?cluster=devnet">4TrZg6Z1…</a></td></tr><tr><td>2026-11-12T14:45:42Z</td><td>SOL&gt;81.3@1794497025</td><td class="no">SELL NO</td>
 <td>16.54</td><td>23.9%</td><td>19.5% → 23.2%</td><td>0.3376</td>
 <td><span class="no">NO</span></td><td><a href="https://solscan.io/tx/3mzwat9ihGDFTfRWkvYhxTu7vK6AyjvEqgunb6c5ezJWKX3dBH2KcTwZiuehpFtCe1BHn5tg172p8ZtzHoMes71L?cluster=devnet">3mzwat9i…</a></td></tr><tr><td>2026-11-12T14:30:57Z</td><td>BTC&gt;72800@1794506400</td><td class="no">BUY NO</td>
 <td>20.00</td><td>3.6%</td><td>19.8% → 9.2%</td><td>0.4000</td>
-<td>open</td><td><a href="https://solscan.io/tx/4gqmSWpeGpBj4J5Nj4imTnXcbVyPmghWn53mqtGa94fJX56r3BETd3YxRrq1hbxzB4U9aVm4FCEJnsR35ArEwVP4?cluster=devnet">4gqmSWpe…</a></td></tr><tr><td>2026-11-12T14:30:55Z</td><td>BTC&gt;73300@1794506400</td><td class="no">BUY NO</td>
+<td><span class="no">NO</span></td><td><a href="https://solscan.io/tx/4gqmSWpeGpBj4J5Nj4imTnXcbVyPmghWn53mqtGa94fJX56r3BETd3YxRrq1hbxzB4U9aVm4FCEJnsR35ArEwVP4?cluster=devnet">4gqmSWpe…</a></td></tr><tr><td>2026-11-12T14:30:55Z</td><td>BTC&gt;73300@1794506400</td><td class="no">BUY NO</td>
 <td>7.62</td><td>0.3%</td><td>5.4% → 2.8%</td><td>0.1523</td>
-<td>open</td><td><a href="https://solscan.io/tx/57WVhq7fZSEd6gRdFcuL4LuqAgyjYjq8HTtGd1TXB7mWQ2hFTfCiy6agwC6uPk6Cnarzz9o78GFMkPVyo5zFsDEP?cluster=devnet">57WVhq7f…</a></td></tr><tr><td>2026-11-12T14:30:53Z</td><td>SOL&gt;82.2@1794528000</td><td class="no">BUY NO</td>
+<td><span class="no">NO</span></td><td><a href="https://solscan.io/tx/57WVhq7fZSEd6gRdFcuL4LuqAgyjYjq8HTtGd1TXB7mWQ2hFTfCiy6agwC6uPk6Cnarzz9o78GFMkPVyo5zFsDEP?cluster=devnet">57WVhq7f…</a></td></tr><tr><td>2026-11-12T14:30:53Z</td><td>SOL&gt;82.2@1794528000</td><td class="no">BUY NO</td>
 <td>13.18</td><td>17.0%</td><td>23.3% → 19.5%</td><td>0.2636</td>
-<td>open</td><td><a href="https://solscan.io/tx/1NstZ67zKtKZDVtqn4i4kKTffj1ggAVH2xfUS5JDujvxdR1S9UFib7Ym9JEyEUDGXP7CxQ4EXkxXRxf19S2nvDc?cluster=devnet">1NstZ67z…</a></td></tr><tr><td>2026-11-12T14:30:51Z</td><td>SOL&gt;81.2@1794528000</td><td class="no">BUY NO</td>
+<td><span class="no">NO</span></td><td><a href="https://solscan.io/tx/1NstZ67zKtKZDVtqn4i4kKTffj1ggAVH2xfUS5JDujvxdR1S9UFib7Ym9JEyEUDGXP7CxQ4EXkxXRxf19S2nvDc?cluster=devnet">1NstZ67z…</a></td></tr><tr><td>2026-11-12T14:30:51Z</td><td>SOL&gt;81.2@1794528000</td><td class="no">BUY NO</td>
 <td>17.73</td><td>39.6%</td><td>47.6% → 42.1%</td><td>0.3546</td>
-<td>open</td><td><a href="https://solscan.io/tx/5B8awYnRtgbvcc9gokKXYVm56CtnxDzyJN3atN8RPxCwmRGTRwRay5kY9TUpipBUHiP5bt7tGzWTiStDHK8XdPj7?cluster=devnet">5B8awYnR…</a></td></tr><tr><td>2026-11-12T14:30:49Z</td><td>SOL&gt;81.3@1794497025</td><td class="no">BUY NO</td>
+<td><span class="yes">YES</span></td><td><a href="https://solscan.io/tx/5B8awYnRtgbvcc9gokKXYVm56CtnxDzyJN3atN8RPxCwmRGTRwRay5kY9TUpipBUHiP5bt7tGzWTiStDHK8XdPj7?cluster=devnet">5B8awYnR…</a></td></tr><tr><td>2026-11-12T14:30:49Z</td><td>SOL&gt;81.3@1794497025</td><td class="no">BUY NO</td>
 <td>20.00</td><td>14.4%</td><td>23.1% → 19.5%</td><td>0.4000</td>
 <td><span class="no">NO</span></td><td><a href="https://solscan.io/tx/3mzDqNQcwfaLgaDL1JtjYLttffN1unuAjC1ZhuJsLPqRhXQWFmE58GS3Chzzg4UbiUr6VRenJNWKox42DBDr2PfY?cluster=devnet">3mzDqNQc…</a></td></tr><tr><td>2026-11-12T14:30:47Z</td><td>SOL&gt;82.2@1794506400</td><td class="no">BUY NO</td>
 <td>10.05</td><td>5.9%</td><td>12.3% → 8.4%</td><td>0.2009</td>
-<td>open</td><td><a href="https://solscan.io/tx/4Xb7vLjRLZX4tcdWvkFJKCCHJpZY7wtU5SWDVbedkQNxGuPC8nnjM1Kp4uWWiK5GiLeveTRGYHH4aw8SRQWzcuDK?cluster=devnet">4Xb7vLjR…</a></td></tr><tr><td>2026-11-12T14:16:42Z</td><td>SOL&gt;81.3@1794497025</td><td class="no">SELL NO</td>
+<td><span class="no">NO</span></td><td><a href="https://solscan.io/tx/4Xb7vLjRLZX4tcdWvkFJKCCHJpZY7wtU5SWDVbedkQNxGuPC8nnjM1Kp4uWWiK5GiLeveTRGYHH4aw8SRQWzcuDK?cluster=devnet">4Xb7vLjR…</a></td></tr><tr><td>2026-11-12T14:16:42Z</td><td>SOL&gt;81.3@1794497025</td><td class="no">SELL NO</td>
 <td>13.78</td><td>26.9%</td><td>20.8% → 23.1%</td><td>0.2812</td>
 <td><span class="no">NO</span></td><td><a href="https://solscan.io/tx/4j9cM8grbz9gLZjjZPtivWUGGeptvRKxAGPfovS6NRnS6Sv7nokkX3ek9FJUxwZ25VjMMqgsnPbQYs1TcTnfN9AG?cluster=devnet">4j9cM8gr…</a></td></tr><tr><td>2026-11-12T14:16:01Z</td><td>SOL&gt;83@1794506400</td><td class="no">BUY NO</td>
 <td>10.53</td><td>1.5%</td><td>9.3% → 4.0%</td><td>0.2105</td>
-<td>open</td><td><a href="https://solscan.io/tx/2VC8r68EpH2pTnGpEJKPBZ4VezMkB15yYus76xZdrEtFyrgheS2yDFZDcvzTaL8joaCqzYVs5D75GnRq1a1z7uJR?cluster=devnet">2VC8r68E…</a></td></tr><tr><td>2026-11-12T14:15:57Z</td><td>BTC&gt;72800@1794506400</td><td class="no">BUY NO</td>
+<td><span class="no">NO</span></td><td><a href="https://solscan.io/tx/2VC8r68EpH2pTnGpEJKPBZ4VezMkB15yYus76xZdrEtFyrgheS2yDFZDcvzTaL8joaCqzYVs5D75GnRq1a1z7uJR?cluster=devnet">2VC8r68E…</a></td></tr><tr><td>2026-11-12T14:15:57Z</td><td>BTC&gt;72800@1794506400</td><td class="no">BUY NO</td>
 <td>12.39</td><td>17.3%</td><td>30.0% → 19.8%</td><td>0.2479</td>
-<td>open</td><td><a href="https://solscan.io/tx/4u8kPjnr1uJ7ZkSbAhywEpcTcDEP7RTyhpkycpaR3dBrTFy3dDsr4Y2inSPTMp6HzQMkA9DSsZLzbb9KKivrNR9S?cluster=devnet">4u8kPjnr…</a></td></tr><tr><td>2026-11-12T14:15:55Z</td><td>BTC&gt;73300@1794506400</td><td class="no">BUY NO</td>
+<td><span class="no">NO</span></td><td><a href="https://solscan.io/tx/4u8kPjnr1uJ7ZkSbAhywEpcTcDEP7RTyhpkycpaR3dBrTFy3dDsr4Y2inSPTMp6HzQMkA9DSsZLzbb9KKivrNR9S?cluster=devnet">4u8kPjnr…</a></td></tr><tr><td>2026-11-12T14:15:55Z</td><td>BTC&gt;73300@1794506400</td><td class="no">BUY NO</td>
 <td>12.08</td><td>2.9%</td><td>13.2% → 5.4%</td><td>0.2415</td>
-<td>open</td><td><a href="https://solscan.io/tx/4G6GBZKStLmachchrYwdLhPtDytvYF5YYRMZfgVcR7e3pJnaE8B6P5Bpd2fatwhgjhVbMR1XJskoPyHJTFbYNYCr?cluster=devnet">4G6GBZKS…</a></td></tr><tr><td>2026-11-12T14:15:50Z</td><td>SOL&gt;82.2@1794528000</td><td class="no">BUY NO</td>
+<td><span class="no">NO</span></td><td><a href="https://solscan.io/tx/4G6GBZKStLmachchrYwdLhPtDytvYF5YYRMZfgVcR7e3pJnaE8B6P5Bpd2fatwhgjhVbMR1XJskoPyHJTFbYNYCr?cluster=devnet">4G6GBZKS…</a></td></tr><tr><td>2026-11-12T14:15:50Z</td><td>SOL&gt;82.2@1794528000</td><td class="no">BUY NO</td>
 <td>9.55</td><td>20.8%</td><td>26.5% → 23.3%</td><td>0.1909</td>
-<td>open</td><td><a href="https://solscan.io/tx/24qa6QKd2oUbZrAzXz4VwH78ZVwAeYBEXH1rbw3CyfLKGeho2RZuDXK5xKkAVTZnf62vgvZL3noHBBCm8Je5tQSJ?cluster=devnet">24qa6QKd…</a></td></tr><tr><td>2026-11-12T14:15:49Z</td><td>SOL&gt;81.2@1794528000</td><td class="no">BUY NO</td>
+<td><span class="no">NO</span></td><td><a href="https://solscan.io/tx/24qa6QKd2oUbZrAzXz4VwH78ZVwAeYBEXH1rbw3CyfLKGeho2RZuDXK5xKkAVTZnf62vgvZL3noHBBCm8Je5tQSJ?cluster=devnet">24qa6QKd…</a></td></tr><tr><td>2026-11-12T14:15:49Z</td><td>SOL&gt;81.2@1794528000</td><td class="no">BUY NO</td>
 <td>13.84</td><td>45.1%</td><td>52.2% → 47.6%</td><td>0.2768</td>
-<td>open</td><td><a href="https://solscan.io/tx/Z5oVXdEH21QZxLXaBVcK6CbKj8CCAocmcxJ9k2JQwppS65o7D58uPUSRed2h1jdoGF1UQiRCQpaUaZymgDwEvTG?cluster=devnet">Z5oVXdEH…</a></td></tr><tr><td>2026-11-12T14:15:46Z</td><td>SOL&gt;81.3@1794497025</td><td class="no">BUY NO</td>
+<td><span class="yes">YES</span></td><td><a href="https://solscan.io/tx/Z5oVXdEH21QZxLXaBVcK6CbKj8CCAocmcxJ9k2JQwppS65o7D58uPUSRed2h1jdoGF1UQiRCQpaUaZymgDwEvTG?cluster=devnet">Z5oVXdEH…</a></td></tr><tr><td>2026-11-12T14:15:46Z</td><td>SOL&gt;81.3@1794497025</td><td class="no">BUY NO</td>
 <td>20.00</td><td>29.4%</td><td>48.7% → 42.5%</td><td>0.4000</td>
-<td><span class="no">NO</span></td><td><a href="https://solscan.io/tx/4H5dzj46m32wZ4C6X6g9PgNoA5X6CgMHqCxNGMvZeRRJ1gWv8CanpTKr6FwWdQDT6eokxqQwqGSnvwvTtoPjYM5M?cluster=devnet">4H5dzj46…</a></td></tr><tr><td>2026-11-12T14:15:45Z</td><td>SOL&gt;82.2@1794506400</td><td class="no">BUY NO</td>
-<td>20.00</td><td>9.6%</td><td>24.5% → 12.3%</td><td>0.4000</td>
-<td>open</td><td><a href="https://solscan.io/tx/2L5h4pYFU55zdpAR1pQHpHGw7uJ8h7n1WMmXYBojHjvh2ZE35imT3YytErF8N8XUEBVaMFLojCSc4Ko8Q6HipWUk?cluster=devnet">2L5h4pYF…</a></td></tr><tr><td>2026-11-12T14:00:35Z</td><td>BTC&gt;72800@1794506400</td><td class="no">BUY NO</td>
-<td>2.76</td><td>27.5%</td><td>32.8% → 30.0%</td><td>0.0552</td>
-<td>open</td><td><a href="https://solscan.io/tx/2Ps98o3Tm3jZMqbmChc7fwCfWMtghcf3XWbHoXqySGyFkBTP8wRjBxwxfnqhpDZA1zN4WhzF1UV7fEWYB1UxzDmk?cluster=devnet">2Ps98o3T…</a></td></tr><tr><td>2026-11-12T13:15:45Z</td><td>SOL&gt;83@1794506400</td><td class="no">BUY NO</td>
-<td>11.15</td><td>6.8%</td><td>18.8% → 9.3%</td><td>0.2230</td>
-<td>open</td><td><a href="https://solscan.io/tx/HNDjzAYBWH7PrAbgCxZRASaJHaYYykiEpb5VrRmr9PCHycLgrZ8FeKyJP4Gfwv3bQ5BemszQaF1MSChLmEcMRWY?cluster=devnet">HNDjzAYB…</a></td></tr></table>
-<h2>Ladders</h2><section><h3>SOL · expiry 2026-11-12T15:23:45Z</h3>
+<td><span class="no">NO</span></td><td><a href="https://solscan.io/tx/4H5dzj46m32wZ4C6X6g9PgNoA5X6CgMHqCxNGMvZeRRJ1gWv8CanpTKr6FwWdQDT6eokxqQwqGSnvwvTtoPjYM5M?cluster=devnet">4H5dzj46…</a></td></tr></table>
+<h2>Ladders</h2><section><h3>SOL · expiry 2026-11-13T00:00:00Z</h3>
+<p class="proof">Settlement print: <b>$81.6900</b> ± –
+at publish_time 2026-11-13T00:01:00Z (+60s after expiry) · source <code>coinbase-1m-fallback</code></p>
+<table><tr><th>Market</th><th>Strike</th><th>Seed fair YES</th><th>Result</th><th>Brier</th><th>Create tx</th><th>Resolve tx</th><th>Claims</th></tr><tr>
+<td><a href="https://pm-amm-devnet.vercel.app/market/57531244803496">SOL&gt;82.2@1794528000</a></td><td>$82.2000</td><td>26.5%</td>
+<td class="no">NO</td><td>0.070</td><td><a href="https://solscan.io/tx/3PzUfhmqYsxEraP93o616bnWx28onVLkcD1SkuCWFZ8y54FtzrcPYfhEwKEz5jMTSAcJWn67cutsHr13j9UgQwxM?cluster=devnet">3PzUfhmq…</a></td><td><a href="https://solscan.io/tx/3cVL4XGXcCBVyHorHRL9CBM7gJBgk6HjU2HC6BcgfJsMVF8yY94Rv4rS3NwYPEQ4tr76j8UjeJtswGznQzY7AJh?cluster=devnet">3cVL4XGX…</a></td><td>2</td></tr><tr>
+<td><a href="https://pm-amm-devnet.vercel.app/market/261409879141000">SOL&gt;81.2@1794528000</a></td><td>$81.2000</td><td>52.2%</td>
+<td class="yes">YES</td><td>0.228</td><td><a href="https://solscan.io/tx/4Qsqs1F2i2jN9feT6N8tH7eHMgkhxvgWawdkGxhBij6C52pbhH3ja6xQ1hGX4LotFAzz89DEv7giQKMQKRY3CsHb?cluster=devnet">4Qsqs1F2…</a></td><td><a href="https://solscan.io/tx/24nHdPtRLVRsT9qaDPAFAFBa1MAB2CraSQa9WkRnJm7ih3B64jkPjpZdV8X31Bwi6CEyJ9DgJCRDfLZeH3bsHb4t?cluster=devnet">24nHdPtR…</a></td><td>2</td></tr></table></section>
+<section><h3>BTC · expiry 2026-11-12T18:00:00Z</h3>
+<p class="proof">Settlement print: <b>$71866.45</b> ± –
+at publish_time 2026-11-12T18:01:00Z (+60s after expiry) · source <code>coinbase-1m-fallback</code></p>
+<table><tr><th>Market</th><th>Strike</th><th>Seed fair YES</th><th>Result</th><th>Brier</th><th>Create tx</th><th>Resolve tx</th><th>Claims</th></tr><tr>
+<td><a href="https://pm-amm-devnet.vercel.app/market/64176677259306">BTC&gt;73300@1794506400</a></td><td>$73300.00</td><td>27.0%</td>
+<td class="no">NO</td><td>0.073</td><td><a href="https://solscan.io/tx/3t6Qi9z35HQ7xN7nC4cZSejVtX1C1cGJuU5HpBiRByRFnvfKhwaVu3yEKeskYbjJinqgcNDAV8MNZnryXytNB9vg?cluster=devnet">3t6Qi9z3…</a></td><td><a href="https://solscan.io/tx/2D4bAjUyqMY48xwjJmUn9q1Pc4vGcVNr4Rt9SCEMND8ZVtminEYWJTKbxzDfcMGPTm2mdhV1CdpCyDyte4W4P1zP?cluster=devnet">2D4bAjUy…</a></td><td>2</td></tr><tr>
+<td><a href="https://pm-amm-devnet.vercel.app/market/175037526798701">BTC&gt;72800@1794506400</a></td><td>$72800.00</td><td>51.2%</td>
+<td class="no">NO</td><td>0.262</td><td><a href="https://solscan.io/tx/6XhmDNd8gMhtEowKFGeiDjdz5oThaEtqLwHwJLXWGz4ohg9BePTC827xf8hCrnn8NnYH6rRuYvtg6HMEtmKcVD3?cluster=devnet">6XhmDNd8…</a></td><td><a href="https://solscan.io/tx/3Tot2VnqcvRFKKnqyPQC9chogg17WHAnwT2oXCM8iy3pRqkjWT2jECyFeKn6QQzgNFy2CA7CkQiTeKoUL8cv1rb1?cluster=devnet">3Tot2Vnq…</a></td><td>2</td></tr></table></section>
+<section><h3>SOL · expiry 2026-11-12T18:00:00Z</h3>
+<p class="proof">Settlement print: <b>$81.6800</b> ± –
+at publish_time 2026-11-12T18:01:00Z (+60s after expiry) · source <code>coinbase-1m-fallback</code></p>
+<table><tr><th>Market</th><th>Strike</th><th>Seed fair YES</th><th>Result</th><th>Brier</th><th>Create tx</th><th>Resolve tx</th><th>Claims</th></tr><tr>
+<td><a href="https://pm-amm-devnet.vercel.app/market/202420670894762">SOL&gt;83@1794506400</a></td><td>$83.0000</td><td>25.8%</td>
+<td class="no">NO</td><td>0.067</td><td><a href="https://solscan.io/tx/29SG2Lgb6aHKPRLMCZmQ2k9hex63eVdHA6zHFXvSGDXZE1hZq15xe6yig4r1R8Rq5h5Xgwz2TgVKcx4PidoiDZuN?cluster=devnet">29SG2Lgb…</a></td><td><a href="https://solscan.io/tx/58DGKMfXGje7ARxq4ggDscJhSK5LSWrrdxpddtCkFjQyJQZfsdu4TuqWybnCPWJMrrcS92CHkEefYiCzZK1WzgUw?cluster=devnet">58DGKMfX…</a></td><td>2</td></tr><tr>
+<td><a href="https://pm-amm-devnet.vercel.app/market/147664053110203">SOL&gt;82.2@1794506400</a></td><td>$82.2000</td><td>49.8%</td>
+<td class="no">NO</td><td>0.248</td><td><a href="https://solscan.io/tx/3iMkLKPgaVxugysE8hnd2Ur4tFtxpUhVBonL1cgGTDdAffLfziEX9JFWL6scDnTwnPivmFeHSrLFPcyaLgRic8k2?cluster=devnet">3iMkLKPg…</a></td><td><a href="https://solscan.io/tx/5tSzBiFuvF9Tp63mXUCAWUM6nf6zgE6m2H3GHRqPzRWr6ZzwjK9frkCyYhFprQSqAMMdLtzhNxvxfjk7A3tjay3L?cluster=devnet">5tSzBiFu…</a></td><td>2</td></tr></table></section>
+<section><h3>SOL · expiry 2026-11-12T15:23:45Z</h3>
 <p class="proof">Settlement print: <b>$80.8500</b> ± –
 at publish_time 2026-11-12T15:24:00Z (+15s after expiry) · source <code>coinbase-1m-fallback</code></p>
 <table><tr><th>Market</th><th>Strike</th><th>Seed fair YES</th><th>Result</th><th>Brier</th><th>Create tx</th><th>Resolve tx</th><th>Claims</th></tr><tr>
@@ -596,6 +620,6 @@ at publish_time 2026-10-30T13:02:38Z (+2s after expiry) · source <code>pyth-onc
 <td><a href="https://pm-amm-devnet.vercel.app/market/213252208319062">SOL&gt;96.38@1793365356</a></td><td>$96.3800</td><td>76.3%</td>
 <td class="yes">YES</td><td>0.056</td><td><a href="https://solscan.io/tx/5nWDr2G7zjAwtwjzeMrdp3wdh8dAMMgZ5Z3VTaMPXZaMz6pyXE65hgg69fU95nJTteNPMHUhbp1QBBEAYEs4dXcC?cluster=devnet">5nWDr2G7…</a></td><td><a href="https://solscan.io/tx/34BX2n7pXBAYFx5E5wXeJSz9HSUcZV2XkxYbsneukHXeSUZKYkjMamM4dzBj4RMGznHVpKMJ2TGHEfN8YiSZK1X7?cluster=devnet">34BX2n7p…</a></td><td>2</td></tr></table></section>
 <h2>Calibration of the pricing engine</h2><p><small>Seed fair YES vs realised YES rate. Small samples are noisy; this fills in as the keeper rolls ladders.</small></p>
-<table><tr><th>Seed fair bucket</th><th>n</th><th>Mean fair</th><th>YES rate</th></tr><tr><td>20.0%–40.0%</td><td>63</td><td>25.1%</td><td>14.3%</td></tr><tr><td>40.0%–60.0%</td><td>64</td><td>49.8%</td><td>39.1%</td></tr><tr><td>60.0%–80.0%</td><td>2</td><td>73.4%</td><td>50.0%</td></tr></table>
-<p><small>Oracle sources: coinbase-1m-fallback × 101, pyth-onchain × 29. Devnet test tokens only; no real money.</small></p>
+<table><tr><th>Seed fair bucket</th><th>n</th><th>Mean fair</th><th>YES rate</th></tr><tr><td>20.0%–40.0%</td><td>66</td><td>25.1%</td><td>13.6%</td></tr><tr><td>40.0%–60.0%</td><td>67</td><td>49.9%</td><td>38.8%</td></tr><tr><td>60.0%–80.0%</td><td>2</td><td>73.4%</td><td>50.0%</td></tr></table>
+<p><small>Oracle sources: coinbase-1m-fallback × 107, pyth-onchain × 29. Devnet test tokens only; no real money.</small></p>
 </body></html>
