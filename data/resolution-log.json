@@ -1,6 +1,6 @@
 {
   "schema": "strikebook.resolution-log/v1",
-  "generatedAt": 1794664785,
+  "generatedAt": 1794664869,
   "cluster": "devnet",
   "program": "GV1FMGHRYBjQLaghE5fnGuYCuCcpdt3GD5xEX3TwN16y",
   "app": "https://pm-amm-devnet.vercel.app",
@@ -76,18 +76,18 @@
     ],
     "openMarkets": 8,
     "traction": {
-      "trades": 565,
-      "volumeUsdc": 3963.563436,
-      "feesUsdc": 79.316486,
-      "lpFeesUsdc": 39.658243,
+      "trades": 566,
+      "volumeUsdc": 3973.601436,
+      "feesUsdc": 79.517246,
+      "lpFeesUsdc": 39.758623,
       "markets": 114,
       "yes": 196,
-      "no": 369,
+      "no": 370,
       "sells": 13,
-      "meanGapClosed": 0.0953,
-      "expectedEdgeUsdc": 597.730292,
+      "meanGapClosed": 0.0951,
+      "expectedEdgeUsdc": 598.105214,
       "firstAt": 1793628172,
-      "lastAt": 1794664769
+      "lastAt": 1794664854
     }
   },
   "ladders": [
@@ -6481,10 +6481,10 @@
         "depositUsdc": 100
       },
       "amm": {
-        "yes": 0.354214,
-        "at": 1794664766,
-        "trades": 2,
-        "spot": 66731.66208748,
+        "yes": 0.326883,
+        "at": 1794664854,
+        "trades": 3,
+        "spot": 66786.56651579001,
         "sigmaAnnual": 0.426675
       },
       "url": "https://pm-amm-devnet.vercel.app/market/89556801815802"
@@ -6635,6 +6635,24 @@
     }
   ],
   "trades": [
+    {
+      "at": 1794664854,
+      "market": "DPekK8YuyKtEDb32xxSfoPWSfwAExRiWqZymGY31jREj",
+      "name": "BTC>67100@1794679200",
+      "asset": "BTC",
+      "action": "buy",
+      "side": "no",
+      "amountUsdc": 10.038,
+      "tokensOut": 14.915744,
+      "feeUsdc": 0.20076,
+      "pModel": 0.301884,
+      "ammBefore": 0.354214,
+      "ammAfter": 0.326883,
+      "spot": 66786.56651579001,
+      "sigmaAnnual": 0.426675,
+      "tx": "2XR3PfQrUydwpefyhTfFK6r4gBdb7qo3JtcCbxtARukYgVJ6W8mCD5FJYT1Ea625J1krWN7mDKXNXNtZjiJ7ic2z",
+      "outcome": null
+    },
     {
       "at": 1794664769,
       "market": "GmLfsbSLM7aFssHtCFWkiVhtiuQfXFsSYyU2ssHfkAEt",
