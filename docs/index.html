@@ -8,17 +8,17 @@ td,th{padding:4px 8px;border-bottom:1px solid #e3e3e3;text-align:left;font-varia
 <p><a href="app/"><b>Open markets &amp; trade panel (beta) →</b></a> · <a href="app/#try"><b>Try it on devnet in 60 seconds</b></a> (burner wallet + faucet, play money) · <a href="#honest-traction">ours vs outside traction</a></p>
 <p>Short-dated binary strike markets ("Will SOL be above $K at T?") on the Predict pm-AMM, seeded at a fair digital-option price from the
 live Pyth mark and realised vol, and <b>resolved by a keeper from the Pyth oracle</b>. Every resolution below carries its oracle proof and devnet transactions.</p>
-<p><small>Rule: YES iff the first Pyth PriceUpdateV2 print with publish_time &gt;= expiry is strictly above the strike. Program <code>GV1FMGHRYBjQLaghE5fnGuYCuCcpdt3GD5xEX3TwN16y</code>. Log generated 2026-11-14T02:13:47Z · schema <code>strikebook.resolution-log/v1</code> ·
+<p><small>Rule: YES iff the first Pyth PriceUpdateV2 print with publish_time &gt;= expiry is strictly above the strike. Program <code>GV1FMGHRYBjQLaghE5fnGuYCuCcpdt3GD5xEX3TwN16y</code>. Log generated 2026-11-14T03:43:57Z · schema <code>strikebook.resolution-log/v1</code> ·
 <a href="resolution-log.json">raw JSON</a></small></p>
 <div class="kpi"><div><b>144</b>markets resolved</div><div><b>73</b>ladders</div><div><b>37 / 107</b>YES / NO</div>
 <div><b>0.189</b>Brier (seed fair)<br><small>coin flip = 0.250</small></div><div><b>8</b>open markets</div></div>
 <h2 id="honest-traction">Honest traction: our wallets vs outside wallets</h2>
-<p><small>Every finalized devnet transaction on every StrikeBook market account, scanned on-chain (<code>npm run traction</code>, last scan 2026-11-14T02:13:46Z).
+<p><small>Every finalized devnet transaction on every StrikeBook market account, scanned on-chain (<code>npm run traction</code>, last scan 2026-11-14T03:43:57Z).
 Our own keeper, trader bot and E2E test burners are listed in <a href="https://github.com/LMH-Solutions/strikebook/blob/main/data/team-wallets.json">team-wallets.json</a> and are <b>never</b> counted as outside activity.</small></p>
 <div class="kpi"><div><b>151</b>markets created</div><div><b>143</b>resolved</div><div><b>2</b>outside trades</div>
 <div><b>4.00</b>outside volume (mUSDC)</div><div><b>1</b>outside wallets</div><div><b>0.1%</b>outside share of volume</div></div>
 <table><tr><th>Wallet group</th><th>Trades</th><th>Buys</th><th>Sells</th><th>Volume (mUSDC)</th><th>Claims</th><th>Wallets</th></tr>
-<tr><td>Keeper (creator / LP / resolver)</td><td>3</td><td>3</td><td>0</td><td>108.90</td><td>294</td><td>1</td></tr><tr><td>Trader bot (ours)</td><td>565</td><td>552</td><td>13</td><td>3830.65</td><td>105</td><td>1</td></tr><tr><td>Team E2E test burners (ours)</td><td>10</td><td>6</td><td>4</td><td>80.03</td><td>1</td><td>5</td></tr><tr><td><b>Ours, total</b></td><td>578</td><td>561</td><td>17</td><td>4019.58</td><td>400</td><td>7</td></tr><tr><td><b>Outside wallets</b></td><td>2</td><td>2</td><td>0</td><td>4.00</td><td>0</td><td>1</td></tr></table>
+<tr><td>Keeper (creator / LP / resolver)</td><td>3</td><td>3</td><td>0</td><td>108.90</td><td>294</td><td>1</td></tr><tr><td>Trader bot (ours)</td><td>568</td><td>555</td><td>13</td><td>3884.41</td><td>105</td><td>1</td></tr><tr><td>Team E2E test burners (ours)</td><td>10</td><td>6</td><td>4</td><td>80.03</td><td>1</td><td>5</td></tr><tr><td><b>Ours, total</b></td><td>581</td><td>564</td><td>17</td><td>4073.34</td><td>400</td><td>7</td></tr><tr><td><b>Outside wallets</b></td><td>2</td><td>2</td><td>0</td><td>4.00</td><td>0</td><td>1</td></tr></table>
 <p><small>Want to be an outside tester? <a href="app/#try">Try StrikeBook on devnet in 60 seconds</a> (play money, no install).</small></p>
 <h2>Our trader bot: edge re-centering trader (our wallet, not organic volume)</h2>
 <p><small>A separate devnet trader wallet prices every open rung with the same model (P(YES) = Φ(d2) from the live Pyth spot and 7-day realised vol)
