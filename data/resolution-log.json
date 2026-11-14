@@ -1,6 +1,6 @@
 {
   "schema": "strikebook.resolution-log/v1",
-  "generatedAt": 1794692767,
+  "generatedAt": 1794697748,
   "cluster": "devnet",
   "program": "GV1FMGHRYBjQLaghE5fnGuYCuCcpdt3GD5xEX3TwN16y",
   "app": "https://pm-amm-devnet.vercel.app",
@@ -76,18 +76,18 @@
     ],
     "openMarkets": 8,
     "traction": {
-      "trades": 592,
-      "volumeUsdc": 4398.569793,
-      "feesUsdc": 88.03458,
-      "lpFeesUsdc": 44.01729,
+      "trades": 593,
+      "volumeUsdc": 4403.59956,
+      "feesUsdc": 88.135175,
+      "lpFeesUsdc": 44.067588,
       "markets": 118,
       "yes": 196,
-      "no": 396,
+      "no": 397,
       "sells": 16,
-      "meanGapClosed": 0.0933,
-      "expectedEdgeUsdc": 684.838284,
+      "meanGapClosed": 0.0932,
+      "expectedEdgeUsdc": 686.608522,
       "firstAt": 1793628172,
-      "lastAt": 1794692750
+      "lastAt": 1794697732
     }
   },
   "ladders": [
@@ -6653,11 +6653,11 @@
         "depositUsdc": 100
       },
       "amm": {
-        "yes": 0.287449,
-        "at": 1794692743,
-        "trades": 5,
-        "spot": 64789.5491262,
-        "sigmaAnnual": 0.457256
+        "yes": 0.262972,
+        "at": 1794697732,
+        "trades": 6,
+        "spot": 63477.61779528,
+        "sigmaAnnual": 0.467165
       },
       "url": "https://pm-amm-devnet.vercel.app/market/261194204206695"
     },
@@ -6807,6 +6807,24 @@
     }
   ],
   "trades": [
+    {
+      "at": 1794697732,
+      "market": "6TW3xgo19PXRdUMc17c4ydGZ1D7yYa3BvDyJK1K4PLaR",
+      "name": "BTC>65800@1794700800",
+      "asset": "BTC",
+      "action": "buy",
+      "side": "no",
+      "amountUsdc": 5.029767,
+      "tokensOut": 6.800005,
+      "feeUsdc": 0.100595,
+      "pModel": 0,
+      "ammBefore": 0.287449,
+      "ammAfter": 0.262972,
+      "spot": 63477.61779528,
+      "sigmaAnnual": 0.467165,
+      "tx": "5PTrgG6AoKmQEU5bzLmut5EHoJDhNZHqJwK76NcHttgjxCCMghmYNdDmnnMCqBTPP8GhFbozmmAQRvM6SvxoL4Rv",
+      "outcome": null
+    },
     {
       "at": 1794692750,
       "market": "97GvqB95SY8wghjJzD3tPznCRyfe72iq52w9K5gacXZA",
