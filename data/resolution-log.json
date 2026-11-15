@@ -1,6 +1,6 @@
 {
   "schema": "strikebook.resolution-log/v1",
-  "generatedAt": 1794771971,
+  "generatedAt": 1794773909,
   "cluster": "devnet",
   "program": "GV1FMGHRYBjQLaghE5fnGuYCuCcpdt3GD5xEX3TwN16y",
   "app": "https://pm-amm-devnet.vercel.app",
@@ -76,18 +76,18 @@
     ],
     "openMarkets": 5,
     "traction": {
-      "trades": 633,
-      "volumeUsdc": 4983.581526,
-      "feesUsdc": 99.770118,
-      "lpFeesUsdc": 49.885059,
+      "trades": 634,
+      "volumeUsdc": 5004.326016,
+      "feesUsdc": 100.193474,
+      "lpFeesUsdc": 50.096737,
       "markets": 127,
-      "yes": 213,
+      "yes": 214,
       "no": 420,
-      "sells": 30,
+      "sells": 31,
       "meanGapClosed": 0.0912,
-      "expectedEdgeUsdc": 932.802338,
+      "expectedEdgeUsdc": 934.099562,
       "firstAt": 1793628172,
-      "lastAt": 1794771957
+      "lastAt": 1794773893
     }
   },
   "ladders": [
@@ -7145,11 +7145,11 @@
         "depositUsdc": 100
       },
       "amm": {
-        "yes": 0.609711,
-        "at": 1794771957,
-        "trades": 5,
-        "spot": 71.78400034,
-        "sigmaAnnual": 0.83042
+        "yes": 0.533447,
+        "at": 1794773893,
+        "trades": 6,
+        "spot": 71.28314203000001,
+        "sigmaAnnual": 0.792699
       },
       "url": "https://pm-amm-devnet.vercel.app/market/187297039488942"
     },
@@ -7251,6 +7251,24 @@
     }
   ],
   "trades": [
+    {
+      "at": 1794773893,
+      "market": "ApcvwMdUFMwr6h7uim5NV6WZfGGxdoGan6SgCTo31wEg",
+      "name": "SOL>71.2@1794787200",
+      "asset": "SOL",
+      "action": "sell",
+      "side": "yes",
+      "amountUsdc": 20.74449,
+      "tokensOut": 37.01949,
+      "feeUsdc": 0.423356,
+      "pModel": 0.525325,
+      "ammBefore": 0.609711,
+      "ammAfter": 0.533447,
+      "spot": 71.28314203000001,
+      "sigmaAnnual": 0.792699,
+      "tx": "3Fgr9LGTVzsZ31QxyN5Y54fewBKP9q4UKZu1FFE6dFEGyNssyETsAkHpddVKheviPQwYGRS237kz4X8Hg65w3L2p",
+      "outcome": null
+    },
     {
       "at": 1794771957,
       "market": "ApcvwMdUFMwr6h7uim5NV6WZfGGxdoGan6SgCTo31wEg",
