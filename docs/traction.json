@@ -1,7 +1,7 @@
 {
  "schema": "strikebook.traction.v1",
- "generatedAt": 1794706775,
- "scannedAt": 1794706775,
+ "generatedAt": 1794714101,
+ "scannedAt": 1794714101,
  "sinceTs": null,
  "cluster": "devnet",
  "markets": {
@@ -112,8 +112,8 @@
   "since": 1794578400
  },
  "scan": {
-  "fetched": 20,
-  "skipped": 0,
+  "fetched": 0,
+  "skipped": 33,
   "txsCached": 1381,
   "marketsScanned": 163
  }
