@@ -1,7 +1,7 @@
 {
  "schema": "strikebook.traction.v1",
- "generatedAt": 1794778993,
- "scannedAt": 1794778993,
+ "generatedAt": 1794779196,
+ "scannedAt": 1794779196,
  "sinceTs": null,
  "cluster": "devnet",
  "markets": {
@@ -10,19 +10,19 @@
   "open": 1
  },
  "all": {
-  "trades": 666,
-  "buys": 629,
+  "trades": 667,
+  "buys": 630,
   "sells": 37,
-  "volumeUsdc": 5357.998738,
+  "volumeUsdc": 5374.726314,
   "claims": 460,
   "wallets": 8,
   "markets": 136
  },
  "ours": {
-  "trades": 664,
-  "buys": 627,
+  "trades": 665,
+  "buys": 628,
   "sells": 37,
-  "volumeUsdc": 5353.998738,
+  "volumeUsdc": 5370.726314,
   "claims": 460,
   "wallets": 7,
   "markets": 134
@@ -47,10 +47,10 @@
    "markets": 3
   },
   "traderBot": {
-   "trades": 651,
-   "buys": 618,
+   "trades": 652,
+   "buys": 619,
    "sells": 33,
-   "volumeUsdc": 5165.067772,
+   "volumeUsdc": 5181.795348,
    "claims": 125,
    "wallets": 1,
    "markets": 128
@@ -74,7 +74,7 @@
    "markets": 2
   }
  },
- "outsideShareOfVolume": 0.000747,
+ "outsideShareOfVolume": 0.000744,
  "outsideWallets": [
   {
    "wallet": "5jddEQQjHNwrjf6NBjAhCaxZ3ZS2mzaeS4i3E4jLqqsm",
@@ -112,9 +112,9 @@
   "since": 1794578400
  },
  "scan": {
-  "fetched": 2,
+  "fetched": 1,
   "skipped": 0,
-  "txsCached": 1461,
+  "txsCached": 1462,
   "marketsScanned": 168
  }
 }
