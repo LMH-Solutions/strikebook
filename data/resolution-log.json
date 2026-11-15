@@ -1,6 +1,6 @@
 {
   "schema": "strikebook.resolution-log/v1",
-  "generatedAt": 1794746849,
+  "generatedAt": 1794749209,
   "cluster": "devnet",
   "program": "GV1FMGHRYBjQLaghE5fnGuYCuCcpdt3GD5xEX3TwN16y",
   "app": "https://pm-amm-devnet.vercel.app",
@@ -76,18 +76,18 @@
     ],
     "openMarkets": 8,
     "traction": {
-      "trades": 605,
-      "volumeUsdc": 4602.595263,
-      "feesUsdc": 92.131004,
-      "lpFeesUsdc": 46.065502,
-      "markets": 122,
-      "yes": 200,
+      "trades": 608,
+      "volumeUsdc": 4643.973263,
+      "feesUsdc": 92.958564,
+      "lpFeesUsdc": 46.479282,
+      "markets": 125,
+      "yes": 203,
       "no": 405,
       "sells": 20,
-      "meanGapClosed": 0.093,
-      "expectedEdgeUsdc": 849.340154,
+      "meanGapClosed": 0.0929,
+      "expectedEdgeUsdc": 853.604077,
       "firstAt": 1793628172,
-      "lastAt": 1794714375
+      "lastAt": 1794749192
     }
   },
   "ladders": [
@@ -6997,11 +6997,11 @@
         "depositUsdc": 100
       },
       "amm": {
-        "yes": 0.5059,
-        "at": 1794745593,
-        "trades": 0,
-        "spot": 65420.99657593,
-        "sigmaAnnual": 0.578982109692679
+        "yes": 0.560454,
+        "at": 1794749188,
+        "trades": 1,
+        "spot": 65592.60624721,
+        "sigmaAnnual": 0.579382
       },
       "url": "https://pm-amm-devnet.vercel.app/market/227932134432709"
     },
@@ -7021,11 +7021,11 @@
         "depositUsdc": 100
       },
       "amm": {
-        "yes": 0.2662,
-        "at": 1794745586,
-        "trades": 0,
-        "spot": 72.6717396,
-        "sigmaAnnual": 0.8203264715940629
+        "yes": 0.313657,
+        "at": 1794749192,
+        "trades": 1,
+        "spot": 73.0415188,
+        "sigmaAnnual": 0.820862
       },
       "url": "https://pm-amm-devnet.vercel.app/market/178240401067050"
     },
@@ -7045,11 +7045,11 @@
         "depositUsdc": 100
       },
       "amm": {
-        "yes": 0.5149,
-        "at": 1794745588,
-        "trades": 0,
-        "spot": 72.6717396,
-        "sigmaAnnual": 0.8203264715940629
+        "yes": 0.580232,
+        "at": 1794749185,
+        "trades": 1,
+        "spot": 73.0415188,
+        "sigmaAnnual": 0.820862
       },
       "url": "https://pm-amm-devnet.vercel.app/market/272100041176416"
     },
@@ -7151,6 +7151,60 @@
     }
   ],
   "trades": [
+    {
+      "at": 1794749192,
+      "market": "Gsrwmg14gDSWnqbSTpbQStDNZw131Xz4saysHG1sQcvM",
+      "name": "SOL>73.6@1794765600",
+      "asset": "SOL",
+      "action": "buy",
+      "side": "yes",
+      "amountUsdc": 4.724,
+      "tokensOut": 15.984669,
+      "feeUsdc": 0.09448,
+      "pModel": 0.338661,
+      "ammBefore": 0.2662,
+      "ammAfter": 0.313657,
+      "spot": 73.0415188,
+      "sigmaAnnual": 0.820862,
+      "tx": "58MBZA9iv27YMpKtncfyAb47AL9babBdxjcQjrxLUQxWBrCp6xP8WGqta3Xmo8f8gnjASTP4zdZXNQGmdcTKGbN8",
+      "outcome": null
+    },
+    {
+      "at": 1794749188,
+      "market": "8DqFVYDL928evgypKyW9ANPa6VKzLdyWB4QBbmTc5rJq",
+      "name": "BTC>65400@1794765600",
+      "asset": "BTC",
+      "action": "buy",
+      "side": "yes",
+      "amountUsdc": 16.654,
+      "tokensOut": 30.607749,
+      "feeUsdc": 0.33308,
+      "pModel": 0.585452,
+      "ammBefore": 0.5059,
+      "ammAfter": 0.560454,
+      "spot": 65592.60624721,
+      "sigmaAnnual": 0.579382,
+      "tx": "eeu1ZB5DU8KHQqnPckbQAirfcJZbqu6dpj4UVA5zpWFwxXtFhSStsoaZDNqPMK8vusbx4mbNo9aWmtxp6C11SSt",
+      "outcome": null
+    },
+    {
+      "at": 1794749185,
+      "market": "6ajTX4MChRVSYnmeYkt8tMBPy112bV2XBEPiTPsn4FJz",
+      "name": "SOL>72.6@1794765600",
+      "asset": "SOL",
+      "action": "buy",
+      "side": "yes",
+      "amountUsdc": 20,
+      "tokensOut": 35.787795,
+      "feeUsdc": 0.4,
+      "pModel": 0.623374,
+      "ammBefore": 0.5149,
+      "ammAfter": 0.580232,
+      "spot": 73.0415188,
+      "sigmaAnnual": 0.820862,
+      "tx": "3gUSNjfJ1E57U6fsouWgjFtKsVpJH6USGkG4eE53Lyz6QNet4uZb6p5HZqr5gxP3hLe4HTFD8vXRN63vPRWk1VQD",
+      "outcome": null
+    },
     {
       "at": 1794714375,
       "market": "HxZ3NDMZDHUD6zdMx3KdQt388gzYvriBZRyWfusWZLhU",
