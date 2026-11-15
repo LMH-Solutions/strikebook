@@ -1,6 +1,6 @@
 {
   "schema": "strikebook.resolution-log/v1",
-  "generatedAt": 1794767341,
+  "generatedAt": 1794767465,
   "cluster": "devnet",
   "program": "GV1FMGHRYBjQLaghE5fnGuYCuCcpdt3GD5xEX3TwN16y",
   "app": "https://pm-amm-devnet.vercel.app",
@@ -76,18 +76,18 @@
     ],
     "openMarkets": 5,
     "traction": {
-      "trades": 628,
-      "volumeUsdc": 4910.826921,
-      "feesUsdc": 98.309557,
-      "lpFeesUsdc": 49.154778,
-      "markets": 126,
+      "trades": 629,
+      "volumeUsdc": 4930.179921,
+      "feesUsdc": 98.696617,
+      "lpFeesUsdc": 49.348309,
+      "markets": 127,
       "yes": 211,
-      "no": 417,
+      "no": 418,
       "sells": 28,
       "meanGapClosed": 0.0915,
-      "expectedEdgeUsdc": 918.154089,
+      "expectedEdgeUsdc": 919.621024,
       "firstAt": 1793628172,
-      "lastAt": 1794763049
+      "lastAt": 1794767451
     }
   },
   "ladders": [
@@ -7145,11 +7145,11 @@
         "depositUsdc": 100
       },
       "amm": {
-        "yes": 0.4758,
-        "at": 1794767309,
-        "trades": 0,
-        "spot": 71.12550846,
-        "sigmaAnnual": 0.8277686290916095
+        "yes": 0.41739,
+        "at": 1794767451,
+        "trades": 1,
+        "spot": 70.81352308,
+        "sigmaAnnual": 0.827769
       },
       "url": "https://pm-amm-devnet.vercel.app/market/187297039488942"
     },
@@ -7251,6 +7251,24 @@
     }
   ],
   "trades": [
+    {
+      "at": 1794767451,
+      "market": "ApcvwMdUFMwr6h7uim5NV6WZfGGxdoGan6SgCTo31wEg",
+      "name": "SOL>71.2@1794787200",
+      "asset": "SOL",
+      "action": "buy",
+      "side": "no",
+      "amountUsdc": 19.353,
+      "tokensOut": 34.265398,
+      "feeUsdc": 0.38706,
+      "pModel": 0.392392,
+      "ammBefore": 0.4758,
+      "ammAfter": 0.41739,
+      "spot": 70.81352308,
+      "sigmaAnnual": 0.827769,
+      "tx": "3NkzgYTyQ3TRge4nVVGziUeMLSk6RXmBoMZstYGfAX7H5nurDzbunUgfee5GTfeKPbvP54H7zh9kNeK4GJGVFA8W",
+      "outcome": null
+    },
     {
       "at": 1794763049,
       "market": "EH3CAkmRt6SQeBbMcou6APbUCYdDv6qKdtyYcMHjNy4H",
